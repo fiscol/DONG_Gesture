@@ -495,7 +495,7 @@
     console.log(data);
 	document.getElementById("huge").innerHTML = data.data;
 
-  	ref.set({id: data.data});
+  	ref.push({id: data.data});
 
   });
 
