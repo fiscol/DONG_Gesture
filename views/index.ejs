@@ -488,16 +488,23 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
 <script>
+  // Setting Firebase
   var ref = new Firebase("https://dong-test-8ac54.firebaseio.com/web/saving-data/");
-
+  
+  // Socket Client
   var socket = io.connect();
+  // Get socket event from app.js
   socket.on('data_update', function (data) {
     console.log(data);
+    
+    // Change DOM view
 	document.getElementById("huge").innerHTML = data.data;
 
-  	ref.push({id: data.data});
+	// push to firebase database
+  	// ref.push({id: data.data});
 
   });
+
 
 </script>
 

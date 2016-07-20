@@ -31,25 +31,46 @@ app.use('/users', users);
 
 
 
-// API-function dictionary
+
+//DONG API-function resolve
 var api = require('./api_function.js');
+var db = require('./firebase_db.js');
+var ref_path = "DONGCloud";
+var UserData = "UserData";
+
+
 // API server
 app.post('/api', function(req, res){
-  // body 
-  // "id":"BigQ";
 
   // 解析body
-  var api_data_raw = req.body.id;
-  console.log(api_data_raw);
-  
-  //傳到api層處理 (api_function.js)
-  var api_data_finish = api.post_data(api_data_raw);
-  console.log(api_data_finish);
+  var data_raw = req.body;
+  console.log(data_raw);
+
+  // 存到DB
+  // db._set(UserData, ref_path, data_raw);
+  db._push(UserData, ref_path, data_raw);
 
   // socket 更新處理後數據到前端
-  io.sockets.emit('data_update', { data: api_data_finish });
-  res.send('api_data is : '+ api_data_finish);
+  io.sockets.emit('data_update', { data: data_raw });
+  res.json({ data: data_raw });
+
+  //傳到api層處理 (api_function.js)
+  var data_finish = api.post_data(data_raw);
+  console.log(data_finish);
+
+
 });
+
+
+
+
+
+
+
+// db._push(ref_path, haha);
+// db._update(ref_path, haha2);
+// db.on_value(ref_path);
+
 
 
 
