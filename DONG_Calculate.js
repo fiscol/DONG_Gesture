@@ -1,10 +1,35 @@
-exports.post_data = function(data){
+exports._postData = function(data){
+  // Time Log Test
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth()+1; //January is 0!
+  var yyyy = today.getFullYear();
+　var h = today.getHours();
+　var m = today.getMinutes();
+　var s = today.getSeconds();
+　
+  if(dd<10) {
+      dd='0'+dd
+  } 
   
+  if(mm<10) {
+      mm='0'+mm
+  } 
+  today = yyyy+'/'+mm+'/'+dd+" "+h+":"+m+":"+s;
+
+  // Calculate
   if ( data.RawCode = [6,6,1,2,5,3,2,0] ) {
   	data = {
   		User: data.User + "(after api data)",
   		RawCode: data.RawCode + "(after api data)",
-  		MotionCode: "[0]"
+  		MotionCode: "[0]",
+  		Time: today
+	}
+  }else{
+  	data = {
+  		User: data.User + "(after api data)",
+  		RawCode: data.RawCode + "(after api data)",
+  		MotionCode: "[error]"
 	}
   }
   return data

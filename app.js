@@ -5,8 +5,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+//routes(controllers)
 var routes = require('./routes/index');
 var users = require('./routes/users');
+// var api = require('./routes/api');
+// var unit = require('./routes/unit');
+// var train = require('./routes/train');
 
 var app = express();
 var server = require('http').Server(app);
@@ -28,50 +32,48 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 
-
-
-
-
-
-
 // API server
 app.post('/api/iOS', function(req, res){
 
   // 解析body
-  var data_raw = req.body;
-  console.log(data_raw);
+  var DataRaw = req.body;
+  console.log(DataRaw);
 
   //DONG API-function resolve
-  var db = require('./firebase_db.js');
-  var ref_path = "DONGCloud/UserData";
+  var DB = require('./libraries/firebase_db.js');
+  var RefPath = "DONGCloud/UserData";
   var ChildName = "User";
 
-  // 存到DB
-  // db._set(ref_path, ChildName, data_raw);
-  // db.on_childAdded(ref_path, ChildName);
+  // DB._set(ref_path, ChildName, DataRaw);
+  // DB.on_childAdded(ref_path, ChildName);
 
   // // socket 更新處理後數據到前端
-  // io.sockets.emit('data_update', { data: data_raw });
+  // io.sockets.emit('data_update', { data: DataRaw });
 
   //傳到計算層處理 (DONG_Calculate.js)
   var api = require('./DONG_Calculate.js');
 
-  var data_finish = api.post_data(data_raw);
-  console.log(data_finish);
+  var DataFinish = api._postData(DataRaw);
+  console.log(DataFinish);
 
-  db._set(ref_path, ChildName, data_finish);
-  db.on_childAdded(ref_path, ChildName);
+  // 存到DB
+  DB._set(RefPath, ChildName, DataFinish);
+  DB._onChildAdded(RefPath, ChildName);
 
-  res.json(data_finish);
+
+  res.json(DataFinish);
   
-  requestDONG();
+  // DONG motion request TEST.
+  _requestDong();
 
 });
+
+
 /*
 request DONG Motion
 */
 
-function requestDONG(){
+function _requestDong(){
 var querystring = require('querystring');
 var http = require('http');
 
