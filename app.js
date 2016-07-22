@@ -32,44 +32,73 @@ app.use('/users', users);
 
 
 
-//DONG API-function resolve
-var api = require('./api_function.js');
-var db = require('./firebase_db.js');
-var ref_path = "DONGCloud";
-var UserData = "UserData";
 
 
 // API server
-app.post('/api', function(req, res){
+app.post('/api/iOS', function(req, res){
 
   // 解析body
   var data_raw = req.body;
   console.log(data_raw);
 
+  //DONG API-function resolve
+  var db = require('./firebase_db.js');
+  var ref_path = "DONGCloud/UserData";
+  var ChildName = "User";
+
   // 存到DB
-  // db._set(UserData, ref_path, data_raw);
-  db._push(UserData, ref_path, data_raw);
+  // db._set(ref_path, ChildName, data_raw);
+  // db.on_childAdded(ref_path, ChildName);
 
-  // socket 更新處理後數據到前端
-  io.sockets.emit('data_update', { data: data_raw });
-  res.json({ data: data_raw });
+  // // socket 更新處理後數據到前端
+  // io.sockets.emit('data_update', { data: data_raw });
 
-  //傳到api層處理 (api_function.js)
+  //傳到計算層處理 (DONG_Calculate.js)
+  var api = require('./DONG_Calculate.js');
+
   var data_finish = api.post_data(data_raw);
   console.log(data_finish);
 
+  db._set(ref_path, ChildName, data_finish);
+  db.on_childAdded(ref_path, ChildName);
+
+  res.json(data_finish);
+  
+  requestDONG();
 
 });
+/*
+request DONG Motion
+*/
+
+function requestDONG(){
+var querystring = require('querystring');
+var http = require('http');
+
+var data = querystring.stringify({
+      username: 'yourUsernameValue',
+      password: 'yourPasswordValue'
+    });
+
+var options = {
+    host: '192.168.11.100',
+    port: 3000,
+    path: '/api/mac_password',
+    method: 'GET'
+};
+
+var req = http.request(options, function(res) {
+    res.setEncoding('utf8');
+    res.on('data', function (chunk) {
+        console.log("body: " + chunk);
+    });
+});
+// request DONG Motion
+  req.write(data);
+  req.end();
+}
 
 
-
-
-
-
-
-// db._push(ref_path, haha);
-// db._update(ref_path, haha2);
-// db.on_value(ref_path);
 
 
 
