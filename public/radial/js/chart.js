@@ -1,10 +1,10 @@
 var calories = new RadialProgressChart('.calories', {
   diameter: 200,
-  max: 800,
+  max: 200,
   round: true,
   series: [{
     labelStart: '\uF105',
-    value: 500,
+    value: 0,
     color: {
       linearGradient: {
         x1: '0%',
@@ -27,7 +27,7 @@ var calories = new RadialProgressChart('.calories', {
   center: {
     content: [function(value) {
       return value
-    }, ' OF 800 CALS'],
+    }, 'Max Speed'],
     y: 25
   }
 });
@@ -41,7 +41,7 @@ var gpa = new RadialProgressChart('.gpa', {
     color: ['red', '#7CFC00']
   }],
   center: function(d) {
-    return d.toFixed(2) + ' GPA'
+    return d.toFixed(2) + 'N'
   }
 });
 
@@ -50,7 +50,7 @@ function getRandom(min, max) {
 }
 
 (function loop() {
-  calories.update(Math.round(getRandom(50, 800)));
-  gpa.update(getRandom(0.5, 3.8));
+  calories.update(100);
+  gpa.update(20);
   setTimeout(loop, 3000);
 })();
