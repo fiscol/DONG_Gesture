@@ -3,11 +3,11 @@
 // init
 var firebase = require("firebase");
 	firebase.initializeApp({
-	  serviceAccount: "DONG-TEST-e4e5735fa7bb.json",
-	  databaseURL: "https://dong-test-8ac54.firebaseio.com",
-	  databaseAuthVariableOverride: {
-	    uid: "BigQ"
-	  }
+	  	serviceAccount: "DONG-TEST-e4e5735fa7bb.json",
+	  	databaseURL: "https://dong-test-8ac54.firebaseio.com",
+	  	databaseAuthVariableOverride: {
+	    	uid: "BigQ"
+	  	}
 	});
 /*
 	.Write
@@ -21,9 +21,9 @@ exports._set = function(path, childname ,value, error){
 	ref.child(childname).set(value);
 	console.log('ref.set '+ value)
 	if (error) {
-      console.log("Data could not be saved." + error);
+      	console.log("Data could not be saved." + error);
   	} else {
-  	  console.log("Data saved successfully.");
+  	  	console.log("Data saved successfully.");
   	}
   	count++;
 };
@@ -36,9 +36,9 @@ exports._update = function(path, childname, value, error){
 	ref.child(childname).update(value);
 	console.log('ref.update '+ value)
 	if (error) {
-      console.log("Data could not be updated." + error);
+      	console.log("Data could not be updated." + error);
   	} else {
-  	  console.log("Data updated successfully.");
+  	  	console.log("Data updated successfully.");
   	}
 };
 
@@ -49,9 +49,9 @@ exports._push = function(path, childname, value, error){
 	ref.child(childname).push(value);
 	console.log('ref.push '+ value);
 	if (error) {
-      console.log("Data could not be pushed." + error);
+      	console.log("Data could not be pushed." + error);
   	} else {
-  	  console.log("Data pushed successfully."+ref.child(childname).push(value).key);
+  	  	console.log("Data pushed successfully."+ref.child(childname).push(value).key);
   	}
 };
 
@@ -121,8 +121,8 @@ exports.on_childChanged =  function(path){
 	var ref = db.ref(path);
 	// Get the data on a post that has changed
 	ref.on("child_changed", function(snapshot) {
-	  var changedPost = snapshot.val();
-	  console.log("The updated post title is " + changedPost.title);
+	  	var changedPost = snapshot.val();
+	  	console.log("The updated post title is " + changedPost.title);
 	});
 };
 

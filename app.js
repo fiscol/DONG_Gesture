@@ -35,36 +35,35 @@ app.use('/users', users);
 // API server
 app.post('/api/iOS', function(req, res){
 
-  // 解析body
-  var DataRaw = req.body;
-  console.log(DataRaw);
+    // 解析body
+    var DataRaw = req.body;
+    console.log(DataRaw);
 
-  //DONG API-function resolve
-  var DB = require('./libraries/firebase_db.js');
-  var RefPath = "DONGCloud/UserData";
-  var ChildName = "User";
+    //DONG API-function resolve
+    var DB = require('./libraries/firebase_db.js');
+    var RefPath = "DONGCloud/UserData";
+    var ChildName = "User";
 
-  // DB._set(ref_path, ChildName, DataRaw);
-  // DB.on_childAdded(ref_path, ChildName);
+    // DB._set(ref_path, ChildName, DataRaw);
+    // DB.on_childAdded(ref_path, ChildName);
 
-  // // socket 更新處理後數據到前端
-  // io.sockets.emit('data_update', { data: DataRaw });
+    // // socket 更新處理後數據到前端
+    // io.sockets.emit('data_update', { data: DataRaw });
 
-  //傳到計算層處理 (DONG_Calculate.js)
-  var api = require('./DONG_Calculate.js');
+    //傳到計算層處理 (DONG_Calculate.js)
+    var api = require('./DONG_Calculate.js');
 
-  var DataFinish = api._postData(DataRaw);
-  console.log(DataFinish);
+    var DataFinish = api._postData(DataRaw);
+    console.log(DataFinish);
 
-  // 存到DB
-  DB._set(RefPath, ChildName, DataFinish);
-  DB._onChildAdded(RefPath, ChildName);
+    // 存到DB
+    DB._set(RefPath, ChildName, DataFinish);
+    DB._onChildAdded(RefPath, ChildName);
 
-
-  res.json(DataFinish);
+    res.json(DataFinish);
   
-  // DONG motion request TEST.
-  _requestDong();
+    // DONG motion request TEST.
+    _requestDong();
 
 });
 
@@ -78,9 +77,9 @@ var querystring = require('querystring');
 var http = require('http');
 
 var data = querystring.stringify({
-      username: 'yourUsernameValue',
-      password: 'yourPasswordValue'
-    });
+    username: 'yourUsernameValue',
+    password: 'yourPasswordValue'
+});
 
 var options = {
     host: '192.168.11.100',

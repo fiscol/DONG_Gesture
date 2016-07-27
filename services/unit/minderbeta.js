@@ -58,4 +58,3 @@ exports._lcsPatternChartDev = {
         'temp_case8': [4, 2, 5, 7, 6, 6, 4, 2, 2, 4, 2, 6, 2] //y  
     }
 };
-
