@@ -29,6 +29,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Pass Socket.io to routes 
+app.use(function(req,res,next){
+    req.io = io;
+    next();
+});
 app.use('/', routes);
 app.use('/users', users);
 app.use('/api', api); //api 

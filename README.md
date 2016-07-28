@@ -3,13 +3,15 @@ DONG Cloud
 
 Nodejs server
 
-2016/07/20 upload project.
-2016/07/22 前端測試與後端街口完成(架構尚未調整);
-2016/07/22 Test git boundle Slack(Mark)
-2016/07/27 更新一版改寫swift motion code, 加入初版Markdown API說明(Fiscol)
-2016/07/27 測試slack同步訊息(source tree push)
-2016/07/27 建立api router(routes/api.js)(BigQ)
-2016/07/27 建立數據管理雛形(adim.ejs)(BigQ)
+2016/07/20 upload project.  
+2016/07/22 前端測試與後端街口完成(架構尚未調整)  
+2016/07/22 Test git boundle Slack(Mark)  
+2016/07/27 更新一版改寫swift motion code, 加入初版Markdown API說明(Fiscol)  
+2016/07/27 測試slack同步訊息(source tree push)  
+2016/07/27 建立api router(routes/api.js)(BigQ)  
+2016/07/27 建立數據管理雛形(adim.ejs)(BigQ)  
+2016/07/27 將socket.io導入routes、動態數據管理頁面資料(BigQ)  
+
 
 <h1>DONG Cloud Document</h1>
 <h2>命名規範 V1.0 (20160722)</h2>

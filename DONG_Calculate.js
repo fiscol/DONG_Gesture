@@ -7,6 +7,8 @@ exports._postData = function(data){
   var h = today.getHours();
   var m = today.getMinutes();
   var s = today.getSeconds();
+
+
 　
   if(dd<10) {
       dd='0'+dd
@@ -27,13 +29,22 @@ exports._postData = function(data){
   }     
   today = yyyy+'/'+mm+'/'+dd+" "+h+":"+m+":"+s;
 
+
+  var RandomSpeed = (Math.floor((Math.random() * 10) + 1))*17;
+  var RandomPower = (Math.floor((Math.random() * 10) + 1))*37;
+  var RandomSimilarity = (Math.floor((Math.random() * 10) + 1))*10;
+
+
   // Calculate
   if ( data.RawCode = [6,6,1,2,5,3,2,0] ) {
   	  data = {
   		    User: data.User + "(after api data)",
   		    RawCode: data.RawCode + "(after api data)",
   		    MotionCode: "[0]",
-  		    Time: today
+  		    Time: today,
+          MaxSpeed: RandomSpeed,
+          MaxPower: RandomPower,
+          Similarity: RandomSimilarity
 	    }
   } else {
   	  data = {
