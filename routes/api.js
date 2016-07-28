@@ -13,11 +13,6 @@ router.post('/iOS', function(req, res){
     var DataRaw = req.body;
     console.log(DataRaw);
 
-    //DONG API-function resolve
-    var DB = require('../libraries/firebase_db.js');
-    var RefPath = "DONGCloud/UserData";
-    var ChildName = "User";
-
     // DB._set(ref_path, ChildName, DataRaw);
     // DB.on_childAdded(ref_path, ChildName);
 
@@ -33,15 +28,27 @@ router.post('/iOS', function(req, res){
     req.io.sockets.emit('NumData', { 
     	MaxSpeed: DataFinish.MaxSpeed,
     	MaxPower: DataFinish.MaxPower,
-    	Similarity: DataFinish.Similarity 
+    	Similarity: DataFinish.Similarity, 
+    	GestureNum: DataFinish.GestureNum
     });
 
+
+    // DB Library
+    var DB = require('../libraries/firebase_db.js');
+    // DB Path
+    var RefPath = "DONGCloud/UserData";
+    var UserName = "BigQ"
+    RefPath = RefPath + "/" + UserName;
+    // Child Name
+    var ChildName = "Data";
+
     // 存到DB
-    // DB._set(RefPath, ChildName, DataFinish);
+    DB._set(RefPath, ChildName, DataFinish);
     // DB._onChildAdded(RefPath, ChildName);
 
     // respond JSON
     res.json(DataFinish);
+    // res.end();
   
     // DONG motion request TEST.
     // _requestDong();

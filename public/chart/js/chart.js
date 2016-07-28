@@ -1,5 +1,5 @@
 var MaxSpeed = new RadialProgressChart('.MaxSpeed', {
-  diameter: 200,
+  diameter: 150,
   max: 200,
   round: true,
   series: [{
@@ -28,11 +28,11 @@ var MaxSpeed = new RadialProgressChart('.MaxSpeed', {
     content: [function(value) {
       return value
     }, 'Max Speed'],
-    y: 25
+    y: 10
   }
 });
 var MaxPower = new RadialProgressChart('.MaxPower', {
-  diameter: 200,
+  diameter: 150,
   max: 400,
   round: true,
   series: [{
@@ -60,12 +60,13 @@ var MaxPower = new RadialProgressChart('.MaxPower', {
   center: {
     content: [function(value) {
       return value
-    }, 'MaxPower'],
-    y: 25
+    }, 'Max Power'],
+    y: 10
   }
 });
+
 var Similarity = new RadialProgressChart('.Similarity', {
-  diameter: 200,
+  diameter: 150,
   max: 100,
   round: true,
   series: [{
@@ -94,7 +95,7 @@ var Similarity = new RadialProgressChart('.Similarity', {
     content: [function(value) {
       return value
     }, 'Similarity'],
-    y: 25
+    y: 10
   }
 });
 
