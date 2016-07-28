@@ -1,4 +1,3 @@
-
 DONG Cloud 
 
 Nodejs server
@@ -37,6 +36,10 @@ Nodejs server
 函式名稱(底線 + 小寫 + 大寫) 
 
     exports._setUserData = function(path, _ChildName ,value, error){};
+
+檔案名稱(小寫 + 底線 + 小寫)
+
+    firebase_db.js
 
 
 
