@@ -1,13 +1,13 @@
+/*
+api.js 負責處理
+*/
+
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource11');
-});
 
 // API server
-router.post('/iOS', function(req, res){
+router.post('/iOS', function (req, res, next){
 
     // 解析body
     var DataRaw = req.body;
@@ -20,35 +20,42 @@ router.post('/iOS', function(req, res){
     var api = require('../DONG_Calculate.js');
 
     var DataFinish = api._postData(DataRaw);
-    console.log(DataFinish);
+    // console.log(DataFinish);
 
-    // socket 更新處理後數據到前端
+    // socket 更新處理後數據到後端管理view(admin.ejs)
     // socket.io 參數須 req
-    // io.sockets.emit('data_update', { data: DataRaw });
-    req.io.sockets.emit('NumData', { 
+    req.io.sockets.emit('RealTimeData', { 
     	MaxSpeed: DataFinish.MaxSpeed,
     	MaxPower: DataFinish.MaxPower,
     	Similarity: DataFinish.Similarity, 
     	GestureNum: DataFinish.GestureNum
     });
 
-
     // DB Library
     var DB = require('../libraries/firebase_db.js');
     // DB Path
-    var RefPath = "DONGCloud/UserData";
-    var UserName = "BigQ"
-    RefPath = RefPath + "/" + UserName;
+    var RefPath = "DONGCloud/Test";
     // Child Name
-    var ChildName = "Data";
+    var RandomChildName = (Math.floor((Math.random() * 3) + 1));
+    var ChildName = "User" + RandomChildName;
 
     // 存到DB
-    DB._set(RefPath, ChildName, DataFinish);
-    // DB._onChildAdded(RefPath, ChildName);
+    // DB._set(RefPath, ChildName, DataFinish);
+    // Read DB data
+    DB._onValue(RefPath, ChildName, function(onValueResult){
+        console.log(onValueResult);
+        req.io.sockets.emit('DataBaseData', { 
+            Name: onValueResult.User,
+            Member: onValueResult.IsDongMember,
+            Rawdata: onValueResult.RawCode
+        });
+        // res.json(onValueResult);
+    });
+    
 
     // respond JSON
-    res.json(DataFinish);
-    // res.end();
+    
+    res.end();
   
     // DONG motion request TEST.
     // _requestDong();

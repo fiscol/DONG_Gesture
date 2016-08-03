@@ -42,8 +42,10 @@ exports._postData = function(data){
       MaxSpeed: RandomSpeed,
       MaxPower: RandomPower,
       Similarity: RandomSimilarity,
-      GestureNum: RandomGestureNum
+      GestureNum: RandomGestureNum,
     }
+
+
 
   return data
 }

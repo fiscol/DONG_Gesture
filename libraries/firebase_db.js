@@ -12,12 +12,13 @@ var firebase = require("firebase");
 /*
 	.Write
 */
+var count = 0;
 
 // set
 exports._set = function(path, childname ,value, error){
 	var db = firebase.database();
 	var ref = db.ref(path);
-	childname = childname + count;
+	// childname = childname + count;
 	ref.child(childname).set(value);
 	console.log('ref.set '+ value)
 	if (error) {
@@ -25,7 +26,7 @@ exports._set = function(path, childname ,value, error){
   	} else {
   	  console.log("Data saved successfully.");
   	}
-  	count++;
+  	// count++;
 };
 
 // update
@@ -93,14 +94,15 @@ exports._push = function(path, childname, value, error){
 /*
 	.Read
 */
-var count = 0;
 // Read database
-exports._onValue =  function(path, childname){
+exports._onValue =  function(path, childname, callback){
 	var db = firebase.database();
 	var ref = db.ref(path);
 	ref.child(childname).on("value", function(snapshot){
-		console.log(snapshot.val())
-		return snapshot.val()
+		var onValueResult = snapshot.val();
+		console.log(onValueResult);
+		// 回傳onValueResult給api.js
+		callback && callback( onValueResult );
 	}, function (errorObject) {
  		console.log("The read failed: " + errorObject.code);
 	});	
