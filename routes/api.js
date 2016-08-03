@@ -66,6 +66,11 @@ DB Part
     res.json(MinderResult);
 });
 
+
+var localurl;
+router.post('/localurl', function (req, res, next){
+    localurl = req.body.url;
+}
 // 傳到DongMotion測試
 function _requestDongSlide(){
     var request = require('request')
@@ -92,7 +97,7 @@ function _requestDongSlide(){
 function _requestDongMotion(){
     var request = require('request');
 
-    var url = 'https://46c2cfd7.ngrok.io/api/mac_password'
+    var url = localurl + "/api/mac_password"
     var options = {
       method: 'get',
       url: url
