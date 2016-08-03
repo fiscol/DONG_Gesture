@@ -70,7 +70,7 @@ DB Part
 var localurl;
 router.post('/localurl', function (req, res, next){
     localurl = req.body.url;
-}
+});
 // 傳到DongMotion測試
 function _requestDongSlide(){
     var request = require('request')
