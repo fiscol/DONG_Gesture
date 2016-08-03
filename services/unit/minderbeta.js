@@ -1,10 +1,13 @@
 //var foundation = require("foundation");
+var lcsLength = require("./lcslength.js");
 
-exports._dongMinderBata = {
-    //FinalCode, PatternTypeNumPhone不確定來源
-    'LCSRate': this._lcsRateComputing(FinalCode, 0.55, 1, PatternTypeNumPhone).Rate,
-    'LCSActionCode': this._lcsRateComputing(FinalCode, 0.55, 1, PatternTypeNumPhone).ActionCode
-};
+var FinalCode = [];
+var PatternTypeNumPhone = 1;
+// exports._dongMinderBata = {
+//     //FinalCode, PatternTypeNumPhone不確定來源
+//     'LCSRate': _lcsRateComputing(FinalCode, 0.55, 1, PatternTypeNumPhone).Rate,
+//     'LCSActionCode': _lcsRateComputing(FinalCode, 0.55, 1, PatternTypeNumPhone).ActionCode
+// };
 
 exports._lcsRateComputing = function (_Input, _Threshold, _PatternModel, _PatternType) {
     var PatternCase = new Array(30);
@@ -27,9 +30,9 @@ exports._lcsRateComputing = function (_Input, _Threshold, _PatternModel, _Patter
     //=======================
 
     if (_Input.length >= 1) { //避免濾除過後出現空值
-        for (var PatternCaseNum = PatternStart; Patten_Case_Num <= PatternEnd; PatternCaseNum++) {
-            //LCSScore[PatternCaseNum] = parseFloat(lcsLength._lcsNumber(_Input, PatternCaseNum));
-            LCSRate[PatternCaseNum] = LCSScore[Patten_Case_Num] / parseFloat(Math.max(_Input.length, PatternCaseNum));
+        for (var PatternCaseNum = PatternStart; PatternCaseNum <= PatternEnd; PatternCaseNum++) {
+            LCSScore[PatternCaseNum] = parseFloat(lcsLength._lcsNumber(_Input, PatternCase[PatternCaseNum]));
+            LCSRate[PatternCaseNum] = LCSScore[PatternCaseNum] / parseFloat(Math.max(_Input.length, PatternCase[PatternCaseNum].length));
         }
     }
 
@@ -39,9 +42,9 @@ exports._lcsRateComputing = function (_Input, _Threshold, _PatternModel, _Patter
     return { 'Rate': Rate, 'ActionCode': ActionCode };
 };
 
-exports._lcsPatternChart = {};
+var _lcsPatternChart = {};
 
-exports._lcsPatternChartDev = {
+var _lcsPatternChartDev = {
     'mark': { //1.1>0.18
         'temp_case1': [4, 2, 4, 6, 3, 3, 1, 4, 4, 6, 3, 2, 2, 5, 3, 2, 4, 4, 2, 3, 2, 2, 1, 1, 4, 4, 3, 2, 4, 4, 3, 4, 6, 3, 3, 6, 6, 5, 3, 4, 3, 3, 3], //david
         'temp_case2': [2, 4, 3, 3, 7, 7, 4, 1, 2, 4, 4, 3, 2, 4, 4, 1, 3, 6, 4, 3, 3, 2, 2, 4, 4, 3, 3, 4, 4, 6, 3, 3, 1, 4, 3, 4, 3, 4, 4, 2, 2, 1], //mark

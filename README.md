@@ -1,4 +1,3 @@
-
 DONG Cloud 
 
 Nodejs server
@@ -17,6 +16,7 @@ Nodejs server
  - 將socket.io導入routes、動態數據管理頁面資料更新(BigQ)  
 2016/08/03  
  - RealTimeData與DBData異步功能完成(BigQ)
+ - 先更新一版可運算Score，暫時寫死的Minder API(Fiscol)
   
   
   
