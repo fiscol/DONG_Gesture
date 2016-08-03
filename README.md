@@ -1,4 +1,3 @@
-
 DONG Cloud 
 
 Nodejs server
@@ -14,8 +13,8 @@ Nodejs server
  - 建立api router(routes/api.js)(BigQ)  
  - 建立數據管理雛形(adim.ejs)(BigQ)  
 2016/07/28  
- - 將socket.io導入routes、動態數據管理頁面資料更新(BigQ) 
-2016/08/03
+ - 將socket.io導入routes、動態數據管理頁面資料更新(BigQ)  
+2016/08/03  
  - RealTimeData與DBData異步功能完成(BigQ)
   
   
