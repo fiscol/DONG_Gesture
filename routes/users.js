@@ -1,6 +1,12 @@
 var express = require('express');
 var async = require('async');
+<<<<<<< HEAD
+
 // var usersService = require('../services/users/users.js');
+
+=======
+// var usersService = require('../services/users/users.js');
+>>>>>>> d5923076b619b881aa6ae81f821e1c67c0958354
 var router = express.Router();
 
 /* GET users listing. */
