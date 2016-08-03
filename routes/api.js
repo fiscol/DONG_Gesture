@@ -15,17 +15,17 @@ Unit Part
 */
     // minderBetaService
     var minderBetaService = require('../services/unit/minderbeta.js');
-    var SDKRawCode = [4, 5, 3, 3, 7, 5, 4, 4, 6, 1, 2, 2, 3, 2, 4, 4, 3, 3, 4, 4, 5, 2, 3, 1, 4, 4, 2, 3, 1, 4, 4, 2, 3, 3, 4, 4, 2, 3, 4, 6, 2];
+    // var SDKRawCode = [4, 5, 3, 3, 7, 5, 4, 4, 6, 1, 2, 2, 3, 2, 4, 4, 3, 3, 4, 4, 5, 2, 3, 1, 4, 4, 2, 3, 1, 4, 4, 2, 3, 3, 4, 4, 2, 3, 4, 6, 2];
     var SDKThreshold = 0.55;
     var SDKSimilarity = 1;
     var SDKParam = 1;
-    var MinderResult = minderBetaService._lcsRateComputing(SDKRawCode, SDKThreshold, SDKSimilarity, SDKParam);
+    var MinderResult = minderBetaService._lcsRateComputing(DataRaw.SDKRawCode, SDKThreshold, SDKSimilarity, SDKParam);
 
     //DONG_Calculate
     var api = require('../DONG_Calculate.js');
     var DataFinish = api._postData(DataRaw);
 
-    // socket.io 參數須 req
+    // Send RealTimeData to View 
     req.io.sockets.emit('RealTimeData', { 
     	MaxSpeed: DataFinish.MaxSpeed,
     	MaxPower: DataFinish.MaxPower,
@@ -54,14 +54,14 @@ DB Part
         // Send DBdata to View
         req.io.sockets.emit('DBData', { 
             Name: onValueResult.User,
-            Rawdata: SDKRawCode,
+            Rawdata: DataRaw.SDKRawCode,
             Rate: MinderResult.Rate,
             ActionCode: MinderResult.ActionCode
         });
     });
     // DONG motion request TEST.
     // _requestDong();
-    res.end();
+    res.json(MinderResult);
 });
 
 // 傳到DongMotion測試
