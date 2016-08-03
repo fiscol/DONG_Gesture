@@ -36,11 +36,12 @@ router.post('/iOS', function (req, res, next){
     // DB Path
     var RefPath = "DONGCloud/Test";
     // Child Name
-    var RandomChildName = (Math.floor((Math.random() * 3) + 1));
+    var RandomChildName = (Math.floor((Math.random() * 3) + 1));//Random Test
     var ChildName = "User" + RandomChildName;
 
     // 存到DB
     // DB._set(RefPath, ChildName, DataFinish);
+
     // Read DB data
     DB._onValue(RefPath, ChildName, function(onValueResult){
         console.log(onValueResult);
@@ -49,7 +50,6 @@ router.post('/iOS', function (req, res, next){
             Member: onValueResult.IsDongMember,
             Rawdata: onValueResult.RawCode
         });
-        // res.json(onValueResult);
     });
     
 

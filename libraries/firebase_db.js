@@ -52,7 +52,7 @@ exports._push = function(path, childname, value, error){
 	if (error) {
       console.log("Data could not be pushed." + error);
   	} else {
-  	  console.log("Data pushed successfully."+ref.child(childname).push(value).key);
+  	  console.log("Data pushed successfully." + ref.child(childname).push(value).key);
   	}
 };
 
@@ -108,24 +108,24 @@ exports._onValue =  function(path, childname, callback){
 	});	
 };
 
-exports._onChildAdded =  function(path){
-	var db = firebase.database();
-	var ref = db.ref(path);
-	// Retrieve new posts as they are added to our database
-	ref.on("child_added", function(snapshot) {
-  		// console.log("newChild: " + snapshot.val());
-  		console.log("PrePost: " + snapshot.val());
-	});
-};
+// exports._onChildAdded =  function(path){
+// 	var db = firebase.database();
+// 	var ref = db.ref(path);
+// 	// Retrieve new posts as they are added to our database
+// 	ref.on("child_added", function(snapshot) {
+//   		// console.log("newChild: " + snapshot.val());
+//   		console.log("PrePost: " + snapshot.val());
+// 	});
+// };
 
-exports._onChildChanged =  function(path){
-	var db = firebase.database();
-	var ref = db.ref(path);
-	// Get the data on a post that has changed
-	ref.on("child_changed", function(snapshot) {
-	  var changedPost = snapshot.val();
-	  console.log("The updated post title is " + changedPost.title);
-	});
-};
+// exports._onChildChanged =  function(path){
+// 	var db = firebase.database();
+// 	var ref = db.ref(path);
+// 	// Get the data on a post that has changed
+// 	ref.on("child_changed", function(snapshot) {
+// 	  var changedPost = snapshot.val();
+// 	  console.log("The updated post title is " + changedPost.title);
+// 	});
+// };
 
 
