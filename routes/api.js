@@ -95,7 +95,7 @@ function _requestDongMotion(){
       name: 'mark'
     }
 
-    var url = 'http://192.168.11.100:3000/api/mac_password'
+    var url = 'https://127f9eae.ngrok.io/api/mac_password'
     var options = {
       method: 'get',
       url: url
