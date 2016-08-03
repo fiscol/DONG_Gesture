@@ -97,8 +97,8 @@ function _requestDongSlide(){
 // 傳到DongMotion測試
 function _requestDongMotion(){
     var request = require('request');
-    console.log(localurl)
-    var url = localurl + "/api/mac_password"
+    var url = localurl + "/api/mac_password";
+    console.log(url);
     var options = {
       method: 'get',
       url: url
