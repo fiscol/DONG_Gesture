@@ -1,28 +1,30 @@
 /*
-api.js 負責處理
+api.js
 */
-
 var express = require('express');
 var router = express.Router();
 
-
-// API server
+/*
+API Server
+*/
 router.post('/iOS', function (req, res, next){
-
     // 解析body
     var DataRaw = req.body;
-    console.log(DataRaw);
+/*
+Unit Part
+*/
+    // minderBetaService
+    var minderBetaService = require('../services/unit/minderbeta.js');
+    var SDKRawCode = [4, 5, 3, 3, 7, 5, 4, 4, 6, 1, 2, 2, 3, 2, 4, 4, 3, 3, 4, 4, 5, 2, 3, 1, 4, 4, 2, 3, 1, 4, 4, 2, 3, 3, 4, 4, 2, 3, 4, 6, 2];
+    var SDKThreshold = 0.55;
+    var SDKSimilarity = 1;
+    var SDKParam = 1;
+    var MinderResult = minderBetaService._lcsRateComputing(SDKRawCode, SDKThreshold, SDKSimilarity, SDKParam);
 
-    // DB._set(ref_path, ChildName, DataRaw);
-    // DB.on_childAdded(ref_path, ChildName);
-
-    //傳到計算層處理 (DONG_Calculate.js)
+    //DONG_Calculate
     var api = require('../DONG_Calculate.js');
-
     var DataFinish = api._postData(DataRaw);
-    // console.log(DataFinish);
 
-    // socket 更新處理後數據到後端管理view(admin.ejs)
     // socket.io 參數須 req
     req.io.sockets.emit('RealTimeData', { 
     	MaxSpeed: DataFinish.MaxSpeed,
@@ -31,37 +33,36 @@ router.post('/iOS', function (req, res, next){
     	GestureNum: DataFinish.GestureNum
     });
 
-    // DB Library
+/*
+Learn Part
+*/
+
+/*
+DB Part
+*/
     var DB = require('../libraries/firebase_db.js');
     // DB Path
     var RefPath = "DONGCloud/Test";
     // Child Name
     var RandomChildName = (Math.floor((Math.random() * 3) + 1));//Random Test
     var ChildName = "User" + RandomChildName;
-
+    // Read DB data
     // 存到DB
     // DB._set(RefPath, ChildName, DataFinish);
 
-    // Read DB data
     DB._onValue(RefPath, ChildName, function(onValueResult){
-        console.log(onValueResult);
-        req.io.sockets.emit('DataBaseData', { 
+        // Send DBdata to View
+        req.io.sockets.emit('DBData', { 
             Name: onValueResult.User,
-            Member: onValueResult.IsDongMember,
-            Rawdata: onValueResult.RawCode
+            Rawdata: SDKRawCode,
+            Rate: MinderResult.Rate,
+            ActionCode: MinderResult.ActionCode
         });
     });
-    
-
-    // respond JSON
-    
-    res.end();
-  
     // DONG motion request TEST.
     // _requestDong();
-
+    res.end();
 });
-
 
 // 傳到DongMotion測試
 // function _requestDong(){

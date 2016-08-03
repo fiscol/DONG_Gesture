@@ -15,12 +15,12 @@ var firebase = require("firebase");
 var count = 0;
 
 // set
-exports._set = function(path, childname ,value, error){
+exports._set = function(_Path, _ChildName, _Value, error){
 	var db = firebase.database();
-	var ref = db.ref(path);
+	var ref = db.ref(_Path);
 	// childname = childname + count;
-	ref.child(childname).set(value);
-	console.log('ref.set '+ value)
+	ref.child(_ChildName).set(_Value);
+	console.log('ref.set '+ _Value)
 	if (error) {
       console.log("Data could not be saved." + error);
   	} else {
@@ -31,11 +31,11 @@ exports._set = function(path, childname ,value, error){
 
 // update
 // Error: Firebase.update failed: First argument  must be an object containing the children to replace.
-exports._update = function(path, childname, value, error){
+exports._update = function(_Path, _ChildName, _Value, error){
 	var db = firebase.database();
-	var ref = db.ref(path);
-	ref.child(childname).update(value);
-	console.log('ref.update '+ value)
+	var ref = db.ref(_Path);
+	ref.child(_ChildName).update(_Value);
+	console.log('ref.update '+ _Value)
 	if (error) {
       console.log("Data could not be updated." + error);
   	} else {
@@ -44,11 +44,11 @@ exports._update = function(path, childname, value, error){
 };
 
 // push
-exports._push = function(path, childname, value, error){
+exports._push = function(_Path, _ChildName, _Value, error){
 	var db = firebase.database();
-	var ref = db.ref(path);
-	ref.child(childname).push(value);
-	console.log('ref.push '+ value);
+	var ref = db.ref(_Path);
+	ref.child(_ChildName).push(_Value);
+	console.log('ref.push '+ _Value);
 	if (error) {
       console.log("Data could not be pushed." + error);
   	} else {
@@ -95,14 +95,14 @@ exports._push = function(path, childname, value, error){
 	.Read
 */
 // Read database
-exports._onValue =  function(path, childname, callback){
+exports._onValue =  function(_Path, _ChildName, _Callback){
 	var db = firebase.database();
-	var ref = db.ref(path);
-	ref.child(childname).on("value", function(snapshot){
+	var ref = db.ref(_Path);
+	ref.child(_ChildName).on("value", function(snapshot){
 		var onValueResult = snapshot.val();
 		console.log(onValueResult);
 		// 回傳onValueResult給api.js
-		callback && callback( onValueResult );
+		_Callback && _Callback( onValueResult );
 	}, function (errorObject) {
  		console.log("The read failed: " + errorObject.code);
 	});	

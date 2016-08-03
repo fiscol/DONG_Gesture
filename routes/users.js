@@ -1,6 +1,6 @@
 var express = require('express');
 var async = require('async');
-var usersService = require('../services/users/users.js');
+// var usersService = require('../services/users/users.js');
 var router = express.Router();
 
 /* GET users listing. */
