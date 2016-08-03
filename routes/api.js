@@ -60,7 +60,7 @@ DB Part
         });
     });
     // DONG motion request TEST.
-    // _requestDong();
+    _requestDong();
     res.json(MinderResult);
 });
 
