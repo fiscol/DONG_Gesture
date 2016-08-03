@@ -60,36 +60,51 @@ DB Part
         });
     });
     // DONG motion request TEST.
-    _requestDong();
+    _requestDongSlide()
+    _requestDongMotion()
     res.json(MinderResult);
 });
 
 // 傳到DongMotion測試
-function _requestDong(){
-var querystring = require('querystring');
-var http = require('http');
+function _requestDongSlide(){
+    var request = require('request')
+    
+    var postData = {
+      name: 'mark'
+    }
 
-var data = querystring.stringify({
-    username: 'yourUsernameValue',
-    password: 'yourPasswordValue'
-});
+    var url = 'http://dongslide.herokuapp.com/api/MotionID'
+    var options = {
+      method: 'post',
+      body: postData,
+      json: true,
+      url: url
+    }
+    request(options, function (err, res, body) {
+      if (err) {
+        return
+      }
+    })
+}
 
-var options = {
-    host: '192.168.11.100',
-    port: 3000,
-    path: '/api/mac_password',
-    method: 'GET'
-};
+// 傳到DongMotion測試
+function _requestDongMotion(){
+    var request = require('request')
+    
+    var postData = {
+      name: 'mark'
+    }
 
-var req = http.request(options, function(res) {
-    res.setEncoding('utf8');
-    res.on('data', function (chunk) {
-        console.log("body: " + chunk);
-    });
-});
-// request DONG Motion
-  req.write(data);
-  req.end();
+    var url = 'http://192.168.11.100:3000/api/mac_password'
+    var options = {
+      method: 'get',
+      url: url
+    }
+    request(options, function (err, res, body) {
+      if (err) {
+        return
+      }
+    })
 }
 
 module.exports = router;
