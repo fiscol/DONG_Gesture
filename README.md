@@ -17,7 +17,9 @@ Nodejs server
 2016/08/03  
  - RealTimeData與DBData異步功能完成(BigQ)  
  - 先更新一版可運算Score，暫時寫死的Minder API(Fiscol)  
- - 整合Minder至API中進行測試(BigQ)
+ - 整合Minder至API中進行測試(BigQ)  
+ - 發指令到DONG Slide與DONG Motion  
+ 
   
   
   

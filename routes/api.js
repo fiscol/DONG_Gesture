@@ -59,9 +59,10 @@ DB Part
             ActionCode: MinderResult.ActionCode
         });
     });
-    // DONG motion request TEST.
-    _requestDongSlide()
-    _requestDongMotion()
+    // 傳到DongSlide測試
+    _requestDongSlide();
+    // 傳到DongMotion測試
+    _requestDongMotion();
     res.json(MinderResult);
 });
 
@@ -89,13 +90,9 @@ function _requestDongSlide(){
 
 // 傳到DongMotion測試
 function _requestDongMotion(){
-    var request = require('request')
-    
-    var postData = {
-      name: 'mark'
-    }
+    var request = require('request');
 
-    var url = 'https://cdee4f2a.ngrok.io/api/mac_password'
+    var url = 'https://46c2cfd7.ngrok.io/api/mac_password'
     var options = {
       method: 'get',
       url: url
