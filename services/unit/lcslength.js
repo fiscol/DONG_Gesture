@@ -9,11 +9,15 @@
 exports._lcsNumber = function(_X, _Y){
     //: a two dimensional array [0...y.count][0...x.count] of Int
     var Score = [], Row = [];
-    while (_X--) Row.push(0);
-    while (_Y--) Score.push(Row.slice());
+    for(var i = 0; i < _X.length; i++){
+        Row.push(0);
+    }
+    for(var j = 0; j < _Y.length; j++){
+        Score.push(Row.slice());
+    }
 
-    for(var i = 0; i < _Y.length; i++){
-        for(var j = 0; j < _X.length; j++){
+    for(var i = 1; i < _Y.length; i++){
+        for(var j = 1; j < _X.length; j++){
             if(_X[j - 1] === _Y[i - 1]){
                 Score[i][j] = Score[i - 1][j - 1] + 1;
             }
@@ -25,7 +29,7 @@ exports._lcsNumber = function(_X, _Y){
             }
         }
     }
-    return Score[_Y.length][_X.length];
+    return Score[_Y.length-1][_X.length-1];
 };
 
 //_lcsNumberFor2只能算數列，會回傳LCSLength分數(score)跟對應匹配到的數列(traceback)
@@ -37,12 +41,16 @@ exports._lcsNumber = function(_X, _Y){
 exports._lcsNumberFor2 = function(_X, _Y){
     //: a two dimensional array [0...y.count][0...x.count] of Int
     var Score = [], Row = [];
-    while (_X--) Row.push(0);
-    while (_Y--) Score.push(Row.slice());
+    for(var i = 0; i < _X.length; i++){
+        Row.push(0);
+    }
+    for(var j = 0; j < _Y.length; j++){
+        Score.push(Row.slice());
+    }
 
     //Score
-    for(var i = 0; i < _Y.length; i++){
-        for(var j = 0; j < _X.length; j++){
+    for(var i = 1; i < _Y.length; i++){
+        for(var j = 1; j < _X.length; j++){
             if(_X[j - 1] === _Y[i - 1]){
                 Score[i][j] = Score[i - 1][j - 1] + 1;
             }
@@ -63,7 +71,7 @@ exports._lcsNumberFor2 = function(_X, _Y){
         var I = _A - 1;
         var J = _B - 1;
         if(_X[I] === _Y[J]){
-            return _traceBack(I, J) + [x[i]];//重要，這邊要問Mark
+            return _traceBack(I, J) + [_X[i]];//重要，這邊要問Mark
         }
 
         var Result = [[]];
@@ -75,7 +83,7 @@ exports._lcsNumberFor2 = function(_X, _Y){
         }
         return Result;
     }
-    return {'TraceBack' : _traceBack(_X.length, _Y.length), 'Score' : Score[_Y.length][_X.length]};
+    return {'TraceBack' : _traceBack(_X.length - 1, _Y.length - 1), 'Score' : Score[_Y.length - 1][_X.length - 1]};
 };
 
 //此LCS_string能算字串，會回傳LCSLength分數(scroe)跟對應匹配到的數列(traceback)
@@ -89,12 +97,16 @@ exports._lcsString = function(_X, _Y){
     function _lcsTraceBackString (){
         //: a two dimensional array [0...y.count][0...x.count] of Int
         var Score = [], Row = [];
-        while (X--) Row.push(0);
-        while (Y--) Score.push(Row.slice());
+        for(var i = 0; i < _X.length; i++){
+            Row.push(0);
+        }
+        for(var j = 0; j < _Y.length; j++){
+            Score.push(Row.slice());
+        }
 
         //Score
-        for(var i = 0; i < Y.length; i++){
-            for(var j = 0; j < X.length; j++){
+        for(var i = 1; i < Y.length; i++){
+            for(var j = 1; j < X.length; j++){
                 if(X[j - 1] === Y[i - 1]){
                     Score[i][j] = Score[i - 1][j - 1] + 1;
                 }
