@@ -19,7 +19,7 @@ Unit Part
     var SDKThreshold = 0.55;
     var SDKSimilarity = 1;
     var SDKParam = 1;
-    // 
+    // DataRaw.SDKRawCode is string, must to turn into arr. 
     var string2arr = JSON.parse(DataRaw.SDKRawCode);
     // console.log(string2arr);
 
@@ -56,7 +56,6 @@ DB Part
 
     DB._onValue(RefPath, ChildName, function(onValueResult){
 
-
         // Send DBdata to View
         req.io.sockets.emit('DBData', { 
             Name: onValueResult.User,
@@ -65,7 +64,8 @@ DB Part
             Rate: MinderResult.Rate,
             ActionCode: MinderResult.ActionCode
         });
-        console.log(MinderResult.Rate,MinderResult.ActionCode);
+
+        // 過門檻值則觸發DONG Motion
         if ( MinderResult.Rate > 0.5) {
             if (MinderResult.ActionCode == 19) {
                 _requestDongMotion();
