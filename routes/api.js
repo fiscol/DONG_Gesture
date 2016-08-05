@@ -58,11 +58,17 @@ DB Part
             Rate: MinderResult.Rate,
             ActionCode: MinderResult.ActionCode
         });
+        console.log(MinderResult.Rate,MinderResult.ActionCode);
+        if ( MinderResult.Rate > 0.5) {
+            if (MinderResult.ActionCode == 19) {
+                _requestDongMotion();
+                console.log('Good');
+            };
+        };
     });
     // 傳到DongSlide測試
-    _requestDongSlide();
+    // _requestDongSlide();
     // 傳到DongMotion測試
-    _requestDongMotion();
     res.json(MinderResult);
 });
 
