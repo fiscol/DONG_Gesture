@@ -19,7 +19,11 @@ Unit Part
     var SDKThreshold = 0.55;
     var SDKSimilarity = 1;
     var SDKParam = 1;
-    var MinderResult = minderBetaService._lcsRateComputing(DataRaw.SDKRawCode, SDKThreshold, SDKSimilarity, SDKParam);
+    // 
+    var string2arr = JSON.parse(DataRaw.SDKRawCode);
+    // console.log(string2arr);
+
+    var MinderResult = minderBetaService._lcsRateComputing(string2arr, SDKThreshold, SDKSimilarity, SDKParam);
 
     //DONG_Calculate
     var api = require('../DONG_Calculate.js');
@@ -51,10 +55,13 @@ DB Part
     // DB._set(RefPath, ChildName, DataFinish);
 
     DB._onValue(RefPath, ChildName, function(onValueResult){
+
+
         // Send DBdata to View
         req.io.sockets.emit('DBData', { 
             Name: onValueResult.User,
-            Rawdata: DataRaw.SDKRawCode,
+            // Rawdata: DataRaw.SDKRawCode,
+            Rawdata: string2arr,
             Rate: MinderResult.Rate,
             ActionCode: MinderResult.ActionCode
         });
