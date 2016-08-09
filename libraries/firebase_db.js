@@ -1,5 +1,5 @@
 // Firebase realtime database
-
+require('es6-promise');
 // init
 var firebase = require("firebase");
 	firebase.initializeApp({
@@ -106,6 +106,15 @@ exports._onValue =  function(_Path, _ChildName, _Callback){
 	}, function (errorObject) {
  		console.log("The read failed: " + errorObject.code);
 	});	
+};
+
+// Test Read database with Promise
+exports._onValueTest =  function(_Path, _ChildName){
+	var db = firebase.database();
+	var ref = db.ref(_Path);
+	return ref.child(_ChildName).once("value").then(function(snapshot){
+		return snapshot.val();
+	})
 };
 
 // exports._onChildAdded =  function(path){

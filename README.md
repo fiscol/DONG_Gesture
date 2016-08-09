@@ -1,54 +1,53 @@
-DONG Cloud 
+# DONG Cloud 
 
-Nodejs server
+## Nodejs server
 
-2016/07/20  
+**2016/07/20**
  - upload project.  
-2016/07/22  
+**2016/07/22**  
  - 前端測試與後端街口完成(架構尚未調整)  
  - Test git boundle Slack(Mark)  
-2016/07/27  
- - 更新一版改寫swift motion code, 加入初版Markdown API說明(Fiscol)  
+**2016/07/27**
+ - 更新一版改寫swift motion code, 加入初版Markdown API說明*_(Fiscol)_* 
  - 測試slack同步訊息(source tree push)  
  - 建立api router(routes/api.js)(BigQ)  
  - 建立數據管理雛形(adim.ejs)(BigQ)  
-2016/07/28  
+**2016/07/28**
  - 將socket.io導入routes、動態數據管理頁面資料更新(BigQ)  
-2016/08/03  
+**2016/08/03**  
  - RealTimeData與DBData異步功能完成(BigQ)  
- - 先更新一版可運算Score，暫時寫死的Minder API(Fiscol)  
+ - 先更新一版可運算Score，暫時寫死的Minder API*_(Fiscol)_* 
  - 整合Minder至API中進行測試(BigQ)  
  - 發指令到DONG Slide與DONG Motion(BigQ)    
-2016/08/05  
+**2016/08/05**
  - 將iOS端input(SDKRawCode)從字串改成陣列   
- - 增加辨識門檻觸發DONG Motion  
+ - 增加辨識門檻觸發DONG Motion
+**2016/08/09**
+ - 開了一組簡易的登入API, 用Promise的方法做回傳*_(Fiscol)_*
+  
 
-  
-  
-  
-
-<h1>DONG Cloud Document</h1>
-<h2>命名規範 V1.0 (20160722)</h2>
-全域變數(小寫 + 大寫) 
+# DONG Cloud Document
+## 命名規範 V1.0 (20160722)
+*全域變數(小寫 + 大寫)* 
 
     var firstUser = "John";
     var cookieParser = require('cookie-parser');
 
-函式內部變數(大寫 + 大寫) 
+*函式內部變數(大寫 + 大寫)*
 
     var UserName = "Cathy";
 
-自定義函式傳入參數(底線 + 大寫 + 大寫) 
+*自定義函式傳入參數(底線 + 大寫 + 大寫)*
 
     function(req, res, _ChildName){};
 
-函式名稱(底線 + 小寫 + 大寫) 
+*函式名稱(底線 + 小寫 + 大寫)*
 
     exports._setUserData = function(path, _ChildName ,value, error){};
 
 
 
-<h2>專案分層與檔案說明</h2>
+## 專案分層與檔案說明
 
  - 使用Express專案架構
  - 後端Controller：
@@ -76,7 +75,7 @@ Nodejs server
  <i class="icon-folder-open"></i>libraries資料夾
   - <i class="icon-file"></i>firebase_db.js
 
-<h2>資料流UML</h2>
+## 資料流UML
 
 ```flow
 st1=>start: Sensor送出動作
