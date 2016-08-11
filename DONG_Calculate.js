@@ -1,4 +1,5 @@
-exports._getDateTimeNow = function(){
+// exports._getDateTimeNow = function(){
+_getDateTimeNow = function(){
  // Time Log Test
   var today = new Date();
   var dd = today.getDate();
