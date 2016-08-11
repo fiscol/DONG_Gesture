@@ -24,6 +24,8 @@
  - 增加辨識門檻觸發DONG Motion
 **2016/08/09**
  - 開了一組簡易的登入API, 用Promise的方法做回傳*_(Fiscol)_*
+**2016/08/11**
+ - 加入Server端的第一版註冊/登入/登出API*_(Fiscol)_*
   
 
 # DONG Cloud Document

@@ -108,12 +108,14 @@ exports._onValue =  function(_Path, _ChildName, _Callback){
 	});	
 };
 
-// Test Read database with Promise
-exports._onValueTest =  function(_Path, _ChildName){
+// Read database with Promise
+exports._onValuePromise =  function(_Path, _ChildName){
 	var db = firebase.database();
 	var ref = db.ref(_Path);
 	return ref.child(_ChildName).once("value").then(function(snapshot){
 		return snapshot.val();
+	}, function(error){
+		return error;
 	})
 };
 
@@ -137,4 +139,13 @@ exports._onValueTest =  function(_Path, _ChildName){
 // 	});
 // };
 
-
+//使用者登入
+exports._logIn = function(_Token){
+	return firebase.auth().verifyIdToken(_Token).then(function(_UserData) {
+	return _UserData;
+	// ...
+	}).catch(function(error) {
+		return error;
+	// Handle error
+	});
+}
