@@ -10,6 +10,7 @@ API Server
 router.post('/iOS', function (req, res, next){
     // 解析body
     var DataRaw = req.body;
+    console.log(req.body.UID);
 /*
 Unit Part
 */

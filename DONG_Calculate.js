@@ -53,7 +53,5 @@ exports._postData = function(data){
       GestureNum: RandomGestureNum,
     }
 
-
-
   return data
 }
