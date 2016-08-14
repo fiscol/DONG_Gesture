@@ -12,7 +12,7 @@ router.post('/register', function(req, res){
         res.json({"Message":"您已註冊成功"});
     }).catch((err)=>{
         //註冊失敗
-        res.json({"Error":"未傳入使用者ID/Email/UserName，或登入時出現問題"});
+        res.json({"Error":"未傳入使用者ID/Email/UserName，或註冊時出現問題"});
     })
 })
 
@@ -23,7 +23,7 @@ router.post('/login', function(req, res){
     usersService._logIn(UserData).then(function(data){
         if(data != null){
             //登入成功
-            res.json(data);
+            res.json({"Message":"登入成功"});
         }
         else{
             //權限不足
