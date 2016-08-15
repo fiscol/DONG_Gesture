@@ -26,6 +26,8 @@
  - 開了一組簡易的登入API, 用Promise的方法做回傳*_(Fiscol)_*  
 **2016/08/11**  
  - 加入Server端的第一版註冊/登入/登出API*_(Fiscol)_*  
+**2016/08/15**
+ - 串接api/iOS內的兩隻API, 到可接收兩種種類的RawCode*_(Fiscol)_*  
   
 
 # DONG Cloud Document
