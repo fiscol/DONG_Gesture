@@ -2,6 +2,8 @@
 //Note : iOS串上RawData做ViewData串接與寫入DB測試;
 //20160815 Ver.2 Fiscol
 //Note : 將minder/raw兩種input, 拆成兩組api
+//20160815 Ver.3 Fiscol
+//Note : 當Rate > 門檻值(0.5)時，才觸發監控介面動畫，表格更新
 
 /*
 api.js
@@ -42,15 +44,16 @@ Unit Part
         Similarity : parseInt(MinderResult.Rate * 100)
     }
     var DataFinish = api._postData(DataResult);
-
-    // Send RealTimeData to View 
-    req.io.sockets.emit('RealTimeData', { 
-    	MaxSpeed: DataFinish.MaxSpeed,
-    	MaxPower: DataFinish.MaxPower,
-    	Similarity: DataFinish.Similarity, 
-    	GestureNum: DataFinish.GestureNum
-    });
-
+    //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才觸發DashBoard動畫
+    if (MinderResult.Rate >= MinderThreshold) {
+        // Send RealTimeData to View 
+        req.io.sockets.emit('RealTimeData', { 
+            MaxSpeed: DataFinish.MaxSpeed,
+            MaxPower: DataFinish.MaxPower,
+            Similarity: DataFinish.Similarity, 
+            GestureNum: DataFinish.GestureNum
+        });
+    }
 /*
 Learn Part
 */
@@ -61,18 +64,21 @@ DB Part
     // 存到DB
     _updateDB(UID, DataFinish);
 
-    // Send DBdata to View
-    req.io.sockets.emit('DBData', { 
-        Name: UID,
-        Rawdata: ProcessedCode,
-        Rate: MinderResult.Rate,
-        ActionCode: MinderResult.ActionCode
-    });
+    //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才寫到介面Table
+    if (MinderResult.Rate >= MinderThreshold) {
+        // Send DBdata to View
+        req.io.sockets.emit('DBData', { 
+            Name: UID,
+            Rawdata: ProcessedCode,
+            Rate: MinderResult.Rate,
+            ActionCode: MinderResult.ActionCode
+        });
+    }
 
-    // 過門檻值則觸發DONG Motion
+    // 過門檻值則觸發DONGSlide
     if (MinderResult.Rate >= MinderThreshold) {
         if (MinderResult.ActionCode == 19) {
-            _requestDongMotion();
+            _requestDongSlide();
             console.log('Good');
         };
     };
@@ -110,13 +116,16 @@ Unit Part
     }
     var DataFinish = api._postData(DataResult);
 
-    // Send RealTimeData to View 
-    req.io.sockets.emit('RealTimeData', { 
-    	MaxSpeed: DataFinish.MaxSpeed,
-    	MaxPower: DataFinish.MaxPower,
-    	Similarity: DataFinish.Similarity, 
-    	GestureNum: DataFinish.GestureNum
-    });
+    //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才觸發DashBoard動畫
+    if (MinderResult.Rate >= MinderThreshold) {
+        // Send RealTimeData to View
+        req.io.sockets.emit('RealTimeData', { 
+            MaxSpeed: DataFinish.MaxSpeed,
+            MaxPower: DataFinish.MaxPower,
+            Similarity: DataFinish.Similarity, 
+            GestureNum: DataFinish.GestureNum
+        });
+    }
 
 /*
 Learn Part
@@ -127,19 +136,21 @@ DB Part
 */
     // 存到DB
     _updateDB(UID, DataFinish);
+    //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才寫到介面Table
+    if (MinderResult.Rate >= MinderThreshold) {
+        // Send DBdata to View
+        req.io.sockets.emit('DBData', { 
+            Name: UID,
+            Rawdata: ProcessedCode,
+            Rate: MinderResult.Rate,
+            ActionCode: MinderResult.ActionCode
+        });
+    }
 
-    // Send DBdata to View
-    req.io.sockets.emit('DBData', { 
-        Name: UID,
-        Rawdata: ProcessedCode,
-        Rate: MinderResult.Rate,
-        ActionCode: MinderResult.ActionCode
-    });
-
-    // 過門檻值則觸發DONG Motion
+    // 過門檻值則觸發DongSlide
     if (MinderResult.Rate >= MinderThreshold) {
         if (MinderResult.ActionCode == 19) {
-            _requestDongMotion();
+            _requestDongSlide();
             console.log('Good');
         };
     };
