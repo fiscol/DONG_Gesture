@@ -35,6 +35,11 @@ router.post('/login', function(req, res){
     })
 })
 
+//免費帳號
+router.post('', function(){
+    
+})
+
 //使用者登出
 router.post('/logout', function(req, res){
     var UserData = req.body;

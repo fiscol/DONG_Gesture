@@ -1,3 +1,6 @@
+//20160815 Ver.1 Fiscol
+//Note : exports._processData補上清空mixBinaryCodes = [];
+
 //var foundation = require("foundation");
 
 //var motionQuenAcc = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
@@ -49,7 +52,7 @@ exports._processData = function(_RawCode, _Threshold){
         var FinalCode_before = _pureMixBinaryCodes(catchMixBinaryCodes); //去雜訊
         finalCodeArr = _shortMixBinaryCodes(FinalCode_before); //縮短
     }
-    //mixBinaryCodes = [];
+    mixBinaryCodes = [];
     
     return {"mixBinaryCodes": finalCodeArr};
 }
