@@ -10,6 +10,7 @@ API Server
 router.post('/iOS', function (req, res, next){
     // 解析body
     var DataRaw = req.body;
+    // UID解析測試
     console.log(req.body.UID);
 /*
 Unit Part
@@ -86,27 +87,31 @@ router.post('/localurl', function (req, res, next){
     localurl = req.body.url;
     res.send(localurl);
 });
-// 傳到DongMotion測試
-function _requestDongSlide(){
-    var request = require('request')
-    
-    var postData = {
-      name: 'mark'
-    }
 
-    var url = 'http://dongslide.herokuapp.com/api/MotionID'
-    var options = {
-      method: 'post',
-      body: postData,
-      json: true,
-      url: url
-    }
-    request(options, function (err, res, body) {
-      if (err) {
-        return
-      }
-    })
-}
+
+
+
+// 傳到DongSlide測試
+// function _requestDongSlide(){
+//     var request = require('request')
+    
+//     var postData = {
+//       name: 'mark'
+//     }
+
+//     var url = 'http://dongslide.herokuapp.com/api/MotionID'
+//     var options = {
+//       method: 'post',
+//       body: postData,
+//       json: true,
+//       url: url
+//     }
+//     request(options, function (err, res, body) {
+//       if (err) {
+//         return
+//       }
+//     })
+// }
 
 // 傳到DongMotion測試
 function _requestDongMotion(){
