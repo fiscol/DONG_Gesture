@@ -37,6 +37,17 @@ var motionStateCount = 0; //計算Motion_State多久的參數
 var listeningStateCount = 0; //計算Listening_State多久的參數
 
 exports._processData = function(_RawCode, _Threshold){
+    accelX = 0.0;
+    accelY = 0.0;
+    accelZ = 0.0;
+    motionQuenAccX = [0.0, 0.0];
+    motionCodeAccX = [0,0,0,0,0,0,0,0];
+
+    motionQuenAccY = [0.0, 0.0];
+    motionCodeAccY = [0,0,0,0,0,0,0,0];
+
+    motionQuenAccZ = [0.0, 0.0];
+    motionCodeAccZ = [0,0,0,0,0,0,0,0];
     var AX = JSON.parse("[" + _RawCode["AX"] + "]")[0];
     var AY = JSON.parse("[" + _RawCode["AY"] + "]")[0];
     var AZ = JSON.parse("[" + _RawCode["AZ"] + "]")[0];
