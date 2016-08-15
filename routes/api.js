@@ -97,7 +97,7 @@ Kernal Part
 */
     // 運算Rate, Pattern
     var minderBetaService = require('../services/unit/kernal/minderbeta.js');
-    var ProcessedCode = DataRaw.Code;
+    var ProcessedCode = JSON.parse(DataRaw.Code);
     var MinderThreshold = 0.5;
     var PatternModel = 1;
     var PatternType = 1;
