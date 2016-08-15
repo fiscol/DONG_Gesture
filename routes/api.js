@@ -1,5 +1,7 @@
 //20160815 Ver.1 Fiscol
 //Note : iOS串上RawData做ViewData串接與寫入DB測試;
+//20160815 Ver.2 Fiscol
+//Note : 將minder/raw兩種input, 拆成兩組api
 
 /*
 api.js
@@ -10,7 +12,7 @@ var dataCounter = 0;
 /*
 API Server
 */
-router.post('/iOS', function (req, res, next){
+router.post('/iOS/Raw', function (req, res, next){
     // 解析body
     var DataRaw = req.body;
 /*
@@ -56,15 +58,8 @@ Learn Part
 /*
 DB Part
 */
-    var DB = require('../libraries/firebase_db.js');
-    // DB Path
-    var RefPath = "DONGCloud/MotionData/" + UID;
-    // Child Name
-    dataCounter++;
-    var ChildName = "Data" + dataCounter;
-    // Read DB data
     // 存到DB
-    DB._set(RefPath, ChildName, DataFinish);
+    _updateDB(UID, DataFinish);
 
     // Send DBdata to View
     req.io.sockets.emit('DBData', { 
@@ -87,6 +82,84 @@ DB Part
     res.json(MinderResult);
 });
 
+router.post('/iOS/Minder', function (req, res, next){
+    // 解析body
+    var DataRaw = req.body;
+/*
+Kernal Part
+*/
+    // 運算Rate, Pattern
+    var minderBetaService = require('../services/unit/kernal/minderbeta.js');
+    var ProcessedCode = DataRaw.Code;
+    var MinderThreshold = 0.5;
+    var PatternModel = 1;
+    var PatternType = 1;
+    // 運算Rate, Pattern 
+    var MinderResult = minderBetaService._lcsRateComputing(
+ProcessedCode, MinderThreshold, PatternModel, PatternType);
+/*
+Unit Part
+*/
+    var api = require('../DONG_Calculate.js');
+    var UID = DataRaw.UID;
+    var DataResult = {
+        User : UID,
+        ProcessCode : ProcessedCode,
+        MotionCode : MinderResult.ActionCode,
+        Similarity : parseInt(MinderResult.Rate * 100)
+    }
+    var DataFinish = api._postData(DataResult);
+
+    // Send RealTimeData to View 
+    req.io.sockets.emit('RealTimeData', { 
+    	MaxSpeed: DataFinish.MaxSpeed,
+    	MaxPower: DataFinish.MaxPower,
+    	Similarity: DataFinish.Similarity, 
+    	GestureNum: DataFinish.GestureNum
+    });
+
+/*
+Learn Part
+*/
+
+/*
+DB Part
+*/
+    // 存到DB
+    _updateDB(UID, DataFinish);
+
+    // Send DBdata to View
+    req.io.sockets.emit('DBData', { 
+        Name: UID,
+        Rawdata: ProcessedCode,
+        Rate: MinderResult.Rate,
+        ActionCode: MinderResult.ActionCode
+    });
+
+    // 過門檻值則觸發DONG Motion
+    if (MinderResult.Rate >= MinderThreshold) {
+        if (MinderResult.ActionCode == 19) {
+            _requestDongMotion();
+            console.log('Good');
+        };
+    };
+    // 傳到DongSlide測試
+    // _requestDongSlide();
+    // 傳到DongMotion測試
+    res.json(MinderResult);
+});
+
+function _updateDB(_UID, _DataResult){
+    var DB = require('../libraries/firebase_db.js');
+    // DB Path
+    var RefPath = "DONGCloud/MotionData/" + _UID;
+    // Child Name
+    dataCounter++;
+    var ChildName = "Data" + dataCounter;
+    // Read DB data
+    // 存到DB
+    DB._set(RefPath, ChildName, _DataResult);
+}
 
 var localurl;
 router.post('/localurl', function (req, res, next){
