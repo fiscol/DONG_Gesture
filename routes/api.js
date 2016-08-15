@@ -16,7 +16,7 @@ router.post('/iOS', function (req, res, next){
 Unit Part
 */
     // minderBetaService
-    var minderBetaService = require('../services/unit/minderbeta.js');
+    var minderBetaService = require('../services/unit/kernal/minderbeta.js');
     // var SDKRawCode = [4, 5, 3, 3, 7, 5, 4, 4, 6, 1, 2, 2, 3, 2, 4, 4, 3, 3, 4, 4, 5, 2, 3, 1, 4, 4, 2, 3, 1, 4, 4, 2, 3, 3, 4, 4, 2, 3, 4, 6, 2];
     var SDKThreshold = 0.55;
     var SDKSimilarity = 1;
