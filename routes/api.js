@@ -75,10 +75,11 @@ DB Part
         });
     }
 
-    // 過門檻值則觸發DONGSlide
+    // 過門檻值則觸發DONGSlide, DongMotion
     if (MinderResult.Rate >= MinderThreshold) {
         if (MinderResult.ActionCode == 19) {
             _requestDongSlide();
+            _requestDongMotion();
             console.log('Good');
         };
     };
@@ -147,10 +148,11 @@ DB Part
         });
     }
 
-    // 過門檻值則觸發DongSlide
+    // 過門檻值則觸發DONGSlide, DongMotion
     if (MinderResult.Rate >= MinderThreshold) {
         if (MinderResult.ActionCode == 19) {
             _requestDongSlide();
+            _requestDongMotion();
             console.log('Good');
         };
     };
