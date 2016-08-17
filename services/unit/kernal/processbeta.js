@@ -1,3 +1,6 @@
+//20160815 Ver.1 Fiscol
+//Note : exports._processData補上清空mixBinaryCodes = [];
+
 //var foundation = require("foundation");
 
 //var motionQuenAcc = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
@@ -34,6 +37,17 @@ var motionStateCount = 0; //計算Motion_State多久的參數
 var listeningStateCount = 0; //計算Listening_State多久的參數
 
 exports._processData = function(_RawCode, _Threshold){
+    accelX = 0.0;
+    accelY = 0.0;
+    accelZ = 0.0;
+    motionQuenAccX = [0.0, 0.0];
+    motionCodeAccX = [0,0,0,0,0,0,0,0];
+
+    motionQuenAccY = [0.0, 0.0];
+    motionCodeAccY = [0,0,0,0,0,0,0,0];
+
+    motionQuenAccZ = [0.0, 0.0];
+    motionCodeAccZ = [0,0,0,0,0,0,0,0];
     var AX = JSON.parse("[" + _RawCode["AX"] + "]")[0];
     var AY = JSON.parse("[" + _RawCode["AY"] + "]")[0];
     var AZ = JSON.parse("[" + _RawCode["AZ"] + "]")[0];
@@ -49,7 +63,7 @@ exports._processData = function(_RawCode, _Threshold){
         var FinalCode_before = _pureMixBinaryCodes(catchMixBinaryCodes); //去雜訊
         finalCodeArr = _shortMixBinaryCodes(FinalCode_before); //縮短
     }
-    //mixBinaryCodes = [];
+    mixBinaryCodes = [];
     
     return {"mixBinaryCodes": finalCodeArr};
 }

@@ -1,43 +1,134 @@
+//20160815 Ver.1 Fiscol
+//Note : iOS串上RawData做ViewData串接與寫入DB測試;
+//20160815 Ver.2 Fiscol
+//Note : 將minder/raw兩種input, 拆成兩組api
+//20160815 Ver.3 Fiscol
+//Note : 當Rate > 門檻值(0.5)時，才觸發監控介面動畫，表格更新
+
 /*
 api.js
 */
 var express = require('express');
 var router = express.Router();
-
+var dataCounter = 0;
 /*
 API Server
 */
-router.post('/iOS', function (req, res, next){
+router.post('/iOS/Raw', function (req, res, next){
     // 解析body
     var DataRaw = req.body;
     // UID解析測試
     console.log(req.body.UID);
 /*
+Kernal Part
+*/
+    // 編碼處理 + 運算Rate, Pattern
+    var minderBetaService = require('../services/unit/kernal/minderbeta.js');
+    var processBetaService = require('../services/unit/kernal/processbeta.js');
+    var Threshold = 0.18;
+    // 轉換為一列編碼
+    var ProcessedCode = processBetaService._processData(DataRaw, Threshold).mixBinaryCodes;
+    var MinderThreshold = 0.5;
+    var PatternModel = 1;
+    var PatternType = 1;
+    // 運算Rate, Pattern 
+    var MinderResult = minderBetaService._lcsRateComputing(
+ProcessedCode, MinderThreshold, PatternModel, PatternType);
+/*
 Unit Part
 */
-    // minderBetaService
-    var minderBetaService = require('../services/unit/kernal/minderbeta.js');
-    // var SDKRawCode = [4, 5, 3, 3, 7, 5, 4, 4, 6, 1, 2, 2, 3, 2, 4, 4, 3, 3, 4, 4, 5, 2, 3, 1, 4, 4, 2, 3, 1, 4, 4, 2, 3, 3, 4, 4, 2, 3, 4, 6, 2];
-    var SDKThreshold = 0.55;
-    var SDKSimilarity = 1;
-    var SDKParam = 1;
-    // DataRaw.SDKRawCode is string, must to turn into arr. 
-    var string2arr = JSON.parse(DataRaw.SDKRawCode);
-    // console.log(string2arr);
-
-    var MinderResult = minderBetaService._lcsRateComputing(string2arr, SDKThreshold, SDKSimilarity, SDKParam);
-
-    //DONG_Calculate
     var api = require('../DONG_Calculate.js');
-    var DataFinish = api._postData(DataRaw);
+    var UID = DataRaw.UID;
+    var DataResult = {
+        User : UID,
+        ProcessCode : ProcessedCode,
+        MotionCode : MinderResult.ActionCode,
+        Similarity : parseInt(MinderResult.Rate * 100)
+    }
+    var DataFinish = api._postData(DataResult);
+    //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才觸發DashBoard動畫
+    if (MinderResult.Rate >= MinderThreshold) {
+        // Send RealTimeData to View 
+        req.io.sockets.emit('RealTimeData', { 
+            MaxSpeed: DataFinish.MaxSpeed,
+            MaxPower: DataFinish.MaxPower,
+            Similarity: DataFinish.Similarity, 
+            GestureNum: DataFinish.GestureNum
+        });
+    }
+/*
+Learn Part
+*/
 
-    // Send RealTimeData to View 
-    req.io.sockets.emit('RealTimeData', { 
-    	MaxSpeed: DataFinish.MaxSpeed,
-    	MaxPower: DataFinish.MaxPower,
-    	Similarity: DataFinish.Similarity, 
-    	GestureNum: DataFinish.GestureNum
-    });
+/*
+DB Part
+*/
+    // 存到DB
+    _updateDB(UID, DataFinish);
+
+    //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才寫到介面Table
+    if (MinderResult.Rate >= MinderThreshold) {
+        // Send DBdata to View
+        req.io.sockets.emit('DBData', { 
+            Name: UID,
+            Rawdata: ProcessedCode,
+            Rate: MinderResult.Rate,
+            ActionCode: MinderResult.ActionCode
+        });
+    }
+
+    // 過門檻值則觸發DONGSlide, DongMotion
+    if (MinderResult.Rate >= MinderThreshold) {
+        if (MinderResult.ActionCode == 19) {
+            _requestDongSlide();
+            _requestDongMotion();
+            console.log('Good');
+        };
+    };
+    // 傳到DongSlide測試
+    // _requestDongSlide();
+    // 傳到DongMotion測試
+    res.json(MinderResult);
+});
+
+router.post('/iOS/Minder', function (req, res, next){
+    // 解析body
+    var DataRaw = req.body;
+/*
+Kernal Part
+*/
+    // 運算Rate, Pattern
+    var minderBetaService = require('../services/unit/kernal/minderbeta.js');
+    var ProcessedCode = JSON.parse(DataRaw.Code);
+    var MinderThreshold = 0.5;
+    var PatternModel = 1;
+    var PatternType = 1;
+    // 運算Rate, Pattern 
+    var MinderResult = minderBetaService._lcsRateComputing(
+ProcessedCode, MinderThreshold, PatternModel, PatternType);
+/*
+Unit Part
+*/
+    var api = require('../DONG_Calculate.js');
+    var UID = DataRaw.UID;
+    var DataResult = {
+        User : UID,
+        ProcessCode : ProcessedCode,
+        MotionCode : MinderResult.ActionCode,
+        Similarity : parseInt(MinderResult.Rate * 100)
+    }
+    var DataFinish = api._postData(DataResult);
+
+    //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才觸發DashBoard動畫
+    if (MinderResult.Rate >= MinderThreshold) {
+        // Send RealTimeData to View
+        req.io.sockets.emit('RealTimeData', { 
+            MaxSpeed: DataFinish.MaxSpeed,
+            MaxPower: DataFinish.MaxPower,
+            Similarity: DataFinish.Similarity, 
+            GestureNum: DataFinish.GestureNum
+        });
+    }
 
 /*
 Learn Part
@@ -46,41 +137,44 @@ Learn Part
 /*
 DB Part
 */
-    var DB = require('../libraries/firebase_db.js');
-    // DB Path
-    var RefPath = "DONGCloud/Test";
-    // Child Name
-    var RandomChildName = (Math.floor((Math.random() * 3) + 1));//Random Test
-    var ChildName = "User" + RandomChildName;
-    // Read DB data
     // 存到DB
-    // DB._set(RefPath, ChildName, DataFinish);
-
-    DB._onValue(RefPath, ChildName, function(onValueResult){
-
+    _updateDB(UID, DataFinish);
+    //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才寫到介面Table
+    if (MinderResult.Rate >= MinderThreshold) {
         // Send DBdata to View
         req.io.sockets.emit('DBData', { 
-            Name: onValueResult.User,
-            // Rawdata: DataRaw.SDKRawCode,
-            Rawdata: string2arr,
+            Name: UID,
+            Rawdata: ProcessedCode,
             Rate: MinderResult.Rate,
             ActionCode: MinderResult.ActionCode
         });
+    }
 
-        // 過門檻值則觸發DONG Motion
-        if ( MinderResult.Rate > 0.5) {
-            if (MinderResult.ActionCode == 19) {
-                _requestDongMotion();
-                console.log('Good');
-            };
+    // 過門檻值則觸發DONGSlide, DongMotion
+    if (MinderResult.Rate >= MinderThreshold) {
+        if (MinderResult.ActionCode == 19) {
+            _requestDongSlide();
+            _requestDongMotion();
+            console.log('Good');
         };
-    });
+    };
     // 傳到DongSlide測試
     // _requestDongSlide();
     // 傳到DongMotion測試
     res.json(MinderResult);
 });
 
+function _updateDB(_UID, _DataResult){
+    var DB = require('../libraries/firebase_db.js');
+    // DB Path
+    var RefPath = "DONGCloud/MotionData/" + _UID;
+    // Child Name
+    dataCounter++;
+    var ChildName = "Data" + dataCounter;
+    // Read DB data
+    // 存到DB
+    DB._set(RefPath, ChildName, _DataResult);
+}
 
 var localurl;
 router.post('/localurl', function (req, res, next){
