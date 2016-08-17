@@ -14,7 +14,7 @@ router.post('/Minder', function (req, res) {
     var MinderResult = minderBetaService._lcsRateComputing(
 ProcessedCode, 0.5, 1, 1);
     var UID = DataRaw.UID;
-    var IsTrial = DataRaw.IsTrial;
+    var IsTrial = JSON.parse(DataRaw.IsTrial);
     _GetRequestCount(UID, IsTrial).then(function(_Count){
         var DataResult = {
             User : UID,
@@ -40,7 +40,7 @@ router.post('/Raw', function(req, res){
     var MinderResult = minderBetaService._lcsRateComputing(
 ProcessedCode, 0.5, 1, 1);
     var UID = DataRaw.UID;
-    var IsTrial = DataRaw.IsTrial;
+    var IsTrial = JSON.parse(DataRaw.IsTrial);
     _GetRequestCount(UID, IsTrial).then(function(_Count){
         var DataResult = {
             User : UID,
