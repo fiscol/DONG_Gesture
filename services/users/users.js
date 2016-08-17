@@ -1,5 +1,5 @@
 var db = require('../../libraries/firebase_db.js');
-var calculator = require('../../DONG_Calculate.js');
+var calculator = require('../../libraries/tool/postdata.js');
 require('es6-promise');
 
 //註冊使用者資訊

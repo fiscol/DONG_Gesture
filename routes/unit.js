@@ -6,7 +6,7 @@ var express = require('express');
 var router = express.Router();
 var minderBetaService = require('../services/unit/kernal/minderbeta.js');
 var processBetaService = require('../services/unit/kernal/processbeta.js');
-var api = require('../DONG_Calculate.js');
+var api = require('../libraries/tool/postdata.js');
 
 router.post('/Minder', function (req, res) {
     var DataRaw = req.body;
@@ -87,7 +87,7 @@ function _SaveMotion(_UID, _DataResult, _RequestCount){
 
 function _AddRequestCount(_UID, _IsTrial, _RequestCount){
     var DB = require('../libraries/firebase_db.js');
-    var Calculator = require('../DONG_Calculate.js');
+    var Calculator = require('../libraries/tool/postdata.js');
     // DB Path
     var RefPath = (_IsTrial == true)? "DONGCloud/DongService/Trial" : "DONGCloud/DongService";
     // Child Name

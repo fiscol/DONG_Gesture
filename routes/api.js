@@ -37,7 +37,7 @@ ProcessedCode, MinderThreshold, PatternModel, PatternType);
 /*
 Unit Part
 */
-    var api = require('../DONG_Calculate.js');
+    var api = require('../libraries/tool/postdata.js');
     var UID = DataRaw.UID;
     var DataResult = {
         User : UID,
@@ -85,9 +85,6 @@ DB Part
             console.log('Good');
         };
     };
-    // 傳到DongSlide測試
-    // _requestDongSlide();
-    // 傳到DongMotion測試
     res.json(MinderResult);
 });
 
@@ -109,7 +106,7 @@ ProcessedCode, MinderThreshold, PatternModel, PatternType);
 /*
 Unit Part
 */
-    var api = require('../DONG_Calculate.js');
+    var api = require('../libraries/tool/postdata.js');
     var UID = DataRaw.UID;
     var DataResult = {
         User : UID,
@@ -183,29 +180,27 @@ router.post('/localurl', function (req, res, next){
 });
 
 
-
-
 // 傳到DongSlide測試
-// function _requestDongSlide(){
-//     var request = require('request')
+function _requestDongSlide(){
+    var request = require('request')
     
-//     var postData = {
-//       name: 'mark'
-//     }
+    var postData = {
+      name: 'mark'
+    }
 
-//     var url = 'http://dongslide.herokuapp.com/api/MotionID'
-//     var options = {
-//       method: 'post',
-//       body: postData,
-//       json: true,
-//       url: url
-//     }
-//     request(options, function (err, res, body) {
-//       if (err) {
-//         return
-//       }
-//     })
-// }
+    var url = 'http://dongslide.herokuapp.com/api/MotionID'
+    var options = {
+      method: 'post',
+      body: postData,
+      json: true,
+      url: url
+    }
+    request(options, function (err, res, body) {
+      if (err) {
+        return
+      }
+    })
+}
 
 // 傳到DongMotion測試
 function _requestDongMotion(){
