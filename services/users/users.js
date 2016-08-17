@@ -9,7 +9,8 @@ exports._register = function(_RegisterData){
         var ChildName = _RegisterData.UID;
         var Data = {
             "EnabledDate" : calculator._getDateTimeNow(),
-            "Status" : "On"
+            "Status" : "On",
+            "RequestCount" : 0
         };
         db._set(Ref, ChildName, Data);
 
@@ -17,7 +18,7 @@ exports._register = function(_RegisterData){
         ChildName = "UserDetail";
         Data = {
             "Email" : _RegisterData.Email,
-            "UserName" : _RegisterData.UserName
+            "UserName" : _RegisterData.UserName,
         };
         db._set(Ref, ChildName, Data);
         return Promise.resolve("註冊完成");
@@ -25,31 +26,28 @@ exports._register = function(_RegisterData){
     else{
         return Promise.reject(new Error("使用者註冊資料有遺漏，註冊失敗"));
     }
-    // if(_RegisterData.MemberType){
+}
 
-    // }
+//註冊試用帳號
+exports._registerTrial = function(_RegisterData){
+    if(_RegisterData.UID){
+        var Ref = "DONGCloud/DongService/Trial";
+        var ChildName = _RegisterData.UID;
+        var Data = {
+            "EnabledDate" : calculator._getDateTimeNow(),
+            "RequestCount" : 0
+        };
+        db._set(Ref, ChildName, Data);
+        return Promise.resolve("試用帳號註冊完成");
+    }
+    else{
+        return Promise.reject(new Error("試用帳號註冊失敗"));
+    }
 }
 
 //透過UID登入，回傳使用者資訊
 exports._logIn = function(_UserData){
-    // if(_UserData.UID && _UserData.Token){
-    //     return db._logIn(_UserData.Token).then(function(data){
-    //         if(data != null){
-    //             //登入成功:
-    //             if(data.user_id == _UserData.UID){
-    //                 return _login(data.user_id);
-    //             }
-    //             return data;
-    //         }
-    //         else{
-    //             //權限不足:
-    //             return null;
-    //         }
-    //     })
-    // }
-    // else{
-    //     return Promise.reject(new Error("未傳入使用者ID/Token"));
-    // }
+    //160817_是否需要加入Token, 先記起來(Fiscol)
     if(_UserData.UID){
         return _logStatus(_UserData.UID, "On").then(function(data){
             if(data != "找不到帳號"){
@@ -105,7 +103,8 @@ var _logStatus = function(_UID, _Status){
         if(data){
             if(_Status == "On" || _Status == "Off"){
                 var Data = {
-                    "Status" : _Status
+                    "Status" : _Status,
+                    "LastLoginDate" : calculator._getDateTimeNow()
                 };
                 db._update(Ref, ChildName, Data);
                 return "登入/登出成功";
