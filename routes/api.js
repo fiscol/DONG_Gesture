@@ -29,7 +29,7 @@ router.post('/iOS/Raw', function (req, res, next){
             MaxSpeed: (Math.floor((Math.random() * 10) + 1))*17,
             MaxPower: (Math.floor((Math.random() * 10) + 1))*37,
             Similarity: parseInt(MinderResult.Rate * 100), 
-            GestureNum: (Math.floor((Math.random() * 3) + 1))
+            GestureNum: (MinderResult.ActionCode % 3) + 1
         });
     }
     //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才寫到介面Table
@@ -54,8 +54,8 @@ router.post('/iOS/Raw', function (req, res, next){
     };
     res.json(MinderResult);
 });
-
-router.post('/iOS/Minder', function (req, res, next){
+var aaaa = '/iOS/Minder';
+router.post(aaaa, function (req, res, next){
     // 解析body
     var MinderData = req.body;
     var MinderResult = apiServices._MinderProcess(MinderData);
@@ -68,7 +68,7 @@ router.post('/iOS/Minder', function (req, res, next){
             MaxSpeed: (Math.floor((Math.random() * 10) + 1))*17,
             MaxPower: (Math.floor((Math.random() * 10) + 1))*37,
             Similarity: parseInt(MinderResult.Rate * 100), 
-            GestureNum: (Math.floor((Math.random() * 3) + 1))
+            GestureNum: (MinderResult.ActionCode % 3) + 1
         });
     }
     //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才寫到介面Table
@@ -98,6 +98,12 @@ var localurl;
 router.post('/localurl', function (req, res, next){
     localurl = req.body.url;
     res.send(localurl);
+});
+
+var motionUrl = "";
+router.post('/setMotionUrl', function(req, res){
+    motionUrl = req.body.urlvalue;
+    res.json({"URL":motionUrl});
 });
 
 module.exports = router;
