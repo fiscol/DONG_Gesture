@@ -14,7 +14,8 @@ var router = express.Router();
 /*
 API Server
 */
-router.post('/iOS/Raw', function (req, res, next){
+var rawReqURL = '/iOS/Raw';
+router.post(rawReqURL, function (req, res, next){
     // 解析body
     var RawData = req.body;
     var MinderResult = apiServices._RawProcess(RawData);
@@ -54,8 +55,8 @@ router.post('/iOS/Raw', function (req, res, next){
     };
     res.json(MinderResult);
 });
-var aaaa = '/iOS/Minder';
-router.post(aaaa, function (req, res, next){
+var minderReqURL = '/iOS/Minder';
+router.post(minderReqURL, function (req, res, next){
     // 解析body
     var MinderData = req.body;
     var MinderResult = apiServices._MinderProcess(MinderData);
