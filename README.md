@@ -32,6 +32,7 @@
  - 增加 libraries/tool 歸納無家可歸小工具(DONG_Calaulate.js)，並修改相依路徑。*_(BigQ)_*  
 **2016/08/18**  
  - 調整 將部分共用函式，移至libraries底下檔案。*_(Fiscol)_*  
+ - 更新一版資料夾分層架構在Readme.md*_(Fiscol)_*  
 
 
 # DONG Cloud Document
@@ -55,33 +56,43 @@
 
 
 
-## 專案分層與檔案說明
+## 專案分層與檔案說明 (20160818更新)
 
  - 使用Express專案架構
- - 後端Controller：
- (只負責路徑 + 定義I/O，由Service層處理運算)
- <i class="icon-folder-open"></i>routes
-	 - <i class="icon-file"></i>api.js
-	 - <i class="icon-file"></i>unit.js
-	 - <i class="icon-file"></i>train.js
- - 後端Service
- (商業邏輯，依功能區分子資料夾)：
- <i class="icon-folder-open"></i>services
-	 - <i class="icon-folder-open"></i>api(使用者驗證)
-		 - <i class="icon-file"></i>api.js
-	 - <i class="icon-folder-open"></i>train(機器學習)
-		 - <i class="icon-file"></i>ann.js
-		 - <i class="icon-file"></i>pca.js
-		 - <i class="icon-file"></i>pnn.js
-		 - <i class="icon-file"></i>svm.js
-	 - <i class="icon-folder-open"></i>unit(單元運算)
-		 - <i class="icon-file"></i>direction.js
-		 - <i class="icon-file"></i>power.js
- - 前端View(ejs)：
- <i class="icon-folder-open"></i>views資料夾
- - 外部函式庫：
- <i class="icon-folder-open"></i>libraries資料夾
-  - <i class="icon-file"></i>firebase_db.js
+ - 後端Controller(只負責路徑 + 定義I/O，由Service層處理運算)：
+ - routes
+	 - api.js (內部開發，以MotionData觸發目前DEMO用的服務API)
+	 - unit.js (處理MotionData解算的API)
+	 - train.js (目前未使用)
+	 - index.js (監控頁面相關API)
+	 - users.js (使用者相關，註冊，登入相關API)
+ - 後端Service(商業邏輯，依功能區分子資料夾)：
+ - services
+	 - api(內部開發測試相關)
+		 - api.js (呼叫MotionData解算，儲存回DB)
+	 - train(機器學習)
+		 - ann.js (目前未使用)
+		 - pca.js (目前未使用)
+		 - pnn.js (目前未使用)
+		 - svm.js (目前未使用)
+	 - unit(單元運算)
+	 	 - kernal(動作核心演算)
+		   - accefilter.js (G-Sensor Filter)
+		   - lcslength.js (運算Score，TraceBack)
+		   - minderbeta.js (將一維陣列運算為Rate，ActionCode)
+		   - processbeta.js (解算三維RawData為一維陣列)
+		 - direction.js (目前未使用)
+		 - power.js (目前未使用)
+	 - users(使用者相關)
+	 	 - users.js (註冊，登入相關處理函式)
+ - 後端函式庫(包含Firebase，內部共用函式)：
+ - libraries
+ 	 - tool (內部共用函式)
+	  	 - dongservices.js (按鍵精靈，投影片切換等DEMO介接函式)
+		 - gettime.js (取得日期時間相關函式)
+		 - postdata.js (組MotionData相關輸出物件)
+	 - DONG-TEST-e4e5735fa7bb.json (Firebase相關設定)
+	 - firebase_db.js (Firebase CRUD相關函式)
 
 ## 資料流UML
 
@@ -103,3 +114,5 @@ sub2->op2
 ```
 
 > Project Source : [Link](https://bitbucket.org/pvdplus_tech/dongserverfmq)
+> Monitor Page : [Link](https://dongcloud.herokuapp.com)
+> Heroku App : [Link](https://dashboard.heroku.com/apps/dongcloud)
