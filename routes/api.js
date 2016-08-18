@@ -9,8 +9,8 @@
 api.js
 */
 var express = require('express');
+var db = require('../libraries/firebase_db.js');
 var router = express.Router();
-var dataCounter = 0;
 /*
 API Server
 */
@@ -23,16 +23,16 @@ router.post('/iOS/Raw', function (req, res, next){
 Kernal Part
 */
     // 編碼處理 + 運算Rate, Pattern
-    var minderBetaService = require('../services/unit/kernal/minderbeta.js');
-    var processBetaService = require('../services/unit/kernal/processbeta.js');
+    var MinderBetaService = require('../services/unit/kernal/minderbeta.js');
+    var ProcessBetaService = require('../services/unit/kernal/processbeta.js');
     var Threshold = 0.18;
     // 轉換為一列編碼
-    var ProcessedCode = processBetaService._processData(DataRaw, Threshold).mixBinaryCodes;
+    var ProcessedCode = ProcessBetaService._processData(DataRaw, Threshold).mixBinaryCodes;
     var MinderThreshold = 0.5;
     var PatternModel = 1;
     var PatternType = 1;
     // 運算Rate, Pattern 
-    var MinderResult = minderBetaService._lcsRateComputing(
+    var MinderResult = MinderBetaService._lcsRateComputing(
 ProcessedCode, MinderThreshold, PatternModel, PatternType);
 /*
 Unit Part
@@ -64,7 +64,11 @@ Learn Part
 DB Part
 */
     // 存到DB
-    _updateDB(UID, DataFinish);
+    var IsTrial = false;
+    db._GetRequestCount(UID, IsTrial).then(function(_Count){
+        db._SaveMotion(UID, DataFinish, _Count);
+        db._AddRequestCount(UID, IsTrial, _Count);
+    });
 
     //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才寫到介面Table
     if (MinderResult.Rate >= MinderThreshold) {
@@ -95,13 +99,13 @@ router.post('/iOS/Minder', function (req, res, next){
 Kernal Part
 */
     // 運算Rate, Pattern
-    var minderBetaService = require('../services/unit/kernal/minderbeta.js');
+    var MinderBetaService = require('../services/unit/kernal/minderbeta.js');
     var ProcessedCode = JSON.parse(DataRaw.Code);
     var MinderThreshold = 0.5;
     var PatternModel = 1;
     var PatternType = 1;
     // 運算Rate, Pattern 
-    var MinderResult = minderBetaService._lcsRateComputing(
+    var MinderResult = MinderBetaService._lcsRateComputing(
 ProcessedCode, MinderThreshold, PatternModel, PatternType);
 /*
 Unit Part
@@ -135,7 +139,11 @@ Learn Part
 DB Part
 */
     // 存到DB
-    _updateDB(UID, DataFinish);
+    var IsTrial = false;
+    db._GetRequestCount(UID, IsTrial).then(function(_Count){
+        db._SaveMotion(UID, DataFinish, _Count);
+        db._AddRequestCount(UID, IsTrial, _Count);
+    });
     //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才寫到介面Table
     if (MinderResult.Rate >= MinderThreshold) {
         // Send DBdata to View
@@ -160,18 +168,6 @@ DB Part
     // 傳到DongMotion測試
     res.json(MinderResult);
 });
-
-function _updateDB(_UID, _DataResult){
-    var DB = require('../libraries/firebase_db.js');
-    // DB Path
-    var RefPath = "DONGCloud/MotionData/" + _UID;
-    // Child Name
-    dataCounter++;
-    var ChildName = "Data" + dataCounter;
-    // Read DB data
-    // 存到DB
-    DB._set(RefPath, ChildName, _DataResult);
-}
 
 var localurl;
 router.post('/localurl', function (req, res, next){

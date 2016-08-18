@@ -30,6 +30,8 @@
  - 串接api/iOS內的兩隻API, 到可接收兩種種類的RawCode*_(Fiscol)_*  
 **2016/08/17**  
  - 增加 libraries/tool 歸納無家可歸小工具(DONG_Calaulate.js)，並修改相依路徑。*_(BigQ)_*  
+**2016/08/18**  
+ - 調整 將部分共用函式，移至libraries底下檔案。*_(Fiscol)_*  
 
 
 # DONG Cloud Document

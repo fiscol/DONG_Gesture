@@ -149,3 +149,53 @@ exports._logIn = function(_Token){
 	// Handle error
 	});
 }
+
+/*
+取得目前Request總數
+*/
+exports._GetRequestCount = function(_UID, _IsTrial){
+    // DB Table
+    var RefPath = (_IsTrial == true)? "DONGCloud/DongService/Trial/"  : "DONGCloud/DongService/";
+    RefPath += _UID
+    // UserID
+    var ChildName = "RequestCount";
+    // 讀取使用者資料, 回傳
+    
+    if(ChildName){
+        return Promise.resolve(this._onValuePromise(RefPath, ChildName));
+    }
+    else{
+        return Promise.reject(new Error("未傳入使用者ID"));
+    }
+    
+}
+
+/*
+儲存MotionData到DB
+*/
+exports._SaveMotion = function(_UID, _DataResult, _RequestCount){
+    // DB Path
+    var RefPath = "DONGCloud/MotionData/" + _UID;
+    // Child Name
+    _RequestCount++;
+    var ChildName = "Data" + _RequestCount;
+    // 存到DB
+    this._set(RefPath, ChildName, _DataResult);
+}
+
+/*
+更新Request總數到DB
+*/
+exports._AddRequestCount = function(_UID, _IsTrial, _RequestCount){
+    var Calculator = require('../libraries/tool/gettime.js');
+    // DB Path
+    var RefPath = (_IsTrial == true)? "DONGCloud/DongService/Trial" : "DONGCloud/DongService";
+    // Child Name
+    var ChildName = _UID;
+    var Data = {
+                    "RequestCount" : _RequestCount + 1,
+                    "LastExecDate" : Calculator._dateTimeNow()
+               };
+    // 存到DB
+    this._update(RefPath, ChildName, Data);
+}
