@@ -171,6 +171,24 @@ exports._GetRequestCount = function(_UID, _IsTrial){
 }
 
 /*
+確認使用者是否為付費會員
+*/
+exports._CheckUserType = function(_UID){
+    // DB Table
+    var RefPath = "DONGCloud/DongService";
+    // UserID
+    var ChildName = _UID;
+    // 讀取使用者資料, 回傳
+    
+    if(ChildName){
+        return Promise.resolve(this._onValuePromise(RefPath, ChildName));
+    }
+    else{
+        return Promise.reject(new Error("未傳入使用者ID"));
+    }
+    
+}
+/*
 儲存MotionData到DB
 */
 exports._SaveMotion = function(_UID, _DataResult, _RequestCount){
@@ -199,3 +217,4 @@ exports._AddRequestCount = function(_UID, _IsTrial, _RequestCount){
     // 存到DB
     this._update(RefPath, ChildName, Data);
 }
+

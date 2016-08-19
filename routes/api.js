@@ -15,7 +15,7 @@ var router = express.Router();
 API Server
 */
 var rawReqURL = '/iOS/Raw';
-router.post(rawReqURL, function (req, res, next){
+router.post(rawReqURL, function (req, res, next) {
     // 解析body
     var RawData = req.body;
     var MinderResult = apiServices._RawProcess(RawData);
@@ -26,17 +26,17 @@ router.post(rawReqURL, function (req, res, next){
     //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才觸發DashBoard動畫
     if (MinderResult.Rate >= MinderThreshold) {
         // Send RealTimeData to View 
-        req.io.sockets.emit('RealTimeData', { 
-            MaxSpeed: (Math.floor((Math.random() * 10) + 1))*17,
-            MaxPower: (Math.floor((Math.random() * 10) + 1))*37,
-            Similarity: parseInt(MinderResult.Rate * 100), 
+        req.io.sockets.emit('RealTimeData', {
+            MaxSpeed: (Math.floor((Math.random() * 10) + 1)) * 17,
+            MaxPower: (Math.floor((Math.random() * 10) + 1)) * 37,
+            Similarity: parseInt(MinderResult.Rate * 100),
             GestureNum: (MinderResult.ActionCode % 3) + 1
         });
     }
     //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才寫到介面Table
     if (MinderResult.Rate >= MinderThreshold) {
         // Send DBdata to View
-        req.io.sockets.emit('DBData', { 
+        req.io.sockets.emit('DBData', {
             Name: RawData.UID,
             Rawdata: ProcessedCode,
             Rate: MinderResult.Rate,
@@ -56,7 +56,7 @@ router.post(rawReqURL, function (req, res, next){
     res.json(MinderResult);
 });
 var minderReqURL = '/iOS/Minder';
-router.post(minderReqURL, function (req, res, next){
+router.post(minderReqURL, function (req, res, next) {
     // 解析body
     var MinderData = req.body;
     var MinderResult = apiServices._MinderProcess(MinderData);
@@ -65,17 +65,17 @@ router.post(minderReqURL, function (req, res, next){
     //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才觸發DashBoard動畫
     if (MinderResult.Rate >= MinderThreshold) {
         // Send RealTimeData to View
-        req.io.sockets.emit('RealTimeData', { 
-            MaxSpeed: (Math.floor((Math.random() * 10) + 1))*17,
-            MaxPower: (Math.floor((Math.random() * 10) + 1))*37,
-            Similarity: parseInt(MinderResult.Rate * 100), 
+        req.io.sockets.emit('RealTimeData', {
+            MaxSpeed: (Math.floor((Math.random() * 10) + 1)) * 17,
+            MaxPower: (Math.floor((Math.random() * 10) + 1)) * 37,
+            Similarity: parseInt(MinderResult.Rate * 100),
             GestureNum: (MinderResult.ActionCode % 3) + 1
         });
     }
     //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才寫到介面Table
     if (MinderResult.Rate >= MinderThreshold) {
         // Send DBdata to View
-        req.io.sockets.emit('DBData', { 
+        req.io.sockets.emit('DBData', {
             Name: MinderData.UID,
             Rawdata: ProcessedCode,
             Rate: MinderResult.Rate,
@@ -96,15 +96,9 @@ router.post(minderReqURL, function (req, res, next){
 });
 
 var localurl;
-router.post('/localurl', function (req, res, next){
+router.post('/localurl', function (req, res, next) {
     localurl = req.body.url;
     res.send(localurl);
-});
-
-var motionUrl = "";
-router.post('/setMotionUrl', function(req, res){
-    motionUrl = req.body.urlvalue;
-    res.json({"URL":motionUrl});
 });
 
 module.exports = router;

@@ -33,7 +33,8 @@
 **2016/08/18**  
  - 調整 將部分共用函式，移至libraries底下檔案。*_(Fiscol)_*  
  - 更新一版資料夾分層架構在Readme.md*_(Fiscol)_*  
-
+**2016/08/19**  
+ - 加入每日定時更新與用戶端查詢MotionURL的API*_(Fiscol)_*  
 
 # DONG Cloud Document
 ## 命名規範 V1.0 (20160722)
