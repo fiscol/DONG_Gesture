@@ -35,6 +35,8 @@
  - 更新一版資料夾分層架構在Readme.md*_(Fiscol)_*  
 **2016/08/19**  
  - 加入每日定時更新與用戶端查詢MotionURL的API*_(Fiscol)_*  
+**2016/08/21**  
+ - 加入APIDoc.md，說明目前的API傳入/輸出與呼叫的URL*_(Fiscol)_*  
 
 # DONG Cloud Document
 ## 命名規範 V1.0 (20160722)
@@ -60,6 +62,8 @@
 ## 專案分層與檔案說明 (20160818更新)
 
  - 使用Express專案架構
+ - README.md (專案說明檔)
+ - APIDoc.md (API說明檔)
  - 後端Controller(只負責路徑 + 定義I/O，由Service層處理運算)：
  - routes
 	 - api.js (內部開發，以MotionData觸發目前DEMO用的服務API)

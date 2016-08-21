@@ -9,10 +9,10 @@ var db = require('../libraries/firebase_db.js');
 var motionUrl = "";
 
 //設定排程
-function startInterval(days, callback) {
-    callback();
+function startInterval(_Days, _Callback) {
+    _Callback();
     //每天重產一次motionUrl
-    return setInterval(callback, days * 1000 * 60 * 60 * 24);
+    return setInterval(_Callback, _Days * 1000 * 60 * 60 * 24);
 }
 
 //重產隨機碼(7碼)
