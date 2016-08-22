@@ -47,7 +47,7 @@ DB Part
 }
 
 exports._MinderProcess = function(_MinderData){
-    /*
+/*
 Kernal Part
 */
     // 運算Rate, Pattern

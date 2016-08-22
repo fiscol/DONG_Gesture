@@ -49,10 +49,7 @@ OUTPUT Data:
       "ActionCode": 19
     }
 
-***
-
-## unit.js
-**unit/getMotionUrl**
+**api/getMotionUrl**
 `POST`
 
 PURPOSE:  
@@ -70,7 +67,7 @@ OUTPUT Data:
       "URL": "6sk6tco"
     }
 
-**unit/Raw/:motionurl**
+**api/Raw/:motionurl**
 `POST`
 
 PURPOSE:  
@@ -94,7 +91,7 @@ OUTPUT Data:
       "ActionCode": 19
     }
 
-**unit/Minder/:motionurl**
+**api/Minder/:motionurl**
 `POST`
 
 PURPOSE:  

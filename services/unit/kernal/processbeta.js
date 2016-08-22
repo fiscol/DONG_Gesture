@@ -1,8 +1,6 @@
 //20160815 Ver.1 Fiscol
 //Note : exports._processData補上清空mixBinaryCodes = [];
 
-//var foundation = require("foundation");
-
 //var motionQuenAcc = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 //var motionCodeAcc = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 

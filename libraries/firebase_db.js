@@ -218,3 +218,11 @@ exports._AddRequestCount = function(_UID, _IsTrial, _RequestCount){
     this._update(RefPath, ChildName, Data);
 }
 
+exports._AddUserPattern = function(_UID, _MinderData){
+	// DB Path
+    var RefPath = "DONGCloud/PatternData";
+    // Child Name
+    var ChildName = _UID;
+    // 存到DB
+    this._set(RefPath, ChildName, _MinderData);
+}

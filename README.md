@@ -37,6 +37,8 @@
  - 加入每日定時更新與用戶端查詢MotionURL的API*_(Fiscol)_*  
 **2016/08/21**  
  - 加入APIDoc.md，說明目前的API傳入/輸出與呼叫的URL*_(Fiscol)_*  
+**2016/08/22**  
+ - 調整一版專案架構，修復Server端Rate運算的BUG*_(Fiscol)_*  
 
 # DONG Cloud Document
 ## 命名規範 V1.0 (20160722)
@@ -59,64 +61,45 @@
 
 
 
-## 專案分層與檔案說明 (20160818更新)
+## 專案分層與檔案說明 (20160822更新)
 
  - 使用Express專案架構
  - README.md (專案說明檔)
- - APIDoc.md (API說明檔)
+ - documents
+ 	 - APIDoc.md (API說明檔)
  - 後端Controller(只負責路徑 + 定義I/O，由Service層處理運算)：
  - routes
-	 - api.js (內部開發，以MotionData觸發目前DEMO用的服務API)
-	 - unit.js (處理MotionData解算的API)
-	 - train.js (目前未使用)
+	 - api.js (以MotionData觸發服務API)
 	 - index.js (監控頁面相關API)
 	 - users.js (使用者相關，註冊，登入相關API)
  - 後端Service(商業邏輯，依功能區分子資料夾)：
  - services
 	 - api(內部開發測試相關)
-		 - api.js (呼叫MotionData解算，儲存回DB)
-	 - train(機器學習)
-		 - ann.js (目前未使用)
-		 - pca.js (目前未使用)
-		 - pnn.js (目前未使用)
-		 - svm.js (目前未使用)
+		 - demo.js (觸發其他Demo相關的Dong Services)
+		 - train.js (機器學習使用，目前還沒開始使用)
+		 - unit.js (呼叫MotionData解算，儲存回DB)
 	 - unit(單元運算)
 	 	 - kernal(動作核心演算)
 		   - accefilter.js (G-Sensor Filter)
 		   - lcslength.js (運算Score，TraceBack)
 		   - minderbeta.js (將一維陣列運算為Rate，ActionCode)
 		   - processbeta.js (解算三維RawData為一維陣列)
-		 - direction.js (目前未使用)
-		 - power.js (目前未使用)
+		 - train(機器學習)
+		   - ann.js (目前未使用)
+		   - pca.js (目前未使用)
+		   - pnn.js (目前未使用)
+		   - svm.js (目前未使用)
 	 - users(使用者相關)
 	 	 - users.js (註冊，登入相關處理函式)
  - 後端函式庫(包含Firebase，內部共用函式)：
  - libraries
  	 - tool (內部共用函式)
+	  	 - crypt.js (加解密相關函式)
 	  	 - dongservices.js (按鍵精靈，投影片切換等DEMO介接函式)
 		 - gettime.js (取得日期時間相關函式)
 		 - postdata.js (組MotionData相關輸出物件)
 	 - DONG-TEST-e4e5735fa7bb.json (Firebase相關設定)
 	 - firebase_db.js (Firebase CRUD相關函式)
-
-## 資料流UML
-
-```flow
-st1=>start: Sensor送出動作
-e1=>end: 結束操作
-e2=>end: 回傳動作到Sensor
-sub2=>subroutine: 解析動作 + 力道
-op1=>operation: 驗證使用者權限
-op2=>operation: 機器學習
-cond1=>condition: 有API權限?
-cond2=>condition: 須經過機器學習?
-
-st1->op1->cond1
-cond1(yes)->sub2
-cond1(no)->e1
-sub2(right)->e2
-sub2->op2
-```
 
 > Project Source : [Link](https://bitbucket.org/pvdplus_tech/dongserverfmq)  
 > Monitor Page : [Link](https://dongcloud.herokuapp.com)  

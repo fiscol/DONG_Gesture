@@ -1,4 +1,3 @@
-//var foundation = require("foundation");
 var lcsLength = require("./lcslength.js");
 
 var FinalCode = [];
@@ -34,7 +33,7 @@ exports._lcsRateComputing = function (_Input, _Threshold, _PatternModel, _Patter
 
     if (_Input.length >= 1) { //避免濾除過後出現空值
         for (var PatternCaseNum = PatternStart; PatternCaseNum <= PatternEnd; PatternCaseNum++) {
-            LCSScore[PatternCaseNum] = parseFloat(lcsLength._lcsNumber(_Input, PatternCase[PatternCaseNum]));
+            LCSScore[PatternCaseNum] = parseFloat(lcsLength._lcsNumberFor2(_Input, PatternCase[PatternCaseNum]).Score);
             LCSRate[PatternCaseNum] = LCSScore[PatternCaseNum] / parseFloat(Math.max(_Input.length, PatternCase[PatternCaseNum].length));
         }
     }
