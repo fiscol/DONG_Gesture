@@ -88,6 +88,8 @@ DB Part
     res.json(MinderResult);
 });
 
+
+
 router.post('/iOS/Minder', function (req, res, next){
     // 解析body
     var DataRaw = req.body;
