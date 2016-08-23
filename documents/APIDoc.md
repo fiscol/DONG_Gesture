@@ -49,6 +49,48 @@ OUTPUT Data:
       "ActionCode": 19
     }
 
+**api/addRawPattern**
+`POST`
+
+PURPOSE:   
+ - Use G-Sensor data as source, generate one-dimentional Minder pattern.  
+ - Save new user pattern to DONGCloud/PatternData.  
+
+INPUT Parameters:
+
+    {
+      "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2",
+      "AX": "[0.2, 0.16, -0.12]",
+      "AY": "[0.2, 0.16, -0.12]",
+      "AZ": "[0.2, 0.16, -0.12]"
+    }
+
+OUTPUT Data:
+
+    {
+      "Message": "儲存會員Pattern成功"
+    }
+
+**api/addMinderPattern**
+`POST`
+
+PURPOSE:  
+ - Use one-dimentional Minder data as pattern.   
+ - Save new user pattern to DONGCloud/PatternData.  
+
+INPUT Parameters:
+
+    {
+      "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2",
+      "Code":"[1,2,3,4,2,1,3,3]"
+    }
+
+OUTPUT Data:
+
+    {
+      "Message": "儲存會員Pattern成功"
+    }
+
 **api/getMotionUrl**
 `POST`
 
