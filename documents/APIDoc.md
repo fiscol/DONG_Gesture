@@ -191,3 +191,28 @@ OUTPUT Data:
     {
       "Message": "已登出"
     }
+
+***
+
+## devapi.js
+**devapi/:devcode/LCS**
+`POST`
+
+PURPOSE:  
+ - devcode == "pvdplus" (temporarily as default)  
+ - Compare a pair of MinderData.  
+ - Returns Rate and TraceBack.
+
+INPUT Parameters:
+
+    {
+      "input1":"[4, 2, 4, 6, 3, 3, 1, 4, 4, 6]",
+      "input2":"[1, 4, 4, 6, 3, 2, 2, 5, 3, 2]"
+    }
+
+OUTPUT Data:
+
+    {
+      "Rate": 0.5,
+      "TraceBack": "[4,4,6,3,3]"
+    }

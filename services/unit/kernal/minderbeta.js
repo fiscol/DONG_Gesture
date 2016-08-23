@@ -1,5 +1,6 @@
 var lcsLength = require("./lcslength.js");
-
+var db = require('../../../libraries/firebase_db.js');
+var String = require("../../../libraries/tool/string.js");
 var FinalCode = [];
 var PatternTypeNumPhone = 1;
 // exports._dongMinderBata = {
@@ -8,6 +9,14 @@ var PatternTypeNumPhone = 1;
 //     'LCSActionCode': _lcsRateComputing(FinalCode, 0.55, 1, PatternTypeNumPhone).ActionCode
 // };
 
+//Pattern的上限?
+//什麼情況加入Pattern TraingData? (相似度 > Threshold && Rank withing Top 30)
+//一組Pattern最多會存在幾組Training Data? (暫定30)
+
+//GestureNum
+//MotionCode
+//RawCode
+//Similarity
 exports._lcsRateComputing = function (_Input, _Threshold, _PatternModel, _PatternType) {
     var PatternCase = new Array(30);
     var LCSScore = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
@@ -17,32 +26,39 @@ exports._lcsRateComputing = function (_Input, _Threshold, _PatternModel, _Patter
 
     //=============Test Code=============
     if (_PatternModel === 1) {
-        var Pattern4 = _lcsPatternChartDev.mark;
+        return db._GetUserPatterns("70Hfhlb3P9VFEIeIozSqfoFy3eA2").then(function (_PatternData) {
+            for(var i = 0; i < Object.keys(_PatternData).length; i++){
+                var Key = String._format("Pattern{0}", i + 1);
+                PatternCase[i] = _PatternData[Key].split(',').map(Number);
+            }
+            PatternStart = 0;
+            PatternEnd = Object.keys(_PatternData).length - 1;
 
-        PatternCase[18] = Pattern4.temp_case1;
-        PatternCase[19] = Pattern4.temp_case2;
-        PatternCase[20] = Pattern4.temp_case3;
-        PatternCase[21] = Pattern4.badminton_case1;
-        PatternCase[22] = Pattern4.badminton_case2;
-        PatternCase[23] = Pattern4.badminton_case3;
+            if (_Input.length >= 1) { //避免濾除過後出現空值
+                for (var PatternCaseNum = PatternStart; PatternCaseNum <= PatternEnd; PatternCaseNum++) {
+                    LCSScore[PatternCaseNum] = parseFloat(lcsLength._lcsNumberFor2(_Input, PatternCase[PatternCaseNum]).Score);
+                    LCSRate[PatternCaseNum] = LCSScore[PatternCaseNum] / parseFloat(Math.max(_Input.length, PatternCase[PatternCaseNum].length));
+                }
+            }
+            var Rate = Math.max.apply(null, LCSRate);
+            var ActionCode = LCSRate.indexOf(Rate);
 
-        PatternStart = 18;
-        PatternEnd = 23;
+            return { 'Rate': Rate, 'ActionCode': ActionCode };
+        }).catch(function (err) {
+            return ({ "Error": "運算Rate出現錯誤" });
+        })
     }
-    //=======================
-
-    if (_Input.length >= 1) { //避免濾除過後出現空值
-        for (var PatternCaseNum = PatternStart; PatternCaseNum <= PatternEnd; PatternCaseNum++) {
-            LCSScore[PatternCaseNum] = parseFloat(lcsLength._lcsNumberFor2(_Input, PatternCase[PatternCaseNum]).Score);
-            LCSRate[PatternCaseNum] = LCSScore[PatternCaseNum] / parseFloat(Math.max(_Input.length, PatternCase[PatternCaseNum].length));
-        }
-    }
-
-    var Rate = Math.max.apply(null, LCSRate);
-    var ActionCode = LCSRate.indexOf(Rate);
-
-    return { 'Rate': Rate, 'ActionCode': ActionCode };
 };
+
+exports._lcsComputing = function (_Input1, _Input2) {
+    var LCSResult = lcsLength._lcsNumberFor2(_Input1, _Input2);
+    var LCSScore = parseFloat(LCSResult.Score);
+    var TraceBack = String._format("[{0}]", LCSResult.TraceBack.split('').toString());
+    var LCSRate = LCSScore / parseFloat(Math.max(_Input1.length, _Input2.length));
+
+    return { 'Rate': LCSRate, 'TraceBack': TraceBack }
+}
+
 
 var _lcsPatternChart = {};
 

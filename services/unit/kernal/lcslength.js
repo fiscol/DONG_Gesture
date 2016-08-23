@@ -76,7 +76,7 @@ exports._lcsNumberFor2 = function (_X, _Y) {
         if (Score[_B][I] >= Score[J][_A]) {
             Result += _traceBack(I, _B);
         }
-        if (Score[J][_A] >= Score[_B][I]) {
+        if (Score[J][_A] > Score[_B][I]) {
             Result += _traceBack(_A, J);
         }
         return Result;
@@ -127,7 +127,7 @@ exports._lcsString = function (_X, _Y) {
             if (Score[_B][I] >= Score[J][_A]) {
                 Result += _traceBackString(I, _B);
             }
-            if (Score[J][_A] >= Score[_B][I]) {
+            if (Score[J][_A] > Score[_B][I]) {
                 Result += _traceBackString(_A, J);
             }
             return Result;

@@ -31,10 +31,12 @@ router.post('/iOS/Minder', function (req, res, next) {
     // 解析body
     var MinderData = req.body;
     var MinderCode = JSON.parse(MinderData.Code);
-    var MinderResult = unitServices._MinderProcess(MinderData);
-    var MinderThreshold = 0.5;
-    demoServices._TriggerDongServices(req, MinderData.UID, MinderCode, MinderResult, MinderThreshold);
-    res.json(MinderResult);
+    unitServices._MinderProcess(MinderData).then(function(_MinderResult){
+        var MinderThreshold = 0.5;
+        demoServices._TriggerDongServices(req, MinderData.UID, MinderCode, _MinderResult, MinderThreshold);
+        res.json(_MinderResult);
+    });
+    
 });
 
 
@@ -44,9 +46,13 @@ router.post('/addRawPattern', function (req, res) {
     if (UID) {
         var DataRaw = req.body;
         var Threshold = 0.18;
-        var ProcessedCode = processBetaService._processData(DataRaw, Threshold).mixBinaryCodes;
-        db._AddUserPattern(UID, ProcessedCode);
-        res.json({ "Message": "儲存會員Pattern成功" });
+        var ProcessedCode = processBetaService._processData(DataRaw, Threshold).mixBinaryCodes.toString();
+        var IsTrial = false;
+        db._GetPatternCount(UID, IsTrial).then(function(_PatternCount){
+            db._AddUserPattern(UID, ProcessedCode, _PatternCount);
+            db._AddPatternCount(UID, IsTrial, _PatternCount);
+            res.json({ "Message": "儲存會員Pattern成功" });
+        })
     }
     else {
         res.json({ "Error": "未傳入會員ID" });
@@ -58,9 +64,13 @@ router.post('/addMinderPattern', function (req, res) {
     var UID = req.body.UID;
     if (UID) {
         var DataRaw = req.body;
-        var ProcessedCode = JSON.parse(DataRaw.Code);
-        db._AddUserPattern(UID, ProcessedCode);
-        res.json({ "Message": "儲存會員Pattern成功" });
+        var ProcessedCode = JSON.parse(DataRaw.Code).toString();
+        var IsTrial = false;
+        db._GetPatternCount(UID, IsTrial).then(function(_PatternCount){
+            db._AddUserPattern(UID, ProcessedCode, _PatternCount);
+            db._AddPatternCount(UID, IsTrial, _PatternCount);
+            res.json({ "Message": "儲存會員Pattern成功" });
+        })
     }
     else {
         res.json({ "Error": "未傳入會員ID" });
@@ -112,8 +122,9 @@ minderbeta API 測試
 router.post("/Minder/:motionurl", function (req, res) {
     var MinderData = req.body;
     var MinderCode = JSON.parse(MinderData.Code);
-    var MinderResult = unitServices._MinderProcess(MinderData);
-    res.json(MinderResult);
+    unitServices._MinderProcess(MinderData).then(function(_MinderResult){
+        res.json(_MinderResult);
+    });
 });
 
 /* 

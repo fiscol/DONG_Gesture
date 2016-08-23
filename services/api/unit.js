@@ -1,9 +1,9 @@
 var db = require('../../libraries/firebase_db.js');
 
-exports._RawProcess = function(_RawData){
-/*
-Kernal Part
-*/
+exports._RawProcess = function (_RawData) {
+    /*
+    Kernal Part
+    */
     // 編碼處理 + 運算Rate, Pattern
     var MinderBetaService = require('../unit/kernal/minderbeta.js');
     var ProcessBetaService = require('../unit/kernal/processbeta.js');
@@ -14,42 +14,43 @@ Kernal Part
     var PatternModel = 1;
     var PatternType = 1;
     // 運算Rate, Pattern 
-    var MinderResult = MinderBetaService._lcsRateComputing(
-ProcessedCode, MinderThreshold, PatternModel, PatternType);
-/*
-Unit Part
-*/
-    var api = require('../../libraries/tool/postdata.js');
-    var UID = _RawData.UID;
-    var DataResult = {
-        User : UID,
-        ProcessCode : ProcessedCode,
-        MotionCode : MinderResult.ActionCode,
-        Similarity : parseInt(MinderResult.Rate * 100)
-    }
-    var DataFinish = api._postData(DataResult);
-    
-/*
-Learn Part
-*/
+    MinderBetaService._lcsRateComputing(
+        ProcessedCode, MinderThreshold, PatternModel, PatternType).then(function (_MinderResult) {
+            /*
+    Unit Part
+    */
+            var api = require('../../libraries/tool/postdata.js');
+            var UID = _RawData.UID;
+            var DataResult = {
+                User: UID,
+                ProcessCode: ProcessedCode,
+                MotionCode: _MinderResult.ActionCode,
+                Similarity: parseInt(_MinderResult.Rate * 100)
+            }
+            var DataFinish = api._postData(DataResult);
 
-/*
-DB Part
-*/
-    // 存到DB
-    var IsTrial = false;
-    db._GetRequestCount(UID, IsTrial).then(function(_Count){
-        db._SaveMotion(UID, DataFinish, _Count);
-        db._AddRequestCount(UID, IsTrial, _Count);
-    });
+            /*
+            Learn Part
+            */
 
-    return MinderResult;
+            /*
+            DB Part
+            */
+            // 存到DB
+            var IsTrial = false;
+            db._GetRequestCount(UID, IsTrial).then(function (_Count) {
+                db._SaveMotion(UID, DataFinish, _Count);
+                db._AddRequestCount(UID, IsTrial, _Count);
+            });
+
+            return _MinderResult;
+        })
 }
 
-exports._MinderProcess = function(_MinderData){
-/*
-Kernal Part
-*/
+exports._MinderProcess = function (_MinderData) {
+    /*
+    Kernal Part
+    */
     // 運算Rate, Pattern
     var MinderBetaService = require('../unit/kernal/minderbeta.js');
     var ProcessedCode = JSON.parse(_MinderData.Code);
@@ -57,33 +58,34 @@ Kernal Part
     var PatternModel = 1;
     var PatternType = 1;
     // 運算Rate, Pattern 
-    var MinderResult = MinderBetaService._lcsRateComputing(
-ProcessedCode, MinderThreshold, PatternModel, PatternType);
-/*
-Unit Part
-*/
+    return MinderBetaService._lcsRateComputing(
+        ProcessedCode, MinderThreshold, PatternModel, PatternType).then(function(_MinderResult){
+            /*
+    Unit Part
+    */
     var api = require('../../libraries/tool/postdata.js');
     var UID = _MinderData.UID;
     var DataResult = {
-        User : UID,
-        ProcessCode : ProcessedCode,
-        MotionCode : MinderResult.ActionCode,
-        Similarity : parseInt(MinderResult.Rate * 100)
+        User: UID,
+        ProcessCode: ProcessedCode,
+        MotionCode: _MinderResult.ActionCode,
+        Similarity: parseInt(_MinderResult.Rate * 100)
     }
     var DataFinish = api._postData(DataResult);
-/*
-Learn Part
-*/
+    /*
+    Learn Part
+    */
 
-/*
-DB Part
-*/
+    /*
+    DB Part
+    */
     // 存到DB
     var IsTrial = false;
-    db._GetRequestCount(UID, IsTrial).then(function(_Count){
+    db._GetRequestCount(UID, IsTrial).then(function (_Count) {
         db._SaveMotion(UID, DataFinish, _Count);
         db._AddRequestCount(UID, IsTrial, _Count);
     });
-    
-    return MinderResult;
+
+    return _MinderResult;
+        });
 }

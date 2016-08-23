@@ -39,6 +39,9 @@
  - 加入APIDoc.md，說明目前的API傳入/輸出與呼叫的URL*_(Fiscol)_*  
 **2016/08/22**  
  - 調整一版專案架構，修復Server端Rate運算的BUG*_(Fiscol)_*  
+**2016/08/23**  
+ - 修正TraceBack重複加入的BUG，加入devapi供內部測試使用*_(Fiscol)_*  
+ - 將Pattern來源搬到DB測試*_(Fiscol)_*  
 
 # DONG Cloud Document
 ## 命名規範 V1.0 (20160722)
@@ -61,7 +64,7 @@
 
 
 
-## 專案分層與檔案說明 (20160822更新)
+## 專案分層與檔案說明 (20160823更新)
 
  - 使用Express專案架構
  - README.md (專案說明檔)
@@ -70,6 +73,7 @@
  - 後端Controller(只負責路徑 + 定義I/O，由Service層處理運算)：
  - routes
 	 - api.js (以MotionData觸發服務API)
+	 - devapi.js (內部測試用API)
 	 - index.js (監控頁面相關API)
 	 - users.js (使用者相關，註冊，登入相關API)
  - 後端Service(商業邏輯，依功能區分子資料夾)：
@@ -98,6 +102,7 @@
 	  	 - dongservices.js (按鍵精靈，投影片切換等DEMO介接函式)
 		 - gettime.js (取得日期時間相關函式)
 		 - postdata.js (組MotionData相關輸出物件)
+		 - string.js (處理字串相關類型函式)
 	 - DONG-TEST-e4e5735fa7bb.json (Firebase相關設定)
 	 - firebase_db.js (Firebase CRUD相關函式)
 

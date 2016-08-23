@@ -165,7 +165,7 @@ exports._GetRequestCount = function(_UID, _IsTrial){
         return Promise.resolve(this._onValuePromise(RefPath, ChildName));
     }
     else{
-        return Promise.reject(new Error("未傳入使用者ID"));
+        return Promise.resolve(0);
     }
     
 }
@@ -218,11 +218,64 @@ exports._AddRequestCount = function(_UID, _IsTrial, _RequestCount){
     this._update(RefPath, ChildName, Data);
 }
 
-exports._AddUserPattern = function(_UID, _MinderData){
+/*
+取得Pattern總數
+*/
+exports._GetPatternCount = function(_UID, _IsTrial){
+    // DB Table
+    var RefPath = (_IsTrial == true)? "DONGCloud/DongService/Trial/"  : "DONGCloud/DongService/";
+    RefPath += _UID
+    // UserID
+    var ChildName = "PatternCount";
+    // 讀取使用者資料, 回傳
+    
+    if(ChildName){
+        return Promise.resolve(this._onValuePromise(RefPath, ChildName));
+    }
+    else{
+        return Promise.resolve(0);
+    }
+}
+
+/*
+加入Pattern到DB
+*/
+exports._AddUserPattern = function(_UID, _MinderData, _PatternCount){
 	// DB Path
-    var RefPath = "DONGCloud/PatternData";
+    var RefPath = "DONGCloud/PatternData/" + _UID;
     // Child Name
-    var ChildName = _UID;
+    _PatternCount++;
+    var ChildName = "Pattern" + _PatternCount;
     // 存到DB
     this._set(RefPath, ChildName, _MinderData);
+}
+
+/*
+更新Pattern總數到DB
+*/
+exports._AddPatternCount = function(_UID, _IsTrial, _PatternCount){
+    var Calculator = require('../libraries/tool/gettime.js');
+    // DB Path
+    var RefPath = (_IsTrial == true)? "DONGCloud/DongService/Trial" : "DONGCloud/DongService";
+    // Child Name
+    var ChildName = _UID;
+    var Data = {
+                    "PatternCount" : _PatternCount + 1
+               };
+    // 存到DB
+    this._update(RefPath, ChildName, Data);
+}
+
+exports._GetUserPatterns = function(_UID){
+    // DB Table
+    var RefPath = "DONGCloud/PatternData";
+    // UserID
+    var ChildName = _UID;
+    // 讀取Pattern資料, 回傳
+    if(ChildName){
+        return Promise.resolve(this._onValuePromise(RefPath, ChildName));
+    }
+    else{
+        return Promise.resolve(0);
+    }
 }
