@@ -23,8 +23,9 @@ router.post('/iOS/Raw', function (req, res, next) {
     var MinderCode = processBetaService._processData(RawData, Threshold).mixBinaryCodes;
     unitServices._RawProcess(RawData).then(function (_MinderResult) {
         var MinderThreshold = 0.5;
+        res.json(_MinderResult);
         demoServices._TriggerDongServices(req, RawData.UID, MinderCode, _MinderResult, MinderThreshold);
-        res.json(MinderResult);
+        
     });
 
 });
@@ -35,8 +36,9 @@ router.post('/iOS/Minder', function (req, res, next) {
     var MinderCode = JSON.parse(MinderData.Code);
     unitServices._MinderProcess(MinderData).then(function (_MinderResult) {
         var MinderThreshold = 0.5;
-        demoServices._TriggerDongServices(req, MinderData.UID, MinderCode, _MinderResult, MinderThreshold);
         res.json(_MinderResult);
+        demoServices._TriggerDongServices(req, MinderData.UID, MinderCode, _MinderResult, MinderThreshold);
+        
     });
 
 });

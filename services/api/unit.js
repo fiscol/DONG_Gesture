@@ -38,12 +38,13 @@ exports._RawProcess = function (_RawData) {
             */
             // 存到DB
             var IsTrial = false;
-            db._GetRequestCount(UID, IsTrial).then(function (_Count) {
+            return db._GetRequestCount(UID, IsTrial).then(function (_Count) {
                 db._SaveMotion(UID, DataFinish, _Count);
                 db._AddRequestCount(UID, IsTrial, _Count);
+                return _MinderResult;
             });
 
-            return _MinderResult;
+
         })
 }
 
@@ -59,33 +60,34 @@ exports._MinderProcess = function (_MinderData) {
     var PatternType = 1;
     // 運算Rate, Pattern 
     return MinderBetaService._lcsRateComputing(
-        ProcessedCode, MinderThreshold, PatternModel, PatternType).then(function(_MinderResult){
+        ProcessedCode, MinderThreshold, PatternModel, PatternType).then(function (_MinderResult) {
             /*
     Unit Part
     */
-    var api = require('../../libraries/tool/postdata.js');
-    var UID = _MinderData.UID;
-    var DataResult = {
-        User: UID,
-        ProcessCode: ProcessedCode,
-        MotionCode: _MinderResult.ActionCode,
-        Similarity: parseInt(_MinderResult.Rate * 100)
-    }
-    var DataFinish = api._postData(DataResult);
-    /*
-    Learn Part
-    */
+            var api = require('../../libraries/tool/postdata.js');
+            var UID = _MinderData.UID;
+            var DataResult = {
+                User: UID,
+                ProcessCode: ProcessedCode,
+                MotionCode: _MinderResult.ActionCode,
+                Similarity: parseInt(_MinderResult.Rate * 100)
+            }
+            var DataFinish = api._postData(DataResult);
+            /*
+            Learn Part
+            */
 
-    /*
-    DB Part
-    */
-    // 存到DB
-    var IsTrial = false;
-    db._GetRequestCount(UID, IsTrial).then(function (_Count) {
-        db._SaveMotion(UID, DataFinish, _Count);
-        db._AddRequestCount(UID, IsTrial, _Count);
-    });
+            /*
+            DB Part
+            */
+            // 存到DB
+            var IsTrial = false;
+            return db._GetRequestCount(UID, IsTrial).then(function (_Count) {
+                db._SaveMotion(UID, DataFinish, _Count);
+                db._AddRequestCount(UID, IsTrial, _Count);
+                return _MinderResult;
+            });
 
-    return _MinderResult;
+
         });
 }
