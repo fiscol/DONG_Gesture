@@ -1,5 +1,5 @@
 //觸發DongServices(DEMO CASE使用)
-exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _MinderThreshold){
+exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _MinderThreshold, _Localurl){
     //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才觸發DashBoard動畫
     if (_MinderResult.Rate >= _MinderThreshold) {
         // Send RealTimeData to View
@@ -26,7 +26,7 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
     if (_MinderResult.Rate >= _MinderThreshold) {
         if (_MinderResult.ActionCode == 1) {
             DongServices._requestDongSlide();
-            DongServices._requestDongMotion(localurl);
+            DongServices._requestDongMotion(_Localurl);
             console.log('Dong Services called.');
         };
     };
