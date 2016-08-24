@@ -1,5 +1,5 @@
 var db = require('../../libraries/firebase_db.js');
-var calculator = require('../../libraries/tool/postdata.js');
+var calculator = require('../../libraries/tool/gettime.js');
 require('es6-promise');
 
 //註冊使用者資訊
@@ -8,7 +8,7 @@ exports._register = function(_RegisterData){
         var Ref = "DONGCloud/DongService";
         var ChildName = _RegisterData.UID;
         var Data = {
-            "EnabledDate" : calculator._getDateTimeNow(),
+            "EnabledDate" : calculator._dateTimeNow(),
             "Status" : "On",
             "RequestCount" : 0
         };
@@ -34,7 +34,7 @@ exports._registerTrial = function(_RegisterData){
         var Ref = "DONGCloud/DongService/Trial";
         var ChildName = _RegisterData.UID;
         var Data = {
-            "EnabledDate" : calculator._getDateTimeNow(),
+            "EnabledDate" : calculator._dateTimeNow(),
             "RequestCount" : 0
         };
         db._set(Ref, ChildName, Data);
@@ -104,7 +104,7 @@ var _logStatus = function(_UID, _Status){
             if(_Status == "On" || _Status == "Off"){
                 var Data = {
                     "Status" : _Status,
-                    "LastLoginDate" : calculator._getDateTimeNow()
+                    "LastLoginDate" : calculator._dateTimeNow()
                 };
                 db._update(Ref, ChildName, Data);
                 return "登入/登出成功";
