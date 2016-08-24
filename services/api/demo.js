@@ -7,7 +7,7 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
             MaxSpeed: (Math.floor((Math.random() * 10) + 1)) * 17,
             MaxPower: (Math.floor((Math.random() * 10) + 1)) * 37,
             Similarity: parseInt(_MinderResult.Rate * 100),
-            GestureNum: (_MinderResult.ActionCode % 3) + 1
+            GestureNum: (_MinderResult.ActionCode % 3)
         });
     }
     //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才寫到介面Table
