@@ -26,6 +26,7 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
     if (_MinderResult.Rate >= _MinderThreshold) {
         if (_MinderResult.ActionCode == 1) {
             DongServices._requestDongSlide();
+            console.log(_Localurl);
             DongServices._requestDongMotion(_Localurl);
             console.log('Dong Services called.');
         };
