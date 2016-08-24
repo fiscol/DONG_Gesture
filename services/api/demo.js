@@ -24,7 +24,7 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
     // 過門檻值則觸發DONGSlide, DongMotion
     var DongServices = require('../../libraries/tool/dongservices.js');
     if (_MinderResult.Rate >= _MinderThreshold) {
-        if (_MinderResult.ActionCode == 19) {
+        if (_MinderResult.ActionCode == 2) {
             DongServices._requestDongSlide();
             DongServices._requestDongMotion(localurl);
             console.log('Dong Services called.');

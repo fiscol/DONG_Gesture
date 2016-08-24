@@ -14,7 +14,7 @@ exports._RawProcess = function (_RawData) {
     var PatternModel = 1;
     var PatternType = 1;
     // 運算Rate, Pattern 
-    MinderBetaService._lcsRateComputing(
+    return MinderBetaService._lcsRateComputing(
         ProcessedCode, MinderThreshold, PatternModel, PatternType).then(function (_MinderResult) {
             /*
     Unit Part
