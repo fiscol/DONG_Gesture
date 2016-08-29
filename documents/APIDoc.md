@@ -49,10 +49,49 @@ OUTPUT Data:
       "ActionCode": 19
     }
 
-***
+**api/addRawPattern**
+`POST`
 
-## unit.js
-**unit/getMotionUrl**
+PURPOSE:   
+ - Use G-Sensor data as source, generate one-dimentional Minder pattern.  
+ - Save new user pattern to DONGCloud/PatternData.  
+
+INPUT Parameters:
+
+    {
+      "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2",
+      "AX": "[0.2, 0.16, -0.12]",
+      "AY": "[0.2, 0.16, -0.12]",
+      "AZ": "[0.2, 0.16, -0.12]"
+    }
+
+OUTPUT Data:
+
+    {
+      "Message": "儲存會員Pattern成功"
+    }
+
+**api/addMinderPattern**
+`POST`
+
+PURPOSE:  
+ - Use one-dimentional Minder data as pattern.   
+ - Save new user pattern to DONGCloud/PatternData.  
+
+INPUT Parameters:
+
+    {
+      "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2",
+      "Code":"[1,2,3,4,2,1,3,3]"
+    }
+
+OUTPUT Data:
+
+    {
+      "Message": "儲存會員Pattern成功"
+    }
+
+**api/getMotionUrl**
 `POST`
 
 PURPOSE:  
@@ -70,7 +109,7 @@ OUTPUT Data:
       "URL": "6sk6tco"
     }
 
-**unit/Raw/:motionurl**
+**api/Raw/:motionurl**
 `POST`
 
 PURPOSE:  
@@ -94,7 +133,7 @@ OUTPUT Data:
       "ActionCode": 19
     }
 
-**unit/Minder/:motionurl**
+**api/Minder/:motionurl**
 `POST`
 
 PURPOSE:  
@@ -193,4 +232,29 @@ OUTPUT Data:
 
     {
       "Message": "已登出"
+    }
+
+***
+
+## devapi.js
+**devapi/:devcode/LCS**
+`POST`
+
+PURPOSE:  
+ - devcode == "pvdplus" (temporarily as default)  
+ - Compare a pair of MinderData.  
+ - Returns Rate and TraceBack.
+
+INPUT Parameters:
+
+    {
+      "input1":"[4, 2, 4, 6, 3, 3, 1, 4, 4, 6]",
+      "input2":"[1, 4, 4, 6, 3, 2, 2, 5, 3, 2]"
+    }
+
+OUTPUT Data:
+
+    {
+      "Rate": 0.5,
+      "TraceBack": "[4,4,6,3,3]"
     }
