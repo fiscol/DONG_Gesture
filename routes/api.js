@@ -7,7 +7,7 @@ api.js
 */
 var express = require('express');
 var unitServices = require('../services/api/unit.js');
-var demoServices = require('../services/api/demo.js');
+var demoServices = require('../services/api/demo-badminton.js');
 var minderBetaService = require('../services/unit/kernal/minderbeta.js');
 var processBetaService = require('../services/unit/kernal/processbeta.js');
 var api = require('../libraries/tool/postdata.js');
