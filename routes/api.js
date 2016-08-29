@@ -21,10 +21,14 @@ router.post('/iOS/Raw', function (req, res, next) {
     var RawData = req.body;
     var Threshold = 0.18;
     var MinderCode = processBetaService._processData(RawData, Threshold).mixBinaryCodes;
-    var MinderResult = unitServices._RawProcess(RawData);
-    var MinderThreshold = 0.5;
-    demoServices._TriggerDongServices(req, RawData.UID, MinderCode, MinderResult, MinderThreshold);
-    res.json(MinderResult);
+    unitServices._RawProcess(RawData).then(function (_MinderResult) {
+        var MinderThreshold = 0.5;
+        res.json(_MinderResult);
+        console.log(localurl);
+        demoServices._TriggerDongServices(req, RawData.UID, MinderCode, _MinderResult, MinderThreshold, localurl);
+        
+    });
+
 });
 
 //一列編碼，輸出Rate和ActionCode，滿足門檻值觸發其他服務
@@ -32,12 +36,14 @@ router.post('/iOS/Minder', function (req, res, next) {
     // 解析body
     var MinderData = req.body;
     var MinderCode = JSON.parse(MinderData.Code);
-    unitServices._MinderProcess(MinderData).then(function(_MinderResult){
+    unitServices._MinderProcess(MinderData).then(function (_MinderResult) {
         var MinderThreshold = 0.5;
-        demoServices._TriggerDongServices(req, MinderData.UID, MinderCode, _MinderResult, MinderThreshold);
         res.json(_MinderResult);
+        console.log(localurl);
+        demoServices._TriggerDongServices(req, MinderData.UID, MinderCode, _MinderResult, MinderThreshold, localurl);
+        
     });
-    
+
 });
 
 
@@ -49,7 +55,7 @@ router.post('/addRawPattern', function (req, res) {
         var Threshold = 0.18;
         var ProcessedCode = processBetaService._processData(DataRaw, Threshold).mixBinaryCodes.toString();
         var IsTrial = false;
-        db._GetPatternCount(UID, IsTrial).then(function(_PatternCount){
+        db._GetPatternCount(UID, IsTrial).then(function (_PatternCount) {
             db._AddUserPattern(UID, ProcessedCode, _PatternCount);
             db._AddPatternCount(UID, IsTrial, _PatternCount);
             res.json({ "Message": "儲存會員Pattern成功" });
@@ -67,7 +73,7 @@ router.post('/addMinderPattern', function (req, res) {
         var DataRaw = req.body;
         var ProcessedCode = JSON.parse(DataRaw.Code).toString();
         var IsTrial = false;
-        db._GetPatternCount(UID, IsTrial).then(function(_PatternCount){
+        db._GetPatternCount(UID, IsTrial).then(function (_PatternCount) {
             db._AddUserPattern(UID, ProcessedCode, _PatternCount);
             db._AddPatternCount(UID, IsTrial, _PatternCount);
             res.json({ "Message": "儲存會員Pattern成功" });
@@ -123,7 +129,7 @@ minderbeta API 測試
 router.post("/Minder/:motionurl", function (req, res) {
     var MinderData = req.body;
     var MinderCode = JSON.parse(MinderData.Code);
-    unitServices._MinderProcess(MinderData).then(function(_MinderResult){
+    unitServices._MinderProcess(MinderData).then(function (_MinderResult) {
         res.json(_MinderResult);
     });
 });
@@ -136,8 +142,9 @@ router.post("/Raw/:motionurl", function (req, res) {
     var RawData = req.body;
     var Threshold = 0.18;
     var MinderCode = processBetaService._processData(RawData, Threshold).mixBinaryCodes;
-    var MinderResult = unitServices._RawProcess(RawData);
-    res.json(MinderResult);
+    unitServices._RawProcess(RawData).then(function(_MinderResult){
+        res.json(_MinderResult);
+    })
 })
 
 //使用者是付費會員，回傳特定格式的URL片段

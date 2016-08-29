@@ -1,5 +1,5 @@
 //觸發DongServices(DEMO CASE使用)
-exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _MinderThreshold){
+exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _MinderThreshold, _Localurl){
     //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才觸發DashBoard動畫
     if (_MinderResult.Rate >= _MinderThreshold) {
         // Send RealTimeData to View
@@ -7,7 +7,7 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
             MaxSpeed: (Math.floor((Math.random() * 10) + 1)) * 17,
             MaxPower: (Math.floor((Math.random() * 10) + 1)) * 37,
             Similarity: parseInt(_MinderResult.Rate * 100),
-            GestureNum: (_MinderResult.ActionCode % 3) + 1
+            GestureNum: (_MinderResult.ActionCode % 3)
         });
     }
     //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才寫到介面Table
@@ -24,9 +24,10 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
     // 過門檻值則觸發DONGSlide, DongMotion
     var DongServices = require('../../libraries/tool/dongservices.js');
     if (_MinderResult.Rate >= _MinderThreshold) {
-        if (_MinderResult.ActionCode == 19) {
+        if (_MinderResult.ActionCode == 1) {
             DongServices._requestDongSlide();
-            DongServices._requestDongMotion(localurl);
+            console.log(_Localurl);
+            DongServices._requestDongMotion(_Localurl);
             console.log('Dong Services called.');
         };
     };
