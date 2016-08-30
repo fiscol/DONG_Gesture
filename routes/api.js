@@ -7,7 +7,7 @@ api.js
 */
 var express = require('express');
 var unitServices = require('../services/api/unit.js');
-var demoServices = require('../services/api/demo.js');
+var demoServices = require('../services/api/demo-badminton.js');
 var minderBetaService = require('../services/unit/kernal/minderbeta.js');
 var processBetaService = require('../services/unit/kernal/processbeta.js');
 var api = require('../libraries/tool/postdata.js');
@@ -29,6 +29,7 @@ router.post('/iOS/Raw', function (req, res, next) {
     });
 
 });
+
 //一列編碼，輸出Rate和ActionCode，滿足門檻值觸發其他服務
 router.post('/iOS/Minder', function (req, res, next) {
     // 解析body

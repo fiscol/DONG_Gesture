@@ -15,4 +15,20 @@ router.get('/admin', function(req, res, next){
 })
 
 
+// Demo Page
+router.get('/demo-boxing', function(req, res, next){
+  res.render('demo/demo-boxing');
+});
+router.post('/boxing', function (req, res, next) {
+    // 解析body
+    var punch = req.body.punch;
+    req.io.sockets.emit('boxing',{punch:punch});
+    console.log(punch)
+    res.json(punch);
+});
+// Demo Page End
+
+
+
+
 module.exports = router;

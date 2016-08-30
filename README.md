@@ -42,6 +42,10 @@
 **2016/08/23**  
  - 修正TraceBack重複加入的BUG，加入devapi供內部測試使用*_(Fiscol)_*  
  - 將Pattern來源搬到DB測試*_(Fiscol)_*  
+ **2016/08/29**  
+ - 增加拳擊Demo(/demo-boxing)，修改routes/index.js，增加views/demo/demo-boxing.ejs, public/demo/demo-boxing *_(BigQ)_*  
+ 
+
 
 # DONG Cloud Document
 ## 命名規範 V1.0 (20160722)
