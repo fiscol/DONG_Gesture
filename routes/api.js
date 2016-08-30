@@ -39,11 +39,14 @@ router.post('/iOS/Minder', function (req, res, next) {
         var MinderData = JSON.parse(DataRaw.Code).toString();
         db._GetPatternCount(UID, false).then(function (_PatternCount) {
             for(var i = 1; i <= _PatternCount; i++){
-                var Threshold = 0.5;
+                var Threshold = 0.4;
                 train._CheckResults(UID, i, MinderData, Threshold).then(function (_Result) {
                     if(_Result.Message == "Pass"){
                         var punch = (_Result.Pattern == 1)? "heavy" :"normal";
                         req.io.sockets.emit('boxing',{punch:punch});
+                        res.json(_Result);
+                    }
+                    else if(_Result.Pattern == _PatternCount){
                         res.json(_Result);
                     }
                 })
