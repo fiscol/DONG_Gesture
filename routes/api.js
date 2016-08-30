@@ -33,7 +33,7 @@ router.post('/iOS/Raw', function (req, res, next) {
 
 //一列編碼，輸出Rate和ActionCode，滿足門檻值觸發其他服務
 router.post('/iOS/Minder', function (req, res, next) {
-    var UID = req.body.UID;
+    var UID = "9KvMvdYmh2YmOU8ihdAA0jXoPl13";
     if (UID) {
         var DataRaw = req.body;
         var MinderData = JSON.parse(DataRaw.Code).toString();
