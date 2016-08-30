@@ -14,17 +14,34 @@ exports._AddNewSample = function (_UID, _PatternCount, _SampleCount, _MinderData
     if (_SampleCount >= 1 && _SampleCount < 3) {
         var RefPath = "DONGCloud/PatternData/" + _UID;
         var ChildName = "Pattern" + _PatternCount;
-        db._onValuePromise(RefPath, ChildName).then(function (_Data) {
-            var Similarity = minderBetaService._lcsComputing(JSON.parse(_Data["Sample" + 1].MinderData), JSON.parse(_MinderData)).Rate;
+        return db._onValuePromise(RefPath, ChildName).then(function (_Data) {
+            var Similarity = minderBetaService._lcsComputing(_Data["Sample" + 1].MinderData, _MinderData).Rate;
             AddResult = (Similarity >= _Threshold) ? true : false;
             if (_SampleCount == 2 && AddResult == true) {
-                Similarity = minderBetaService._lcsComputing(JSON.parse(_Data["Sample" + 2].MinderData), JSON.parse(_MinderData)).Rate;
+                Similarity = minderBetaService._lcsComputing(_Data["Sample" + 2].MinderData, _MinderData).Rate;
                 AddResult = (Similarity >= _Threshold) ? true : false;
             }
-            
+            if (AddResult == true) {
+                var RefPath = "DONGCloud/PatternData/" + _UID + "/Pattern" + _PatternCount;
+                _SampleCount++;
+                var ChildName = "Sample" + _SampleCount;
+                var Data = {
+                    "MinderData": _MinderData,
+                    "AVGRate": 0,
+                    "StandardDeviation": 0,
+                    "PassTotal": 0,
+                    "TotalCount": 0,
+                    "Threshold": _Threshold
+                }
+                db._set(RefPath, ChildName, Data);
+                return { "Message": "成功加入Pattern Sample。", "SampleCount": _SampleCount };
+            }
+            else{
+                return { "Error": "加入Pattern Sample失敗。" };
+            }
         });
     }
-    if (_SampleCount == 0 || AddResult == true) {
+    else if (_SampleCount == 0) {
         var RefPath = "DONGCloud/PatternData/" + _UID + "/Pattern" + _PatternCount;
         _SampleCount++;
         var ChildName = "Sample" + _SampleCount;
@@ -37,10 +54,10 @@ exports._AddNewSample = function (_UID, _PatternCount, _SampleCount, _MinderData
             "Threshold": _Threshold
         }
         db._set(RefPath, ChildName, Data);
-        return { "Message": "成功加入Pattern Sample。", "SampleCount": _SampleCount };
+        return Promise.resolve({ "Message": "成功加入Pattern Sample。", "SampleCount": _SampleCount });
     }
     else {
-        return { "Error": "加入Pattern Sample失敗。" };
+        return Promise.resolve({ "Error": "加入Pattern Sample失敗。" });
     }
     //Rate < Threshold  --->  Return Please Re-Send Sample Message
     //Rate >= Threshold  --->  Add Pattern and Succeed Message
@@ -65,14 +82,14 @@ exports._AddTrainingData = function (_UID, _PatternCount, _SampleCount, _Trainin
     //
 }
 
-exports._UpdateResults = function (_UID, _PatternCount, _MinderData, _Threshold) {
+exports._CheckResults = function (_UID, _PatternCount, _MinderData, _Threshold) {
     var RefPath = "DONGCloud/PatternData/" + _UID;
     var ChildName = "Pattern" + _PatternCount;
-    db._onValuePromise(RefPath, ChildName).then(function (_Data) {
+    return db._onValuePromise(RefPath, ChildName).then(function (_Data) {
         var RateArr = [];
-        RateArr.push(minderBetaService._lcsComputing(JSON.parse(_Data["Sample" + 1].MinderData), JSON.parse(_MinderData)).Rate);
-        RateArr.push(minderBetaService._lcsComputing(JSON.parse(_Data["Sample" + 2].MinderData), JSON.parse(_MinderData)).Rate);
-        RateArr.push(minderBetaService._lcsComputing(JSON.parse(_Data["Sample" + 3].MinderData), JSON.parse(_MinderData)).Rate);
+        RateArr.push(minderBetaService._lcsComputing(_Data["Sample" + 1].MinderData, _MinderData).Rate);
+        RateArr.push(minderBetaService._lcsComputing(_Data["Sample" + 2].MinderData, _MinderData).Rate);
+        RateArr.push(minderBetaService._lcsComputing(_Data["Sample" + 3].MinderData, _MinderData).Rate);
         function isBigEnough(element, index, array) {
             return (element >= _Threshold);
         }
@@ -80,15 +97,27 @@ exports._UpdateResults = function (_UID, _PatternCount, _MinderData, _Threshold)
         var SomePass = RateArr.some(isBigEnough);
         //Pass
         if (AllPass == true) {
-            
+            return Promise.resolve({ 
+                "Pattern": _PatternCount,
+                "Message": "Pass",
+                "Rate": "" + RateArr + "" 
+            });
         }
         //Failed at some sample (Check TrainingData)
         else if (SomePass == true) {
-
+            return Promise.resolve({ 
+                "Pattern": _PatternCount,
+                "Message": "Fail",
+                "Rate": "" + RateArr + "" 
+            });
         }
         //All Failed(Error)
         else {
-            return { "Error": "未通過Pattern Threshold。" }
+            return Promise.resolve({ 
+                "Pattern": _PatternCount,
+                "Message": "Fail",
+                "Rate": "" + RateArr + "" 
+            });
         }
     });
 }

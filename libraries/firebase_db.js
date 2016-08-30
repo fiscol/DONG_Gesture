@@ -279,3 +279,19 @@ exports._GetUserPatterns = function(_UID){
         return Promise.resolve(0);
     }
 }
+
+exports._GetSampleCount = function(_UID, _IsTrial){
+    // DB Table
+    var RefPath = (_IsTrial == true)? "DONGCloud/DongService/Trial/"  : "DONGCloud/DongService/";
+    RefPath += _UID
+    // UserID
+    var ChildName = "SampleCount";
+    // 讀取使用者資料, 回傳
+    
+    if(ChildName){
+        return Promise.resolve(this._onValuePromise(RefPath, ChildName));
+    }
+    else{
+        return Promise.resolve(0);
+    }
+}
