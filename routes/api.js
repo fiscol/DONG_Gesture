@@ -24,7 +24,6 @@ router.post('/iOS/Raw', function (req, res, next) {
     unitServices._RawProcess(RawData).then(function (_MinderResult) {
         var MinderThreshold = 0.5;
         res.json(_MinderResult);
-        console.log(localurl);
         demoServices._TriggerDongServices(req, RawData.UID, MinderCode, _MinderResult, MinderThreshold, localurl);
         
     });
@@ -38,7 +37,6 @@ router.post('/iOS/Minder', function (req, res, next) {
     unitServices._MinderProcess(MinderData).then(function (_MinderResult) {
         var MinderThreshold = 0.5;
         res.json(_MinderResult);
-        console.log(localurl);
         demoServices._TriggerDongServices(req, MinderData.UID, MinderCode, _MinderResult, MinderThreshold, localurl);
         
     });
