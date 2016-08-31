@@ -27,7 +27,8 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
         // for DEMO-sign Threshold = 0.1
         if (_MinderResult.Rate >= 0.1) {
         var SignRate = _MinderResult.Rate;
-        DongServices._requestDongSlide(SignRate);
+        var ActionCode = _MinderResult.ActionCode;
+        DongServices._requestDongSlide(SignRate, ActionCode);
         if (_MinderResult.ActionCode == 1) {
             console.log(_Localurl);
             DongServices._requestDongMotion(_Localurl);
