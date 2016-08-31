@@ -36,7 +36,7 @@ exports._AddNewSample = function (_UID, _PatternCount, _SampleCount, _MinderData
                 db._set(RefPath, ChildName, Data);
                 return { "Message": "成功加入Pattern Sample。", "SampleCount": _SampleCount };
             }
-            else{
+            else {
                 return { "Error": "加入Pattern Sample失敗。" };
             }
         });
@@ -82,6 +82,7 @@ exports._AddTrainingData = function (_UID, _PatternCount, _SampleCount, _Trainin
     //
 }
 
+//Check and Update Results
 exports._CheckResults = function (_UID, _PatternCount, _MinderData, _Threshold) {
     var RefPath = "DONGCloud/PatternData/" + _UID;
     var ChildName = "Pattern" + _PatternCount;
@@ -90,36 +91,75 @@ exports._CheckResults = function (_UID, _PatternCount, _MinderData, _Threshold) 
         RateArr.push(minderBetaService._lcsComputing(_Data["Sample" + 1].MinderData, _MinderData).Rate);
         RateArr.push(minderBetaService._lcsComputing(_Data["Sample" + 2].MinderData, _MinderData).Rate);
         RateArr.push(minderBetaService._lcsComputing(_Data["Sample" + 3].MinderData, _MinderData).Rate);
+
+
+
         function isBigEnough(element, index, array) {
             return (element >= _Threshold);
         }
         var AllPass = RateArr.every(isBigEnough);
         var SomePass = RateArr.some(isBigEnough);
+
+        if (AllPass || SomePass) {
+            for (var i = 1; i <= Object.keys(_Data).length; i++) {
+                var Rate = minderBetaService._lcsComputing(_Data["Sample" + i].MinderData, _MinderData).Rate;
+                var UpdateData = {};
+                var HistoryRateArr = (_Data["Sample" + i].hasOwnProperty("RateArr")) ? _Data["Sample" + i].RateArr.split(',') : [];
+                HistoryRateArr.push(Rate);
+                UpdateData.RateArr = HistoryRateArr.toString();
+                UpdateData.AVGRate = (_Data["Sample" + i].AVGRate * _Data["Sample" + i].TotalCount + Rate) / (_Data["Sample" + i].TotalCount + 1);
+                UpdateData.PassTotal = (Rate >= _Data["Sample" + i].Threshold) ? _Data["Sample" + i].PassTotal + 1 : _Data["Sample" + i].PassTotal;
+                UpdateData.TotalCount = _Data["Sample" + i].TotalCount + 1;
+                UpdateData.StandardDeviation = _StandardDeviation(UpdateData.RateArr.split(','), UpdateData.AVGRate, UpdateData.TotalCount);
+
+                var RefPath = "DONGCloud/PatternData/" + _UID + "/Pattern" + _PatternCount;
+
+                var ChildName = "Sample" + i;
+                var Data = {
+                    "AVGRate": UpdateData.AVGRate,
+                    "StandardDeviation": UpdateData.StandardDeviation,
+                    "PassTotal": UpdateData.PassTotal,
+                    "TotalCount": UpdateData.TotalCount,
+                    "RateArr": UpdateData.RateArr
+                }
+                db._update(RefPath, ChildName, Data);
+            }
+        }
+
         //Pass
         if (AllPass == true) {
-            return Promise.resolve({ 
+            return Promise.resolve({
                 "Pattern": _PatternCount,
                 "Message": "Pass",
-                "Rate": "" + RateArr + "" 
+                "Rate": "[" + RateArr + "]"
             });
         }
         //Failed at some sample (Check TrainingData)
         else if (SomePass == true) {
-            return Promise.resolve({ 
+            return Promise.resolve({
                 "Pattern": _PatternCount,
                 "Message": "Fail",
-                "Rate": "" + RateArr + "" 
+                "Rate": "[" + RateArr + "]"
             });
         }
         //All Failed(Error)
         else {
-            return Promise.resolve({ 
+            return Promise.resolve({
                 "Pattern": _PatternCount,
                 "Message": "Fail",
-                "Rate": "" + RateArr + "" 
+                "Rate": "[" + RateArr + "]"
             });
         }
     });
+}
+
+function _StandardDeviation(_RateArr, _AVG, _TotalCount) {
+    var TotalDeviation = 0;
+    for (var i = 0; i < _RateArr.length; i++) {
+        TotalDeviation += Math.pow((Number(_RateArr[i]) - _AVG), 2);
+    }
+    var StandardDeviation = Math.sqrt((1 / _TotalCount * TotalDeviation));
+    return StandardDeviation;
 }
 
 //Length

@@ -52,18 +52,25 @@ router.post('/:devcode/AddPattern', function (req, res, next) {
 })
 
 router.post('/:devcode/CheckPattern', function (req, res, next) {
-    var UID = req.body.UID;
+    var UID = "9KvMvdYmh2YmOU8ihdAA0jXoPl13";
     if (UID) {
         var DataRaw = req.body;
         var MinderData = JSON.parse(DataRaw.Code).toString();
+        var CheckResult = "Fail";
         db._GetPatternCount(UID, false).then(function (_PatternCount) {
             for(var i = 1; i <= _PatternCount; i++){
-                var Threshold = 0.5;
+                var Threshold = 0.6;
                 train._CheckResults(UID, i, MinderData, Threshold).then(function (_Result) {
                     if(_Result.Message == "Pass"){
+                        CheckResult = "Pass";
                         var punch = (_Result.Pattern == 1)? "heavy" :"normal";
                         req.io.sockets.emit('boxing',{punch:punch});
                         res.json(_Result);
+                        res.end();
+                    }
+                    else if(_Result.Pattern == _PatternCount && CheckResult == "Fail"){
+                        res.json({"Message":"Fail"});
+                        res.end();
                     }
                 })
             }
@@ -72,6 +79,30 @@ router.post('/:devcode/CheckPattern', function (req, res, next) {
     else {
         res.json({ "Error": "未傳入會員ID" });
     }
+})
+//產DT2016的VIP Code
+router.get('/:devcode/GetCode', function(req, res){
+    var crypt = require("../libraries/tool/crypt.js");
+    var codeArr = [];
+    for(var i = 1; i < 151; i++){
+        var number = i.toString();
+        var code = "";
+        switch(i % 3){
+            case 0:
+                code = number + "dt";
+            break;
+            case 1:
+                code = "d" + number + "t";
+            break;
+            case 2:
+                code = "dt" + number;
+            break;
+        }
+        
+        var result = crypt._encrypt(code);
+        codeArr.push(result);
+    }
+    res.json({"Codes": codeArr});
 })
 
 module.exports = router;
