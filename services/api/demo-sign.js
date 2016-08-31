@@ -1,5 +1,5 @@
 //觸發DongServices(DEMO CASE使用)
-exports._TriggerDongServicesDemoSign = function(req, ){
+exports._TriggerDongServicesDemoSign = function(req, _MinderResult){
 
     // 過門檻值則觸發DONGSlide, DongMotion
     var DongServices = require('../../libraries/tool/dongservices.js');
@@ -9,10 +9,6 @@ exports._TriggerDongServicesDemoSign = function(req, ){
         var SignRate = _MinderResult.Rate;
         var ActionCode = _MinderResult.ActionCode;
         DongServices._requestDongSlide(SignRate, ActionCode);
-        if (_MinderResult.ActionCode == 1) {
-            console.log(_Localurl);
-            DongServices._requestDongMotion(_Localurl);
-            console.log('Dong Services called.');
-        };
+        
     };
 }
