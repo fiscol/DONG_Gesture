@@ -1,9 +1,11 @@
 // 傳到DongSlide測試
-exports._requestDongSlide = function (){
+exports._requestDongSlide = function (Rate, Code){
     var request = require('request')
     
     var postData = {
-      name: 'mark'
+      name: 'mark',
+      Rate: Rate,
+      ActionCode: Code
     }
 
     var url = 'http://dongslide.herokuapp.com/api/MotionID'

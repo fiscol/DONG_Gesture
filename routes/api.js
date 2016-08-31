@@ -128,6 +128,7 @@ router.post("/Minder/:motionurl", function (req, res) {
     var MinderData = req.body;
     var MinderCode = JSON.parse(MinderData.Code);
     unitServices._MinderProcess(MinderData).then(function (_MinderResult) {
+        
         res.json(_MinderResult);
     });
 });

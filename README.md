@@ -44,7 +44,9 @@
  - 將Pattern來源搬到DB測試*_(Fiscol)_*  
  **2016/08/29**  
  - 增加拳擊Demo(/demo-boxing)，修改routes/index.js，增加views/demo/demo-boxing.ejs, public/demo/demo-boxing *_(BigQ)_*  
- 
+  **2016/08/31**  
+ - 修改DONGSlide Demo部分(services/api/demo-badmintion.js)*_(BigQ)_*  
+   
 
 
 # DONG Cloud Document
