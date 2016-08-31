@@ -39,13 +39,11 @@ router.post('/iOS/Minder', function (req, res, next) {
         var MinderThreshold = 0.5;
         res.json(_MinderResult);
         demoServices._TriggerDongServices(req, MinderData.UID, MinderCode, _MinderResult, MinderThreshold, localurl);
-        
+        // For DT DEMO
+        var demoServicesSign = require('../services/api/demo-sign.js');
+        demoServicesSign._TriggerDongServicesDemoSign(req, _MinderResult);
     });
 
-    // For DT DEMO
-    var demoServicesSign = require('../services/api/demo-sign.js');
-    demoServicesSign._TriggerDongServicesDemoSign(req, _MinderResult);
-    
 });
 
 
