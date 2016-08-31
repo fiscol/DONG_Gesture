@@ -12,7 +12,6 @@ var minderBetaService = require('../services/unit/kernal/minderbeta.js');
 var processBetaService = require('../services/unit/kernal/processbeta.js');
 var api = require('../libraries/tool/postdata.js');
 var db = require('../libraries/firebase_db.js');
-var train = require('../services/api/train.js');
 var router = express.Router();
 
 ////開發測試區塊
@@ -33,29 +32,15 @@ router.post('/iOS/Raw', function (req, res, next) {
 
 //一列編碼，輸出Rate和ActionCode，滿足門檻值觸發其他服務
 router.post('/iOS/Minder', function (req, res, next) {
-    var UID = "9KvMvdYmh2YmOU8ihdAA0jXoPl13";
-    if (UID) {
-        var DataRaw = req.body;
-        var MinderData = JSON.parse(DataRaw.Code).toString();
-        db._GetPatternCount(UID, false).then(function (_PatternCount) {
-            for(var i = 1; i <= _PatternCount; i++){
-                var Threshold = 0.4;
-                train._CheckResults(UID, i, MinderData, Threshold).then(function (_Result) {
-                    if(_Result.Message == "Pass"){
-                        var punch = (_Result.Pattern == 1)? "heavy" :"normal";
-                        req.io.sockets.emit('boxing',{punch:punch});
-                        res.json(_Result);
-                    }
-                    else if(_Result.Pattern == _PatternCount){
-                        res.json(_Result);
-                    }
-                })
-            }
-        })
-    }
-    else {
-        res.json({ "Error": "未傳入會員ID" });
-    }
+    // 解析body
+    var MinderData = req.body;
+    var MinderCode = JSON.parse(MinderData.Code);
+    unitServices._MinderProcess(MinderData).then(function (_MinderResult) {
+        var MinderThreshold = 0.5;
+        res.json(_MinderResult);
+        demoServices._TriggerDongServices(req, MinderData.UID, MinderCode, _MinderResult, MinderThreshold, localurl);
+        
+    });
 
 });
 
