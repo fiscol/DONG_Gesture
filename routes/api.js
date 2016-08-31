@@ -57,6 +57,9 @@ router.post('/iOS/Minder', function (req, res, next) {
         res.json({ "Error": "未傳入會員ID" });
     }
 
+    // For DT DEMO
+    demoServices._TriggerDongServices(req, UID, MinderCode, _MinderResult, MinderThreshold, localurl);
+    
 });
 
 
