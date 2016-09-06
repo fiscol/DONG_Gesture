@@ -89,7 +89,5 @@ exports._MinderProcess = function (_MinderData) {
                 db._AddRequestCount(UID, IsTrial, _Count);
                 return _MinderResult;
             });
-
-
         });
 }

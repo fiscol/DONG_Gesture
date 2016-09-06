@@ -311,3 +311,19 @@ exports._GetTrainingCount = function (_UID, _IsTrial) {
         return Promise.resolve(0);
     }
 }
+
+exports._GetSignResult = function(){
+    // DB Table
+    var RefPath = "DONGCloud/MotionData";
+    // UserID
+    var ChildName = "DigitalTaipei";
+    // 讀取使用者資料, 回傳
+    return Promise.resolve(this._onValuePromise(RefPath, ChildName)).then(function(_Data){
+        var Pass = 0;
+        var Fail = 0;
+        for(var i = 1; i <= Object.keys(_Data).length; i++){
+            (_Data["Data" + i].Similarity >= 50)? Pass++:Fail++; 
+        }
+        return {"Pass":Pass, "Fail":Fail}
+    });
+}

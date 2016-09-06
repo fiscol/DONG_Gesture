@@ -183,5 +183,12 @@ router.post('/Recognize', function(req, res){
     })
 })
 
+//Get Signature Results
+router.get('/SignResult', function(req, res){
+    db._GetSignResult().then(function (_Data) {  
+        res.json(_Data);
+    })
+})
+
 
 module.exports = router;
