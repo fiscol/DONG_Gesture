@@ -22,12 +22,10 @@ router.post('/iOS/Raw', function (req, res, next) {
     var Threshold = 0.18;
     var MinderCode = processBetaService._processData(RawData, Threshold).mixBinaryCodes;
     unitServices._RawProcess(RawData).then(function (_MinderResult) {
-        var MinderThreshold = 0.5;
+        var MinderThreshold = 0.6;
         res.json(_MinderResult);
         demoServices._TriggerDongServices(req, RawData.UID, MinderCode, _MinderResult, MinderThreshold, localurl);
-        
     });
-
 });
 
 //一列編碼，輸出Rate和ActionCode，滿足門檻值觸發其他服務
@@ -36,12 +34,10 @@ router.post('/iOS/Minder', function (req, res, next) {
     var MinderData = req.body;
     var MinderCode = JSON.parse(MinderData.Code);
     unitServices._MinderProcess(MinderData).then(function (_MinderResult) {
-        var MinderThreshold = 0.5;
+        var MinderThreshold = 0.6;
         res.json(_MinderResult);
         demoServices._TriggerDongServices(req, MinderData.UID, MinderCode, _MinderResult, MinderThreshold, localurl);
-        
     });
-
 });
 
 
@@ -126,9 +122,9 @@ minderbeta API 測試
 */
 router.post("/Minder/:motionurl", function (req, res) {
     var MinderData = req.body;
-    var MinderCode = JSON.parse(MinderData.Code);
+    //var MinderCode = JSON.parse(MinderData.Code);
     unitServices._MinderProcess(MinderData).then(function (_MinderResult) {
-        
+
         res.json(_MinderResult);
     });
 });
@@ -140,8 +136,8 @@ router.post("/Raw/:motionurl", function (req, res) {
     // 解析body
     var RawData = req.body;
     var Threshold = 0.18;
-    var MinderCode = processBetaService._processData(RawData, Threshold).mixBinaryCodes;
-    unitServices._RawProcess(RawData).then(function(_MinderResult){
+    //var MinderCode = processBetaService._processData(RawData, Threshold).mixBinaryCodes;
+    unitServices._RawProcess(RawData).then(function (_MinderResult) {
         res.json(_MinderResult);
     })
 })
@@ -162,6 +158,25 @@ router.post('/getMotionUrl', function (req, res) {
 });
 
 ////免費試用者區塊
+
+
+////Digital Taipei 使用者區塊
+
+//Mark簽名判斷(當天使用)
+
+//Create API
+
+//Check API
+
+//Check Example API(Mark簽名)
+router.post('/Recognize', function(req, res){
+    var RawData = req.body;
+    var Threshold = 0.18;
+    RawData.UID = "DigitalTaipei";
+    unitServices._RawProcess(RawData).then(function (_MinderResult) {
+        res.json(_MinderResult);
+    })
+})
 
 
 module.exports = router;

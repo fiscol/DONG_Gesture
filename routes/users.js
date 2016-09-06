@@ -3,6 +3,19 @@ var async = require('async');
 var usersService = require('../services/users/users.js');
 var router = express.Router();
 
+////Digital Taipei 使用者區塊
+//使用者登入(VIPCode)
+router.post('/RegisterVIP', function (req, res) {
+    var RegisterData = req.body;
+    usersService._registerVIP(RegisterData).then(function (data) {
+        res.json({ "Message": data });
+    }).catch((err) => {
+        //註冊失敗
+        res.json({ "Error": err.message });
+    })
+})
+
+
 //使用者註冊
 router.post('/register', function (req, res) {
     var RegisterData = req.body;

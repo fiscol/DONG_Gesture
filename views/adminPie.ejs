@@ -1,77 +1,79 @@
 <!DOCTYPE html>
-<html >
-    <head>
-        <meta charset="UTF-8">
-        <title>數據管理</title>
-        
-        <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
-    
-        <!-- Chart.css -->
-        <link rel="stylesheet" href="chart/css/chart.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-                <script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-    </head>
-  
-    <body>
-        <div id="Gesture" class="text-center"><img src="chart/images/gesture0.png" height="250" width="250"></div>
-        <div class="container">
-            <div class="MaxSpeed"></div>
-            <div class="MaxPower"></div>
-            <div class="Similarity"></div>
-    
-        </div>
-        
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>數據管理</title>
+
+    <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+
+    <!-- Chart.css -->
+    <link rel="stylesheet" href="chart/css/chart.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+</head>
+
+<body>
+    <div id="Gesture" class="text-center"><img src="chart/images/gesture0.png" height="250" width="250"></div>
+    <div class="container">
+        <div class="MaxSpeed"></div>
+        <div class="MaxPower"></div>
+        <div class="Similarity"></div>
+
+    </div>
 
 
-<div id="containers" style="min-width: 310px; height: 400px; margin: 0 auto"></div>  
-<script  type="text/javascript">
+
+    <div id="containers" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    <script type="text/javascript">
     $(function () {
     var chart = new Highcharts.Chart({
         chart: {
-            type: 'line',
+            type: 'areaspline',
             renderTo: 'containers'
         },
         title: {
-            text: 'Monthly Average Temperature'
+            text: 'Motion Recognition'
         },
         subtitle: {
-            text: 'Source: WorldClimate.com'
+            text: 'Source: pvd-plus.com/'
         },
         xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            categories: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
         },
         yAxis: {
             title: {
-                text: 'Temperature (°C)'
+                text: 'Count'
             }
         },
         plotOptions: {
-            line: {
-                dataLabels: {
-                    enabled: true
-                },
-                enableMouseTracking: false
+            areaspline: {
+                fillOpacity: 0.5
             }
         },
+        zoneAxis: 'y',
         series: [{
-            name: 'Tokyo',
-            data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+            name: 'Sample1',
+            data: [1.0, 0.9, 0.5, 0.5, 0.4, 0.5, 0.2, 0.5, 0.3, 0.3]
         }, {
-            name: 'London',
-            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+            name: 'Sample2',
+            data: [0.9, 0.2, 0.7, 0.5, 0.9, 0.2, 1.0, 0.6, 0.2, 0.3]
+        }, {
+            name: 'Sample3',
+            data: [0.9, 0.6, 0.3, 0.4, 0.9, 0.6, 1.0, 0.5, 0.4, 0.5]
         }]
     });
 });
 </script>
-    </body>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.js'></script>
-    <script src='https://rawgit.com/pablomolnar/radial-progress-chart/master/dist/radial-progress-chart.js'></script>
-    <script src="chart/js/chart.js"></script>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.js'></script>
+<script src='https://rawgit.com/pablomolnar/radial-progress-chart/master/dist/radial-progress-chart.js'></script>
+<script src="chart/js/chart.js"></script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
     // Socket Client
     var socket = io.connect();
     console.log('chart connect')

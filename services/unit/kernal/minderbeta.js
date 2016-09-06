@@ -9,7 +9,7 @@ var PatternTypeNumPhone = 1;
 //     'LCSActionCode': _lcsRateComputing(FinalCode, 0.55, 1, PatternTypeNumPhone).ActionCode
 // };
 
-exports._lcsRateComputing = function (_Input, _Threshold, _PatternModel, _PatternType) {
+exports._lcsRateComputing = function (_UID, _Input, _Threshold, _PatternModel, _PatternType) {
     var PatternCase = new Array(30);
     var LCSScore = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     var LCSRate = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
@@ -18,7 +18,7 @@ exports._lcsRateComputing = function (_Input, _Threshold, _PatternModel, _Patter
 
     //=============Test Code=============
     if (_PatternModel === 1) {
-        return db._GetUserPatterns("70Hfhlb3P9VFEIeIozSqfoFy3eA2").then(function (_PatternData) {
+        return db._GetUserPatterns(_UID).then(function (_PatternData) {
             for (var i = 0; i < Object.keys(_PatternData).length; i++) {
                 var Key = String._format("Pattern{0}", i + 1);
                 PatternCase[i] = _PatternData[Key].split(',').map(Number);
@@ -33,7 +33,7 @@ exports._lcsRateComputing = function (_Input, _Threshold, _PatternModel, _Patter
                 }
             }
             var Rate = Math.max.apply(null, LCSRate);
-            var ActionCode = LCSRate.indexOf(Rate);
+            var ActionCode = LCSRate.indexOf(Rate) + 1; //PatternStart = 0; While Pattern + Count Started from 1
 
             return { 'Rate': Rate, 'ActionCode': ActionCode };
         }).catch(function (err) {

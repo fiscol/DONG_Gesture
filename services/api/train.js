@@ -76,11 +76,7 @@ exports._ResetPattern = function (_UID, _PatternCount, _SampleCount) {
     //
 }
 
-//Interval
-//Rate < Threshold && Rate between AVGRate +- 1σ
-exports._AddTrainingData = function (_UID, _PatternCount, _SampleCount, _TrainingDataCount) {
-    //
-}
+
 
 //Check and Update Results
 exports._CheckResults = function (_UID, _PatternCount, _MinderData, _Threshold) {
@@ -101,8 +97,8 @@ exports._CheckResults = function (_UID, _PatternCount, _MinderData, _Threshold) 
         var SomePass = RateArr.some(isBigEnough);
 
         if (AllPass || SomePass) {
-            for (var i = 1; i <= Object.keys(_Data).length; i++) {
-                var Rate = minderBetaService._lcsComputing(_Data["Sample" + i].MinderData, _MinderData).Rate;
+            for (var i = 1; i <= RateArr.length; i++) {
+                var Rate = RateArr[i - 1];
                 var UpdateData = {};
                 var HistoryRateArr = (_Data["Sample" + i].hasOwnProperty("RateArr")) ? _Data["Sample" + i].RateArr.split(',') : [];
                 HistoryRateArr.push(Rate);
@@ -115,14 +111,18 @@ exports._CheckResults = function (_UID, _PatternCount, _MinderData, _Threshold) 
                 var RefPath = "DONGCloud/PatternData/" + _UID + "/Pattern" + _PatternCount;
 
                 var ChildName = "Sample" + i;
-                var Data = {
-                    "AVGRate": UpdateData.AVGRate,
-                    "StandardDeviation": UpdateData.StandardDeviation,
-                    "PassTotal": UpdateData.PassTotal,
-                    "TotalCount": UpdateData.TotalCount,
-                    "RateArr": UpdateData.RateArr
+                db._update(RefPath, ChildName, UpdateData);
+
+                if (Rate < _Data["Sample" + i].Threshold && (Rate >= UpdateData.AVGRate - UpdateData.StandardDeviation || Rate <= UpdateData.AVGRate + UpdateData.StandardDeviation)) {
+                    db._GetTrainingCount(_UID, false).then(function (_TrainingCount) {
+                        if (_TrainingCount != null) {
+                            _CheckTrainingResults(_UID, _PatternCount, _TrainingCount, _MinderData, _Threshold);
+                        }
+                        else {
+                            _AddTrainingData(_UID, _PatternCount, _TrainingCount, _MinderData, _Threshold);
+                        }
+                    })
                 }
-                db._update(RefPath, ChildName, Data);
             }
         }
 
@@ -162,8 +162,80 @@ function _StandardDeviation(_RateArr, _AVG, _TotalCount) {
     return StandardDeviation;
 }
 
-//Length
+//Interval
+//Rate < Threshold && Rate between AVGRate +- 1σ
+function _AddTrainingData(_UID, _PatternCount, _TrainingCount, _MinderData, _Threshold) {
+    var RefPath = "DONGCloud/DongService";
+    var ChildName = _UID;
+    var TrainingArr = (_TrainingCount == null)? []:_TrainingCount.split(',');
+    if(_TrainingCount == null || TrainingArr.length < _PatternCount){
+        TrainingArr.push(1);
+    }
+    else {
+        TrainingArr[_PatternCount - 1] = Number(TrainingArr[_PatternCount - 1]) + 1;
+    }
+    var Data = {
+        "TrainingCount": TrainingArr.toString()
+    };
+    db._update(RefPath, ChildName, Data);
 
+    var RefPath = "DONGCloud/PatternData/" + _UID + "/Pattern" + _PatternCount;
+    var ChildName = "Training" + TrainingArr[_PatternCount - 1];
+    var Data = {
+        "MinderData": _MinderData,
+        "AVGRate": 0,
+        "StandardDeviation": 0,
+        "PassTotal": 0,
+        "TotalCount": 0,
+        "Threshold": _Threshold
+    }
+    db._set(RefPath, ChildName, Data);
+    //Training1
+    //AVGRate = 0.61
+    //PASS/Total = 9/13
+    //Training2
+    //AVGRate = 0.67
+    //PASS/Total = 6/8
+    //Sample3
+    //AVGRate = 0.58
+    //PASS/Total = 20/32
+}
+
+function _CheckTrainingResults(_UID, _PatternCount, _TrainingCount, _MinderData, _Threshold) {
+    var RefPath = "DONGCloud/PatternData/" + _UID;
+    var ChildName = "Pattern" + _PatternCount;
+    return db._onValuePromise(RefPath, ChildName).then(function (_Data) {
+        var RateArr = [];
+        for (i = 1; i <= _TrainingCount; i++) {
+            RateArr.push(minderBetaService._lcsComputing(_Data["Training" + i].MinderData, _MinderData).Rate);
+        }
+        var HasSameMinderData = false;
+        for (var i = 1; i <= RateArr.length; i++) {
+            var Rate = RateArr[i - 1];
+            var UpdateData = {};
+            var HistoryRateArr = (_Data["Training" + i].hasOwnProperty("RateArr")) ? _Data["Training" + i].RateArr.split(',') : [];
+            HistoryRateArr.push(Rate);
+            UpdateData.RateArr = HistoryRateArr.toString();
+            UpdateData.AVGRate = (_Data["Training" + i].AVGRate * _Data["Training" + i].TotalCount + Rate) / (_Data["Training" + i].TotalCount + 1);
+            UpdateData.PassTotal = (Rate >= _Data["Training" + i].Threshold) ? _Data["Training" + i].PassTotal + 1 : _Data["Training" + i].PassTotal;
+            UpdateData.TotalCount = _Data["Training" + i].TotalCount + 1;
+            UpdateData.StandardDeviation = _StandardDeviation(UpdateData.RateArr.split(','), UpdateData.AVGRate, UpdateData.TotalCount);
+
+            var RefPath = "DONGCloud/PatternData/" + _UID + "/Pattern" + _PatternCount;
+
+            var ChildName = "Training" + i;
+            db._update(RefPath, ChildName, UpdateData);
+            if (Rate == 1) {
+                HasSameMinderData = true;
+            }
+        }
+        if (HasSameMinderData == false) {
+            _AddTrainingData(_UID, _PatternCount, _TrainingCount, _MinderData, _Threshold);
+
+        }
+    });
+}
+//Length
 //Weight
 
 //Average
