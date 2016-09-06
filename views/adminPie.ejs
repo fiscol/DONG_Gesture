@@ -15,14 +15,57 @@
 </head>
 
 <body>
-    <div id="Gesture" class="text-center"><img src="chart/images/gesture0.png" height="250" width="250"></div>
+    <!-- <div id="Gesture" class="text-center"><img src="chart/images/gesture0.png" height="250" width="250"></div> -->
+    <div class="TestRate" id="TestRate"></div>
     <div class="container">
         <div class="MaxSpeed"></div>
         <div class="MaxPower"></div>
         <div class="Similarity"></div>
 
     </div>
+    <script type="text/javascript">
+    var chart1 = Highcharts.chart('TestRate', {
+         plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '次數',
+            data: [{
+                name:'簽名通過',
+                y:0
+            },{
+                name:'簽名未通過',
+                y:0,
+                sliced: true,
+                selected: true
+            }]
+        }]
+    });
 
+    var successNum = 0;
+    var failNum = 0;
+    function UpdatePie(success) {
+        if (success) {
+            successNum = successNum +1;
+        }else{
+            failNum = failNum + 1;
+        }
+        chart1.series[0].setData([successNum, failNum]);
+
+    }
+
+    </script>
 
 
     <div id="containers" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
@@ -83,8 +126,8 @@
         MaxSpeed.update(data.MaxSpeed);
         MaxPower.update(data.MaxPower);
         Similarity.update(data.Similarity);
-        Gesture(data.GestureNum);
-        
+        // Gesture(data.GestureNum);
+        UpdatePie(data.Successful);
     })
 
     function Gesture(GestureNum){
@@ -97,8 +140,6 @@
       }
     }
    
-
-
     </script>
 
 
