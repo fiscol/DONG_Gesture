@@ -12,6 +12,9 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
         });
     }else{
         req.io.sockets.emit('RealTimeData', {
+            MaxSpeed: (Math.floor((Math.random() * 10) + 1)) * 17,
+            MaxPower: (Math.floor((Math.random() * 10) + 1)) * 37,
+            Similarity: parseInt(_MinderResult.Rate * 100),
             Successful: false
         });
     }

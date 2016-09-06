@@ -43,23 +43,23 @@
             name: '次數',
             data: [{
                 name:'簽名通過',
-                y:1
+                y:0
             },{
                 name:'簽名未通過',
-                y:1,
+                y:0,
                 sliced: true,
                 selected: true
             }]
         }]
     });
 
-    var successNum = 1;
-    var failNum = 1;
+    var successNum = 0;
+    var failNum = 0;
     function UpdatePie(success) {
         if (success) {
-            successNum ++
+            successNum = successNum +1;
         }else{
-            failNum ++
+            failNum = failNum + 1;
         }
         chart1.series[0].setData([successNum, failNum]);
 
@@ -126,9 +126,8 @@
         MaxSpeed.update(data.MaxSpeed);
         MaxPower.update(data.MaxPower);
         Similarity.update(data.Similarity);
-        Gesture(data.GestureNum);
-        UpdatePie(data.successful);
-        
+        // Gesture(data.GestureNum);
+        UpdatePie(data.Successful);
     })
 
     function Gesture(GestureNum){
@@ -141,8 +140,6 @@
       }
     }
    
-
-
     </script>
 
 
