@@ -25,7 +25,10 @@
     </div>
     <script type="text/javascript">
     var chart1 = Highcharts.chart('TestRate', {
-         plotOptions: {
+        title: {
+            text: 'DONG Motion 簽名辨識成功率'
+        },
+        plotOptions: {
             pie: {
                 allowPointSelect: true,
                 cursor: 'pointer',
@@ -46,9 +49,7 @@
                 y:0
             },{
                 name:'簽名未通過',
-                y:0,
-                sliced: true,
-                selected: true
+                y:0
             }]
         }]
     });
