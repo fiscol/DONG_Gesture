@@ -37,7 +37,7 @@ router.post('/iOS/Minder', function (req, res, next) {
     unitServices._MinderProcess(MinderData).then(function (_MinderResult) {
         var MinderThreshold = 0.6;
         res.json(_MinderResult);
-        boxingServices._TriggerBoxing(eq, MinderData.UID, MinderCode, _MinderResult, MinderThreshold);
+        boxingServices._TriggerBoxing(req, MinderData.UID, MinderCode, _MinderResult, MinderThreshold);
         demoServices._TriggerDongServices(req, MinderData.UID, MinderCode, _MinderResult, MinderThreshold, localurl);
 
         // For DT DEMO
