@@ -23,7 +23,7 @@ exports._requestDongSlide = function (Rate, Code){
 }
 
 // 傳到DongMotion測試
-exports._requestDongMotion = function (_LocalURL){
+exports._requestDongMotionSign = function (_LocalURL){
     var request = require('request');
     var url = _LocalURL + "/api/mac_password";
     console.log(url);
@@ -37,4 +37,21 @@ exports._requestDongMotion = function (_LocalURL){
       }
     })
     console.log('request');
+}
+
+// 傳到DongMotion測試
+exports._requestDongMotionKnock = function (_LocalURL){
+    var request = require('request');
+    var url = _LocalURL + "/api/youtube_play_pause";
+    console.log(url);
+    var options = {
+      method: 'get',
+      url: url
+    }
+    request(options, function (err, res, body) {
+      if (err) {
+        return
+      }
+    })
+    console.log('request Youtube');
 }

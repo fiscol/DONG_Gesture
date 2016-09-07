@@ -24,6 +24,14 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
     if (_MinderResult.Rate >= _MinderThreshold) {
         // Send DBdata to View
         req.io.sockets.emit('DBData', {
+            Name: _UID + (Pass),
+            Rawdata: _MinderCode,
+            Rate: _MinderResult.Rate,
+            ActionCode: _MinderResult.ActionCode
+        });
+    }else{
+        // Send DBdata to View
+        req.io.sockets.emit('DBData', {
             Name: _UID,
             Rawdata: _MinderCode,
             Rate: _MinderResult.Rate,
@@ -34,13 +42,14 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
     // 過門檻值則觸發DONGSlide, DongMotion
     var DongServices = require('../../libraries/tool/dongservices.js');
         if (_MinderResult.Rate >= _MinderThreshold) {
-        var SignRate = _MinderResult.Rate;
-        var ActionCode = _MinderResult.ActionCode;
-        DongServices._requestDongSlide(SignRate, ActionCode);
-        if (_MinderResult.ActionCode == 1) {
-            console.log(_Localurl);
-            DongServices._requestDongMotion(_Localurl);
-            console.log('Dong Services called.');
+            var SignRate = _MinderResult.Rate;
+            var ActionCode = _MinderResult.ActionCode;
+            DongServices._requestDongSlide(SignRate, ActionCode);
+            if (_MinderResult.ActionCode == 1) {
+                console.log(_Localurl);
+                DongServices._requestDongMotionSign(_Localurl);
+                console.log('Dong Services called.');
+                DongServices._requestDongMotionKnock(_Localurl);
+            };
         };
-    };
-}
+    }
