@@ -47,7 +47,7 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
             DongServices._requestDongSlide(SignRate, ActionCode);
             if (_MinderResult.ActionCode == 1) {
                 console.log(_Localurl);
-                DongServices._requestDongMotionSign(_Localurl);
+                // DongServices._requestDongMotionSign(_Localurl);
                 console.log('Dong Services called.');
                 DongServices._requestDongMotionKnock(_Localurl);
             };
