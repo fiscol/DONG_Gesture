@@ -72,7 +72,9 @@
         RegSum = (successNum+failNum)
         RegRate = (failNum/RegSum).toFixed(4);
         chart1.series[0].setData([successNum, failNum]);
-        chart1.setTitle( { text: '<br/>辨識成功率:'+ RegRate +"%<br/>樣本數:"+RegSum});        
+        chart1.setTitle( { 
+            text: '<br/>辨識成功率:'+ RegRate*100 +"%<br/>樣本數:"+RegSum
+        });        
     }
 
     </script>
