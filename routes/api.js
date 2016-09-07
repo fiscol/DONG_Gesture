@@ -36,14 +36,15 @@ router.post('/iOS/Minder', function (req, res, next) {
     var MinderCode = JSON.parse(MinderData.Code);
     unitServices._MinderProcess(MinderData).then(function (_MinderResult) {
         var MinderThreshold = 0.6;
-        //boxingServices._TriggerBoxing(req, MinderCode, _MinderResult, MinderThreshold);
-        res.json(_MinderResult);
-        
         demoServices._TriggerDongServices(req, MinderData.UID, MinderCode, _MinderResult, MinderThreshold, localurl);
 
         // For DT DEMO
         var demoServicesSign = require('../services/api/demo-sign.js');
         demoServicesSign._TriggerDongServicesDemoSign(req, _MinderResult);
+        boxingServices._TriggerBoxing(req, MinderCode, _MinderResult, MinderThreshold);
+        res.json(_MinderResult);
+        
+        
 
     }).catch((err) => {
         //註冊失敗
