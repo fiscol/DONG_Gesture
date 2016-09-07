@@ -49,7 +49,8 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
                 console.log(_Localurl);
                 // DongServices._requestDongMotionSign(_Localurl);
                 console.log('Dong Services called.');
-                DongServices._requestDongMotionKnock(_Localurl);
+                // DongServices._requestDongMotionKnock(_Localurl);
             };
         };
     }
+    
