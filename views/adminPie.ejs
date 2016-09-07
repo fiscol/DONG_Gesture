@@ -16,6 +16,7 @@
 
 <body>
     <!-- <div id="Gesture" class="text-center"><img src="chart/images/gesture0.png" height="250" width="250"></div> -->
+    <div class="RegRate" id="RegRate"></div>
     <div class="TestRate" id="TestRate"></div>
     <div class="container">
         <div class="MaxSpeed"></div>
@@ -26,7 +27,7 @@
     <script type="text/javascript">
     var chart1 = Highcharts.chart('TestRate', {
         title: {
-            text: 'DONG Motion 簽名辨識成功率'
+            text: 'DONG Motion 簽名辨識成功率:'
         },
         plotOptions: {
             pie: {
@@ -54,16 +55,24 @@
         }]
     });
 
-    var successNum = 0;
-    var failNum = 0;
+
+    var successNum,failNum,RegRate,RegSum;
+    $.get("api/SignResult", function(data){
+        successNum = data.Pass;
+        failNum = data.Fail;
+    });
     function UpdatePie(success) {
         if (success) {
             successNum = successNum +1;
         }else{
             failNum = failNum + 1;
         }
+        RegSum = (successNum+failNum)
+        RegRate = (failNum/RegSum).toFixed(4);
         chart1.series[0].setData([successNum, failNum]);
-
+        chart1.setTitle( { text: 'DONG Motion 簽名DEMO辨識成功率:'+ RegRate +"%<br/>樣本數:"+RegSum});
+        
+        
     }
 
     </script>
