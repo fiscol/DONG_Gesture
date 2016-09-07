@@ -26,7 +26,7 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
     if (_MinderResult.Rate >= _MinderThreshold) {
         // Send DBdata to View
         req.io.sockets.emit('DBData', {
-            Name: _UID + (Pass),
+            Name: _UID + " Pass",
             Rawdata: _MinderCode,
             Rate: _MinderResult.Rate,
             ActionCode: _MinderResult.ActionCode
