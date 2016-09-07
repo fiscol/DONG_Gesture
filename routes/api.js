@@ -91,6 +91,7 @@ router.post('/addMinderPattern', function (req, res) {
 var localurl;
 router.post('/localurl', function (req, res, next) {
     localurl = req.body.url;
+    console.log('get DONG Motion URL:' + localurl);
     res.send(localurl);
 });
 
