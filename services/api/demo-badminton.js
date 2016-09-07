@@ -48,9 +48,10 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
             if (_MinderResult.ActionCode == 1) {
                 console.log(_Localurl);
                 DongServices._requestDongMotionSign(_Localurl);
-                console.log('Dong Services called.');
+                console.log('Dong Services Sign.');
                 DongServices._requestDongMotionKnock(_Localurl);
+                console.log('Dong Services Knock.');
+
             };
         };
     }
-    
