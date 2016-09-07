@@ -16,16 +16,21 @@
 
 <body>
     <!-- <div id="Gesture" class="text-center"><img src="chart/images/gesture0.png" height="250" width="250"></div> -->
-    <div class="TestRate" id="TestRate"></div>
-    <div class="container">
-        <div class="MaxSpeed"></div>
-        <div class="MaxPower"></div>
+    <div class="RegRate" id="RegRate"></div>
+    <div class="container col-lg-6">
+        <h1>簽名相似度</h1>
+        <!-- <div class="MaxSpeed"></div> -->
+        <!-- <div class="MaxPower"></div> -->
         <div class="Similarity"></div>
 
     </div>
+    <div class="TestRate col-lg-6" id="TestRate"></div>
     <script type="text/javascript">
     var chart1 = Highcharts.chart('TestRate', {
-         plotOptions: {
+        title: {
+            text: 'DONG Motion 簽名辨識成功率:'
+        },
+        plotOptions: {
             pie: {
                 allowPointSelect: true,
                 cursor: 'pointer',
@@ -46,68 +51,36 @@
                 y:0
             },{
                 name:'簽名未通過',
-                y:0,
-                sliced: true,
-                selected: true
+                y:0
             }]
         }]
     });
 
-    var successNum = 0;
-    var failNum = 0;
-    function UpdatePie(success) {
-        if (success) {
+
+    var successNum,failNum,RegRate,RegSum;
+    $.get("api/SignResult", function(data){
+        successNum = data.Pass;
+        failNum = data.Fail;
+    });
+
+    function UpdatePie(_success, _actionCode) {
+        if (_success && _actionCode == 1) {
             successNum = successNum +1;
         }else{
             failNum = failNum + 1;
         }
+        RegSum = (successNum + failNum)
+        RegRate = (failNum/RegSum);
         chart1.series[0].setData([successNum, failNum]);
-
+        chart1.setTitle( { 
+            text: '<br/>辨識成功率:'+ RegRate.toFixed(4)* 100 +"%<br/>樣本數:"+RegSum
+        });        
     }
 
     </script>
 
 
-    <div id="containers" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-    <script type="text/javascript">
-    $(function () {
-    var chart = new Highcharts.Chart({
-        chart: {
-            type: 'areaspline',
-            renderTo: 'containers'
-        },
-        title: {
-            text: 'Motion Recognition'
-        },
-        subtitle: {
-            text: 'Source: pvd-plus.com/'
-        },
-        xAxis: {
-            categories: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
-        },
-        yAxis: {
-            title: {
-                text: 'Count'
-            }
-        },
-        plotOptions: {
-            areaspline: {
-                fillOpacity: 0.5
-            }
-        },
-        zoneAxis: 'y',
-        series: [{
-            name: 'Sample1',
-            data: [1.0, 0.9, 0.5, 0.5, 0.4, 0.5, 0.2, 0.5, 0.3, 0.3]
-        }, {
-            name: 'Sample2',
-            data: [0.9, 0.2, 0.7, 0.5, 0.9, 0.2, 1.0, 0.6, 0.2, 0.3]
-        }, {
-            name: 'Sample3',
-            data: [0.9, 0.6, 0.3, 0.4, 0.9, 0.6, 1.0, 0.5, 0.4, 0.5]
-        }]
-    });
-});
+    
 </script>
 </body>
 <script src="/socket.io/socket.io.js"></script>
@@ -123,11 +96,11 @@
     // Get socket event from app.js
     socket.on('RealTimeData', function (data) {
         // console.log(data.MaxSpeed);
-        MaxSpeed.update(data.MaxSpeed);
-        MaxPower.update(data.MaxPower);
+        // MaxSpeed.update(data.MaxSpeed);
+        // MaxPower.update(data.MaxPower);
         Similarity.update(data.Similarity);
         // Gesture(data.GestureNum);
-        UpdatePie(data.Successful);
+        UpdatePie(data.Successful, data.ActionCode);
     })
 
     function Gesture(GestureNum){
