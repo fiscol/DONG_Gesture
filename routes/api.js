@@ -8,6 +8,7 @@ api.js
 var express = require('express');
 var unitServices = require('../services/api/unit.js');
 var demoServices = require('../services/api/demo-badminton.js');
+var boxingServices = require('../services/api/demo-boxing.js');
 var minderBetaService = require('../services/unit/kernal/minderbeta.js');
 var processBetaService = require('../services/unit/kernal/processbeta.js');
 var api = require('../libraries/tool/postdata.js');
@@ -36,6 +37,7 @@ router.post('/iOS/Minder', function (req, res, next) {
     unitServices._MinderProcess(MinderData).then(function (_MinderResult) {
         var MinderThreshold = 0.6;
         res.json(_MinderResult);
+        boxingServices._TriggerBoxing(eq, MinderData.UID, MinderCode, _MinderResult, MinderThreshold);
         demoServices._TriggerDongServices(req, MinderData.UID, MinderCode, _MinderResult, MinderThreshold, localurl);
 
         // For DT DEMO

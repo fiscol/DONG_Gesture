@@ -57,22 +57,26 @@ router.post('/:devcode/CheckPattern', function (req, res, next) {
         var MinderData = JSON.parse(DataRaw.Code).toString();
         var CheckResult = "Fail";
         db._GetPatternCount(UID, false).then(function (_PatternCount) {
-            for (var i = 1; i <= _PatternCount; i++) {
-                var Threshold = 0.6;
-                train._CheckResults(UID, i, MinderData, Threshold).then(function (_Result) {
-                    if (_Result.Message == "Pass") {
-                        CheckResult = "Pass";
-                        var punch = (_Result.Pattern == 1) ? "heavy" : "normal";
-                        req.io.sockets.emit('boxing', { punch: punch });
-                        res.json(_Result);
-                        res.end();
-                    }
-                    else if (_Result.Pattern == _PatternCount && CheckResult == "Fail") {
-                        res.json({ "Message": "Fail" });
-                        res.end();
-                    }
-                })
-            }
+            db._GetSampleCount(UID, false).then(function (_SampleArr) {
+                for (var i = 1; i <= _PatternCount; i++) {
+                    var Threshold = 0.6;
+                    var SampleArr = _SampleArr.split(',');
+                    var SampleCount = SampleArr[i - 1];
+                    train._CheckResults(UID, i, SampleCount, MinderData, Threshold).then(function (_Result) {
+                        if (_Result.Message == "Pass") {
+                            CheckResult = "Pass";
+                            var punch = (_Result.Pattern == 1) ? "heavy" : "normal";
+                            req.io.sockets.emit('boxing', { punch: punch });
+                            res.json(_Result);
+                            res.end();
+                        }
+                        else if (_Result.Pattern == _PatternCount && CheckResult == "Fail") {
+                            res.json({ "Message": "Fail" });
+                            res.end();
+                        }
+                    })
+                }
+            })
         })
     }
     else {

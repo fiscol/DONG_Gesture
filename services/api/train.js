@@ -100,16 +100,14 @@ exports._ResetPattern = function (_UID, _PatternCount, _SampleCount) {
 
 
 //Check and Update Results
-exports._CheckResults = function (_UID, _PatternCount, _MinderData, _Threshold) {
+exports._CheckResults = function (_UID, _PatternCount, _SampleCount, _MinderData, _Threshold) {
     var RefPath = "DONGCloud/PatternData/" + _UID;
     var ChildName = "Pattern" + _PatternCount;
     return db._onValuePromise(RefPath, ChildName).then(function (_Data) {
         var RateArr = [];
-        RateArr.push(minderBetaService._lcsComputing(_Data["Sample" + 1].MinderData, _MinderData).Rate);
-        RateArr.push(minderBetaService._lcsComputing(_Data["Sample" + 2].MinderData, _MinderData).Rate);
-        RateArr.push(minderBetaService._lcsComputing(_Data["Sample" + 3].MinderData, _MinderData).Rate);
-
-
+        for (var i = 1; i <= _SampleCount; i++) {
+            RateArr.push(minderBetaService._lcsComputing(_Data["Sample" + i].MinderData, _MinderData).Rate);
+        }
 
         function isBigEnough(element, index, array) {
             return (element >= _Threshold);
