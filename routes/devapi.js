@@ -28,22 +28,21 @@ router.post('/:devcode/LCS', function (req, res, next) {
         res.json({ "Error": "請傳入input1與input2參數" });
     }
 })
-
+//Add New User Pattern(Private)
 router.post('/:devcode/AddPattern', function (req, res, next) {
     var UID = req.body.UID;
     if (UID) {
         var DataRaw = req.body;
         var MinderData = JSON.parse(DataRaw.Code).toString();
         db._GetPatternCount(UID, false).then(function (_PatternCount) {
-            var PatternCount = _PatternCount;
             db._GetSampleCount(UID, false).then(function (_SampleArr) {
-                var SampleCount = _SampleArr.split(',')[_PatternCount - 1];
+                var SampleArr = _SampleArr.split(',');
+                var SampleCount = SampleArr[_PatternCount - 1];
                 var Threshold = 0.5;
-                train._AddNewSample(UID, PatternCount, SampleCount, MinderData, Threshold).then(function (_Result) {
+                train._AddNewSample(UID, _PatternCount, SampleCount, SampleArr, MinderData, Threshold).then(function (_Result) {
                     res.json(_Result);
                 })
             });
-
         })
     }
     else {
@@ -58,18 +57,18 @@ router.post('/:devcode/CheckPattern', function (req, res, next) {
         var MinderData = JSON.parse(DataRaw.Code).toString();
         var CheckResult = "Fail";
         db._GetPatternCount(UID, false).then(function (_PatternCount) {
-            for(var i = 1; i <= _PatternCount; i++){
+            for (var i = 1; i <= _PatternCount; i++) {
                 var Threshold = 0.6;
                 train._CheckResults(UID, i, MinderData, Threshold).then(function (_Result) {
-                    if(_Result.Message == "Pass"){
+                    if (_Result.Message == "Pass") {
                         CheckResult = "Pass";
-                        var punch = (_Result.Pattern == 1)? "heavy" :"normal";
-                        req.io.sockets.emit('boxing',{punch:punch});
+                        var punch = (_Result.Pattern == 1) ? "heavy" : "normal";
+                        req.io.sockets.emit('boxing', { punch: punch });
                         res.json(_Result);
                         res.end();
                     }
-                    else if(_Result.Pattern == _PatternCount && CheckResult == "Fail"){
-                        res.json({"Message":"Fail"});
+                    else if (_Result.Pattern == _PatternCount && CheckResult == "Fail") {
+                        res.json({ "Message": "Fail" });
                         res.end();
                     }
                 })
@@ -81,28 +80,28 @@ router.post('/:devcode/CheckPattern', function (req, res, next) {
     }
 })
 //產DT2016的VIP Code
-router.get('/:devcode/GetCode', function(req, res){
+router.get('/:devcode/GetCode', function (req, res) {
     var crypt = require("../libraries/tool/crypt.js");
     var codeArr = [];
-    for(var i = 1; i < 151; i++){
+    for (var i = 1; i < 151; i++) {
         var number = i.toString();
         var code = "";
-        switch(i % 3){
+        switch (i % 3) {
             case 0:
                 code = number + "dt";
-            break;
+                break;
             case 1:
                 code = "d" + number + "t";
-            break;
+                break;
             case 2:
                 code = "dt" + number;
-            break;
+                break;
         }
-        
+
         var result = crypt._encrypt(code);
         codeArr.push(result);
     }
-    res.json({"Codes": codeArr});
+    res.json({ "Codes": codeArr });
 })
 
 module.exports = router;

@@ -42,7 +42,10 @@ router.post('/iOS/Minder', function (req, res, next) {
         var demoServicesSign = require('../services/api/demo-sign.js');
         demoServicesSign._TriggerDongServicesDemoSign(req, _MinderResult);
 
-    });
+    }).catch((err) => {
+        //註冊失敗
+        res.json({ "Error": err.message });
+    })
 });
 
 
@@ -180,6 +183,9 @@ router.post('/Recognize', function(req, res){
     RawData.UID = "DigitalTaipei";
     unitServices._RawProcess(RawData).then(function (_MinderResult) {
         res.json(_MinderResult);
+    }).catch((err) => {
+        //註冊失敗
+        res.json({ "Error": err.message });
     })
 })
 
@@ -187,6 +193,9 @@ router.post('/Recognize', function(req, res){
 router.get('/SignResult', function(req, res){
     db._GetSignResult().then(function (_Data) {  
         res.json(_Data);
+    }).catch((err) => {
+        //註冊失敗
+        res.json({ "Error": err.message });
     })
 })
 
