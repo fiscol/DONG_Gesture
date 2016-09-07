@@ -64,11 +64,13 @@
     });
 
     function UpdatePie(_success, _actionCode, _UID) {
-        if (_success && _actionCode == 1 && _UID == 'DigitalTaipei') {
-            successNum = successNum +1;
-        }else{
-            failNum = failNum + 1;
-        }
+        if (_UID == 'DigitalTaipei') {
+            if (_success && _actionCode == 1) {
+                successNum = successNum +1;
+            }else{
+                failNum = failNum + 1;
+            }
+        };
         RegSum = (successNum + failNum)
         RegRate = (failNum/RegSum);
         chart1.series[0].setData([successNum, failNum]);
