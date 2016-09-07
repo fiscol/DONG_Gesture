@@ -7,13 +7,14 @@ var minderBetaService = require('../unit/kernal/minderbeta.js');
 
 //Add 3 Sample For Initial Pattern
 //Return Added Sample Count, Message Succeeded or Failed
-exports._AddNewSample = function (_UID, _PatternCount, _SampleCount, _MinderData, _Threshold) {
+exports._AddNewSample = function (_UID, _PatternCount, _SampleCount, _SampleArr, _MinderData, _Threshold) {
     var AddResult = false;
     var ErrorMessage = "";
     //_SampleCount != 1  --->  Use Sample1 / Sample2 to Calculate Rate and TraceBack
     if (_SampleCount >= 1 && _SampleCount < 3) {
         var RefPath = "DONGCloud/PatternData/" + _UID;
         var ChildName = "Pattern" + _PatternCount;
+        //Compare New Sample Pattern with Added Sample Pattern
         return db._onValuePromise(RefPath, ChildName).then(function (_Data) {
             var Similarity = minderBetaService._lcsComputing(_Data["Sample" + 1].MinderData, _MinderData).Rate;
             AddResult = (Similarity >= _Threshold) ? true : false;
@@ -21,11 +22,20 @@ exports._AddNewSample = function (_UID, _PatternCount, _SampleCount, _MinderData
                 Similarity = minderBetaService._lcsComputing(_Data["Sample" + 2].MinderData, _MinderData).Rate;
                 AddResult = (Similarity >= _Threshold) ? true : false;
             }
+            //Update SampleCount and Add New Sample Pattern
             if (AddResult == true) {
-                var RefPath = "DONGCloud/PatternData/" + _UID + "/Pattern" + _PatternCount;
-                _SampleCount++;
-                var ChildName = "Sample" + _SampleCount;
+                //Update SampleCount
+                var RefPath = "DONGCloud/DongService";
+                var ChildName = _UID;
+                _SampleArr[_SampleArr.length - 1] = (Number(_SampleCount) + 1);
                 var Data = {
+                    "SampleCount": _SampleArr.toString()
+                }
+                db._update(RefPath, ChildName, Data);
+                //Add New Sample Pattern
+                RefPath = "DONGCloud/PatternData/" + _UID + "/Pattern" + _PatternCount;
+                ChildName = "Sample" + (Number(_SampleCount) + 1);
+                Data = {
                     "MinderData": _MinderData,
                     "AVGRate": 0,
                     "StandardDeviation": 0,
@@ -41,11 +51,22 @@ exports._AddNewSample = function (_UID, _PatternCount, _SampleCount, _MinderData
             }
         });
     }
-    else if (_SampleCount == 0) {
-        var RefPath = "DONGCloud/PatternData/" + _UID + "/Pattern" + _PatternCount;
-        _SampleCount++;
-        var ChildName = "Sample" + _SampleCount;
+    else if (_SampleCount == 3) {
+        //Update PatternCount and SampleCount
+        var RefPath = "DONGCloud/DongService";
+        var ChildName = _UID;
+        _PatternCount++;
+        _SampleArr.push(1);
         var Data = {
+            "PatternCount": _PatternCount,
+            "SampleCount": _SampleArr.toString()
+        }
+        db._update(RefPath, ChildName, Data);
+        //Add New Sample Pattern
+        RefPath = "DONGCloud/PatternData/" + _UID + "/Pattern" + _PatternCount;
+        _SampleCount = 1;
+        ChildName = "Sample" + _SampleCount;
+        Data = {
             "MinderData": _MinderData,
             "AVGRate": 0,
             "StandardDeviation": 0,
@@ -167,8 +188,8 @@ function _StandardDeviation(_RateArr, _AVG, _TotalCount) {
 function _AddTrainingData(_UID, _PatternCount, _TrainingCount, _MinderData, _Threshold) {
     var RefPath = "DONGCloud/DongService";
     var ChildName = _UID;
-    var TrainingArr = (_TrainingCount == null)? []:_TrainingCount.split(',');
-    if(_TrainingCount == null || TrainingArr.length < _PatternCount){
+    var TrainingArr = (_TrainingCount == null) ? [] : _TrainingCount.split(',');
+    if (_TrainingCount == null || TrainingArr.length < _PatternCount) {
         TrainingArr.push(1);
     }
     else {

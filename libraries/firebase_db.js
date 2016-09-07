@@ -318,6 +318,9 @@ exports._GetSignResult = function(){
     // UserID
     var ChildName = "DigitalTaipei";
     // 讀取使用者資料, 回傳
+    //Sign Passed (10/30) (10:10)
+    //knock Passed (10/30) (10:10)
+    //All Failed (10/30) (5:5)
     return Promise.resolve(this._onValuePromise(RefPath, ChildName)).then(function(_Data){
         var Pass = 0;
         var Fail = 0;
