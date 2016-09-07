@@ -26,7 +26,7 @@ exports._requestDongSlide = function (Rate, Code) {
 exports._requestDongMotionSign = function (_LocalURL) {
   var request = require('request');
   var url = _LocalURL + "/api/mac_password";
-  console.log(url);
+  console.log("_requestDongMotionSign "+url);
   var options = {
     method: 'get',
     url: url
@@ -43,7 +43,7 @@ exports._requestDongMotionSign = function (_LocalURL) {
 exports._requestDongMotionKnock = function (_LocalURL) {
   var request = require('request');
   var url = _LocalURL + "/api/youtube_play_pause";
-  console.log(url);
+  console.log("_requestDongMotionKnock "+url);
   var options = {
     method: 'get',
     url: url
