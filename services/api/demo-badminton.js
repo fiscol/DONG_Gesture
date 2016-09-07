@@ -45,6 +45,7 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
             var SignRate = _MinderResult.Rate;
             var ActionCode = _MinderResult.ActionCode;
             DongServices._requestDongSlide(SignRate, ActionCode);
+            console.log('_requestDongSlide Good')
             if (_MinderResult.ActionCode == 1) {
                 console.log(_Localurl);
                 DongServices._requestDongMotionSign(_Localurl);
