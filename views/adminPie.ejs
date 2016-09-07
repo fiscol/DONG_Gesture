@@ -63,8 +63,8 @@
         failNum = data.Fail;
     });
 
-    function UpdatePie(_success, _actionCode) {
-        if (_success && _actionCode == 1) {
+    function UpdatePie(_success, _actionCode, _UID) {
+        if (_success && _actionCode == 1 && _UID == 'DigitalTaipei') {
             successNum = successNum +1;
         }else{
             failNum = failNum + 1;
@@ -73,7 +73,7 @@
         RegRate = (failNum/RegSum);
         chart1.series[0].setData([successNum, failNum]);
         chart1.setTitle( { 
-            text: '<br/>辨識成功率:'+ RegRate.toFixed(4)* 100 +"%<br/>樣本數:"+RegSum
+            text: '<br/>辨識成功率:'+ RegRate.toFixed(4)* 100 + "%<br/>樣本數:" + RegSum
         });        
     }
 
@@ -100,7 +100,7 @@
         // MaxPower.update(data.MaxPower);
         Similarity.update(data.Similarity);
         // Gesture(data.GestureNum);
-        UpdatePie(data.Successful, data.ActionCode);
+        UpdatePie(data.Successful, data.ActionCode, data.UID);
     })
 
     function Gesture(GestureNum){
