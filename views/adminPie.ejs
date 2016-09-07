@@ -64,8 +64,10 @@
     });
 
     function UpdatePie(_success, _actionCode, _UID) {
-        if (_success && _actionCode == 1 && _UID == 'DigitalTaipei') {
-            successNum = successNum +1;
+        if (_success && _actionCode == 1) {
+            if (_UID == 'DigitalTaipei') {
+                successNum = successNum +1;
+            };
         }else{
             failNum = failNum + 1;
         }
