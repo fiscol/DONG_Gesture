@@ -69,11 +69,11 @@
         }else{
             failNum = failNum + 1;
         }
-        RegSum = (successNum+failNum)
-        RegRate = (failNum/RegSum).toFixed(4);
+        RegSum = (successNum + failNum)
+        RegRate = (failNum/RegSum);
         chart1.series[0].setData([successNum, failNum]);
         chart1.setTitle( { 
-            text: '<br/>辨識成功率:'+ RegRate*100 +"%<br/>樣本數:"+RegSum
+            text: '<br/>辨識成功率:'+ RegRate.toFixed(4)* 100 +"%<br/>樣本數:"+RegSum
         });        
     }
 
