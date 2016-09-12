@@ -40,7 +40,7 @@ exports._requestDongMotionSign = function (_LocalURL) {
 }
 
 // 傳到DongMotion測試
-exports._requestDongMotionKnock = function (_LocalURL) {
+exports._requestDongMotionYoutubePlay = function (_LocalURL) {
   var request = require('request');
   var url = _LocalURL + "/api/youtube_play_pause";
   console.log("_requestDongMotionKnock "+url);
