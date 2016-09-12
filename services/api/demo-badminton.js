@@ -49,14 +49,14 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
             DongServices._requestDongSlide(SignRate, ActionCode);
             console.log('_requestDongSlide Good')
             if (_MinderResult.ActionCode == 1 && _MinderResult.Rate > 0.6) {
-                console.log(_Localurl);
+                console.log(_MinderResult.Rate);
                 DongServices._requestDongMotionSign(_Localurl);
                 console.log('Dong Services Sign.');
                 // DongServices._requestDongMotionKnock(_Localurl);
                 // console.log('Dong Services Knock.');
             } else if (_MinderResult.ActionCode == 2 && _MinderResult.Rate > 0.4) {
                 // 2016/09/12 IOT Salon Demo Youtube Play
-                console.log(_Localurl);
+                console.log(_MinderResult.Rate);
                 DongServices._requestDongMotionYoutubePlay(_Localurl);
                 console.log('Dong Services YoutubePlay.');
 
