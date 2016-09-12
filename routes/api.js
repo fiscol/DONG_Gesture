@@ -44,8 +44,6 @@ router.post('/iOS/Minder', function (req, res, next) {
         boxingServices._TriggerBoxing(req, MinderCode, _MinderResult, MinderThreshold);
         res.json(_MinderResult);
         
-        
-
     }).catch((err) => {
         //註冊失敗
         res.json({ "Error": err.message });
