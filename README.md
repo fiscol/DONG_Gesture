@@ -48,6 +48,8 @@
  - 修改DONGSlide Demo部分(services/api/demo-badmintion.js)*_(BigQ)_*  
  **2016/09/12**  
  - Fixed BUG: /api/iOS/Minder  觸發dongslide.herokuapp.com問題 *_(BigQ)_*  
+ **2016/09/12**  
+ - Add Page: 增加Doc頁面(/doc) *_(BigQ)_*  
  
     
 
