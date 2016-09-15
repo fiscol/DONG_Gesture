@@ -43,25 +43,23 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
 
     // 過門檻值則觸發DONGSlide, DongMotion
     var DongServices = require('../../libraries/tool/dongservices.js');
-        if (_MinderResult.Rate >= _MinderThreshold) {
+        // if (_MinderResult.Rate >= _MinderThreshold) {
             var SignRate = _MinderResult.Rate;
             var ActionCode = _MinderResult.ActionCode;
             DongServices._requestDongSlide(SignRate, ActionCode);
             console.log('_requestDongSlide Good')
-            if (_MinderResult.ActionCode == 1) {
-                console.log(_Localurl);
-                DongServices._requestDongMotionYoutubePlay(_Localurl);
-                // DongServices._requestDongMotionSign(_Localurl);
+            if (_MinderResult.ActionCode == 1 && _MinderResult.Rate >= 0.55) {
+                console.log(_MinderResult.Rate);
+                DongServices._requestDongMotionSign(_Localurl);
                 console.log('Dong Services Sign.');
                 // DongServices._requestDongMotionKnock(_Localurl);
                 // console.log('Dong Services Knock.');
-            }else if (_MinderResult.ActionCode == 2) {
-                console.log(_Localurl);
-                // DongServices._requestDongMotionSign(_Localurl);
-                // console.log('Dong Services Sign.');
+            } else if (_MinderResult.ActionCode == 2 && _MinderResult.Rate > 0.4) {
+                // 2016/09/12 IOT Salon Demo Youtube Play
+                console.log(_MinderResult.Rate);
                 DongServices._requestDongMotionYoutubePlay(_Localurl);
-                console.log('Dong Services Knock.');
+                console.log('Dong Services YoutubePlay.');
 
             };
-        };
+        // };
     }

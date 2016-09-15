@@ -1,5 +1,5 @@
 //觸發DongServices(DEMO CASE使用)
-exports._TriggerDongServicesDemoSign = function(req, _MinderResult){
+exports._TriggerDongServicesYoutubePlay = function(req, _MinderResult){
 
     // 過門檻值則觸發DONGSlide, DongMotion
     var DongServices = require('../../libraries/tool/dongservices.js');
@@ -12,7 +12,3 @@ exports._TriggerDongServicesDemoSign = function(req, _MinderResult){
         
     };
 }
-
-
-
-
