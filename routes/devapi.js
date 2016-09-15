@@ -38,7 +38,7 @@ router.post('/:devcode/AddPattern', function (req, res, next) {
             db._GetSampleCount(UID, false).then(function (_SampleArr) {
                 var SampleArr = _SampleArr.split(',');
                 var SampleCount = SampleArr[_PatternCount - 1];
-                var Threshold = 0.5;
+                var Threshold = DataRaw.Threshold;
                 train._AddNewSample(UID, _PatternCount, SampleCount, SampleArr, MinderData, Threshold).then(function (_Result) {
                     res.json(_Result);
                 })
@@ -51,7 +51,7 @@ router.post('/:devcode/AddPattern', function (req, res, next) {
 })
 
 router.post('/:devcode/CheckPattern', function (req, res, next) {
-    var UID = "9KvMvdYmh2YmOU8ihdAA0jXoPl13";
+    var UID = req.body.UID;
     if (UID) {
         var DataRaw = req.body;
         var MinderData = JSON.parse(DataRaw.Code).toString();
