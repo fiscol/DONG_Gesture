@@ -225,7 +225,8 @@ function _CheckTrainingResults(_UID, _PatternCount, _TrainingCount, _MinderData,
     var ChildName = "Pattern" + _PatternCount;
     return db._onValuePromise(RefPath, ChildName).then(function (_Data) {
         var RateArr = [];
-        for (i = 1; i <= _TrainingCount; i++) {
+        var TrainingArr = (_TrainingCount == null) ? [] : _TrainingCount.split(',');
+        for (i = 1; i <= TrainingArr[_PatternCount - 1]; i++) {
             RateArr.push(minderBetaService._lcsComputing(_Data["Training" + i].MinderData, _MinderData).Rate);
         }
         var HasSameMinderData = false;
@@ -250,7 +251,6 @@ function _CheckTrainingResults(_UID, _PatternCount, _TrainingCount, _MinderData,
         }
         if (HasSameMinderData == false) {
             _AddTrainingData(_UID, _PatternCount, _TrainingCount, _MinderData, _Threshold);
-
         }
     });
 }
@@ -279,3 +279,14 @@ function _CheckTrainingResults(_UID, _PatternCount, _TrainingCount, _MinderData,
 //MotionCode
 //RawCode
 //Similarity
+
+function _FindPassPatterns(_SampleData, _Threshold){
+    var DataLength = _SampleData.split(',').length;
+    var MaxLength = Math.floor(DataLength / _Threshold);
+    var MinLength = Math.ceil(DataLength * _Threshold);
+    
+    //MaxLength
+    //
+    //MinLength
+    //
+}
