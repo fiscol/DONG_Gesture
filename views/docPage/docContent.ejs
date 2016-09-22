@@ -150,10 +150,9 @@
           <br>
           <p>
           <h3>
-            <a href="customDownload.html">api/iOS/Raw</a>
+            api/iOS/Raw
           </h3>
-          <br>
-          <h4>Description Description Description</h4>
+          <p>/iOS/Raw Description Description Description</p>
           <p class="well note">
           <code>POST</code> https://dongcloud/api/iOS/Raw
           </p>
@@ -204,12 +203,47 @@
 
           <h4>Sample</h4>
           <p class="well note">
-          <code>cURL</code> https://dongcloud/api/iOS/Raw
           </p>
-          <pre>
-          cURL https://dongcloud/api/iOS/Raw
-            
-          </pre>
+          <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2", \
+     "Code":"[2,2,4,5,3,3,7,1,6,5,2,3,4,2,6,4,2,2,6,4,5,2,2,4,6,3,1,4,4,5,2,2,4,5,2,2,3,6,5,2]"}' \
+     https://dongcloud.herokuapp.com/api/iOS/Minder
+
+          </code></pre>
+          <h4>Response</h4>
+          <table class="table table-bordered">
+              <tbody>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <!-- <th>Parameters</th> -->
+                </tr>
+                <tr>
+                    <td>Rate</td>
+                    <td>Number</td>
+                    <td>Your unique user-dev-key</td>
+                    <!-- <td>Enter Option Parameters Here</td> -->
+                </tr>
+                <tr>
+                    <td>ActionCode</td>
+                    <td>Number</td>
+                    <td>Motion Array from DONG-iOS-SDK</td>
+                    <!-- <td>Enter Option Parameters Here</td> -->
+                </tr>
+                
+              </tbody>
+          </table>
+          <h4>Sample Response</h4>
+          
+          <pre><code data-language="csharp">
+{
+  "Rate":0.5476190476190477,
+  "ActionCode":2
+}
+          </code></pre>
 
 
           <h3>api/iOS/Minder</h3>

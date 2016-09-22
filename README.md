@@ -49,8 +49,9 @@
  **2016/09/12**  
  - Fixed BUG: /api/iOS/Minder  觸發dongslide.herokuapp.com問題 *_(BigQ)_*  
  **2016/09/12**  
- - Add Page: 增加Doc頁面(/doc) *_(BigQ)_*  
- 
+ - Add Page(/doc): 增加Doc頁面 *_(BigQ)_*  
+  **2016/09/22**  
+ - Edit Page(/doc): DOC內文格式 *_(BigQ)_*  
     
 
 
