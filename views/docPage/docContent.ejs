@@ -1,295 +1,1313 @@
 <div class="container-fluid" style="margin-top:50px;">
-      <div class="row">
+    <div class="row">
         <div class="tocify col-sm-3 col-md-3">
-          <div id="toc">
-          </div><!--/.well -->
-        </div><!--/span-->
+            <div id="toc">
+            </div>
+            <!--/.well -->
+        </div>
+        <!--/span-->
         <div class="col-sm-9 col-md-9">
-          <div class="jumbotron">
-            <h1>DONG Motion API Doc</h1>
+            <div class="jumbotron">
+                <h1>DONG Motion API Doc</h1>
 
-            <br><br>
+                <br><br>
 
-            <h2>Quick Start</h2>
-            <p>Enter Project Repo Description Here</p>
-            <br>
-            <p>The project is hosted on <a class="projectLinks" href="#" target="_blank">Github</a> and is available for use under the <a class="projectLinks" href="#" target="_blank">MIT software license</a>.  You can report bugs and discuss features on the <a href="#" target="_blank">GitHub issues page</a>, or send tweets to <a href="#" target="_blank">Enter Project Twitter Page Here</a>.
-            </p>
-            <p>
-              <a class="btn btn-primary btn-lg" href="#" target="_blank">Fork on Github »</a>
-            </p>
-          </div>
+                <h2>Quick Start</h2>
+                <p>Enter Project Repo Description Here</p>
+                <br>
+                <p>The project is hosted on <a class="projectLinks" href="#" target="_blank">Github</a> and is available for
+                    use under the <a class="projectLinks" href="#" target="_blank">MIT software license</a>. You can report
+                    bugs and discuss features on the <a href="#" target="_blank">GitHub issues page</a>, or send tweets to
+                    <a href="#" target="_blank">Enter Project Twitter Page Here</a>.
+                </p>
+                <p>
+                    <a class="btn btn-primary btn-lg" href="#" target="_blank">Fork on Github »</a>
+                </p>
+            </div>
 
-          <h2>API Overview<br></h2>
-          <p>Motion Regcognition</p>
+            <h2>API Overview<br></h2>
+            <p>Motion Regcognition</p>
             <table id="table" class="table table-striped table-bordered table-condensed">
-              <tbody>
-                <tr>
-                    <th>URL</th>
-                    <th>HTTP Verb</th>
-                    <th>Functionality</th>
-                    <!-- <th>Parameters</th> -->
-                </tr>
-                <tr>
-                    <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                        <a href="#api/iOS/Raw">api/iOS/Raw</a>
-                    </td>
-                    <td>POST</td>
-                    <td>Resolve raw data from accelerator.</td>
-                    <!-- <td>Enter Option Parameters Here</td> -->
-                </tr>
-                <tr>
-                    <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                        <a href="#api/iOS/Minder">api/iOS/Minder</a>
-                    </td>
-                    <td>POST</td>
-                    <td>Resolve raw data from accelerator.</td>
-                </tr>
-                <tr>
-                    <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                        <a href="#api/addRawPattern">api/addRawPattern</a>
-                    </td>
-                    <td>POST</td>
-                    <td>Resolve raw data from accelerator.</td>
-                </tr>
-                <tr>
-                    <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                        <a href="#api/addMinderPattern">api/addMinderPattern</a>
-                    </td>
-                    <td>POST</td>
-                    <td>Resolve raw data from accelerator.</td>
-                </tr>
-                <tr>
-                    <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                        <a href="#api/getMotionUrl">api/getMotionUrl</a>
-                    </td>
-                    <td>POST</td>
-                    <td>Resolve raw data from accelerator.</td>
-                </tr>
-                <tr>
-                    <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                        <a href="#api/Raw/:motionurl">api/Raw/:motionurl</a>
-                    </td>
-                    <td>POST</td>
-                    <td>Resolve raw data from accelerator.</td>
-                </tr>
-                <tr>
-                    <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                        <a href="#api/Minder/:motionurl">api/Minder/:motionurl</a>
-                    </td>
-                    <td>POST</td>
-                    <td>Resolve raw data from accelerator.</td>
-                </tr>
-                
-              </tbody>
-            </table>
-          <p>Users</p>
-          <table class="table table-striped table-bordered table-condensed">
-              <tbody>
-                <tr>
-                    <th>URL</th>
-                    <th>HTTP Verb</th>
-                    <th>Functionality</th>
-                    <!-- <th>Parameters</th> -->
-                </tr>
-                <tr>
-                    <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                        <a href="#">users/register</a>
-                    </td>
-                    <td>POST</td>
-                    <td>Resolve raw data from accelerator.</td>
-                    <!-- <td>Enter Option Parameters Here</td> -->
-                </tr>
-                <tr>
-                    <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                        <a href="#">users/register_trial</a>
-                    </td>
-                    <td>POST</td>
-                    <td>Resolve raw data from accelerator.</td>
-                </tr>
-                <tr>
-                    <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                        <a href="#">users/login</a>
-                    </td>
-                    <td>POST</td>
-                    <td>Resolve raw data from accelerator.</td>
-                </tr>
-                <tr>
-                    <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                        <a href="#">users/logout</a>
-                    </td>
-                    <td>POST</td>
-                    <td>Resolve raw data from accelerator.</td>
-                </tr>
-                
-                
-              </tbody>
-          </table>
-          <p>Learning</p>
-          <table class="table table-striped table-bordered table-condensed">
-              <tbody>
-                <tr>
-                    <th>URL</th>
-                    <th>HTTP Verb</th>
-                    <th>Functionality</th>
-                    <!-- <th>Parameters</th> -->
-                </tr>
-                <tr>
-                    <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                        <a href="#">devapi/:devcode/LCS</a>
-                    </td>
-                    <td>POST</td>
-                    <td>Resolve raw data from accelerator.</td>
-                    <!-- <td>Enter Option Parameters Here</td> -->
-                </tr>
-                
-              </tbody>
-          </table>
-
-
-          <br>
-          <!-- API Content Start -->
-          <a name="api/iOS/Raw" class="jumptarget" ></a>
-          <div class="API-Content">
-            <h3>api/iOS/Raw</h3>
-          
-              <p>/iOS/Raw Description Description Description</p>
-              <p class="well note">
-              <code>POST</code> https://dongcloud/api/iOS/Raw
-              </p>
-              <h4>Headers</h4>
-    
-              <table class="table table-bordered">
-                  <tbody>
+                <tbody>
                     <tr>
-                        <th>Key</th>
-                        <th>Value</th>
-                    </tr>
-                    <tr>
-                        <td>Content-Type</td>
-                        <td>application/json</td>
-                    </tr>
-                    <tr>
-                        <td>Authorization</td>
-                        <td>Basic Og==</td>
-                    </tr>
-                    
-                  </tbody>
-              </table>
-              <h4>Body</h4>
-    
-              <table class="table table-bordered">
-                  <tbody>
-                    <tr>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Description</th>
+                        <th>URL</th>
+                        <th>HTTP Verb</th>
+                        <th>Functionality</th>
                         <!-- <th>Parameters</th> -->
                     </tr>
                     <tr>
-                        <td>UID</td>
-                        <td>String</td>
-                        <td>Your unique user-dev-key</td>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#api/iOS/Raw">api/iOS/Raw</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Calculate with input g-sensor values, retrieve Rate and ActionCode output.</td>
                         <!-- <td>Enter Option Parameters Here</td> -->
                     </tr>
                     <tr>
-                        <td>Code</td>
-                        <td>String</td>
-                        <td>Motion Array from DONG-iOS-SDK</td>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#api/iOS/Minder">api/iOS/Minder</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Calculate with input one-dimentional processed Minder values, retrieve Rate and ActionCode output.</td>
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#api/addRawPattern">api/addRawPattern</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Use G-Sensor data as source, generate one-dimentional Minder pattern.</td>
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#api/addMinderPattern">api/addMinderPattern</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Use one-dimentional Minder data as pattern.</td>
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#api/getMotionUrl">api/getMotionUrl</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Use UID as input, return daily refreshed random motion URL.</td>
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#api/Raw/:motionurl">api/Raw/:motionurl</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Calculate with input g-sensor values, retrieve Rate and ActionCode output.</td>
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#api/Minder/:motionurl">api/Minder/:motionurl</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Calculate with input one-dimentional processed Minder values, retrieve Rate and ActionCode output.</td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <p>Users</p>
+            <table class="table table-striped table-bordered table-condensed">
+                <tbody>
+                    <tr>
+                        <th>URL</th>
+                        <th>HTTP Verb</th>
+                        <th>Functionality</th>
+                        <!-- <th>Parameters</th> -->
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#users/register">users/register</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Save UserData to DONGCloud/DongService.</td>
                         <!-- <td>Enter Option Parameters Here</td> -->
                     </tr>
-                    
-                  </tbody>
-              </table>
-    
-              <h4>Sample</h4>
-              <pre><code data-language="csharp">
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#users/register_trial">users/register_trial</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Save random created UserData to DONGCloud/DongService/Trial.</td>
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#users/login">users/login</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Change DONGCloud/DongService/UserName/Status to "On".</td>
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#users/logout">users/logout</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Change DONGCloud/DongService/UserName/Status to "Off".</td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+            <p>Learning</p>
+            <table class="table table-striped table-bordered table-condensed">
+                <tbody>
+                    <tr>
+                        <th>URL</th>
+                        <th>HTTP Verb</th>
+                        <th>Functionality</th>
+                        <!-- <th>Parameters</th> -->
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#devapi/:devcode/LCS">devapi/:devcode/LCS</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Compare a pair of MinderData, returns Rate and TraceBack.</td>
+                        <!-- <td>Enter Option Parameters Here</td> -->
+                    </tr>
+
+                </tbody>
+            </table>
+
+
+            <br>
+            <!-- API Content Start -->
+            <a name="api/iOS/Raw" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>api/iOS/Raw</h3>
+
+                <p>/iOS/Raw Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/api/iOS/Raw
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>UID</td>
+                            <td>String</td>
+                            <td>Your unique user-dev-key</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>AX</td>
+                            <td>String</td>
+                            <td>G-Sensor X-directional Data Array from DONG-iOS-SDK</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>AY</td>
+                            <td>String</td>
+                            <td>G-Sensor Y-directional Data Array from DONG-iOS-SDK</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>AZ</td>
+                            <td>String</td>
+                            <td>G-Sensor Z-directional Data Array from DONG-iOS-SDK</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
 curl -H "Content-Type: application/json" \ 
      -X POST -d '{ \
      "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2", \
-     "Code":"[2,2,4,5,3,3,7,1,6,5,2,3,4,2,6,4,2,2,6,4,5,2,2,4,6,3,1,4,4,5,2,2,4,5,2,2,3,6,5,2]"}' \
-     https://dongcloud.herokuapp.com/api/iOS/Minder
+     "AX":"[0.2, 0.16, -0.12]" \
+     "AY":"[0.2, 0.16, -0.12]" \
+     "AZ":"[0.2, 0.16, -0.12]"}' \
+     https://dongcloud.herokuapp.com/api/iOS/Raw
 
               </code></pre>
-              <h4>Response</h4>
-              <table class="table table-bordered">
-                  <tbody>
-                    <tr>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Description</th>
-                        <!-- <th>Parameters</th> -->
-                    </tr>
-                    <tr>
-                        <td>Rate</td>
-                        <td>Number</td>
-                        <td>Your unique user-dev-key</td>
-                        <!-- <td>Enter Option Parameters Here</td> -->
-                    </tr>
-                    <tr>
-                        <td>ActionCode</td>
-                        <td>Number</td>
-                        <td>Motion Array from DONG-iOS-SDK</td>
-                        <!-- <td>Enter Option Parameters Here</td> -->
-                    </tr>
-                    
-                  </tbody>
-              </table>
-              <h4>Sample Response</h4>
-              
-              <pre><code data-language="csharp">
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Rate</td>
+                            <td>Number</td>
+                            <td>Similarity of the best-fit motion data</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>ActionCode</td>
+                            <td>Number</td>
+                            <td>The Best-fit motion data code</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
 {
   "Rate":0.5476190476190477,
   "ActionCode":2
 }
               </code></pre>
-          
-          </div>
-        <!-- API Content End -->
-        <!-- API Content Start -->
-          <a name="api/iOS/Minder" class="jumptarget" ></a>
-          <div class="API-Content">
-            <h3>api/iOS/Minder</h3>
-          </div>
-        <!-- API Content End -->
-        <!-- API Content Start -->
-          <a name="api/addRawPattern" class="jumptarget" ></a>
-          <div class="API-Content">
-            <h3>api/addRawPattern</h3>
-          </div>
-        <!-- API Content End -->
-        <!-- API Content Start -->
-          <a name="api/addMinderPattern" class="jumptarget" ></a>
-          <div class="API-Content">
-            <h3>api/addMinderPattern</h3>
-          </div>
-        <!-- API Content End -->
-        <!-- API Content Start -->
-          <a name="api/getMotionUrl" class="jumptarget" ></a>
-          <div class="API-Content">
-            <h3>api/getMotionUrl</h3>
-          </div>
-        <!-- API Content End -->
-        <!-- API Content Start -->
-          <a name="api/Raw/:motionurl" class="jumptarget" ></a>
-          <div class="API-Content">
-            <h3>api/Raw/:motionurl</h3>
-          </div>
-        <!-- API Content End -->
-        <!-- API Content Start -->
-          <a name="api/Minder/:motionurl" class="jumptarget" ></a>
-          <div class="API-Content">
-            <h3>api/Minder/:motionurl</h3>
-          </div>
-        <!-- API Content End -->
-     
-		<h2>Copyright</h2>
-        <p class="well">
-            Copyright © 2016 PVD Plus.
-        </p>
-      </div>
-      </div><!--/row-->
-          
-    </div><!--/.fluid-container-->
 
-    
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="api/iOS/Minder" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>api/iOS/Minder</h3>
+
+                <p>/iOS/Minder Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/api/iOS/Minder
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>UID</td>
+                            <td>String</td>
+                            <td>Your unique user-dev-key</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Code</td>
+                            <td>String</td>
+                            <td>One-dimensional Data Array from DONG-iOS-SDK</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2", \
+     "Code":"[2,2,4,5,3,3,7]"}' \
+     https://dongcloud.herokuapp.com/api/iOS/Minder
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Rate</td>
+                            <td>Number</td>
+                            <td>Similarity of the best-fit motion data</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>ActionCode</td>
+                            <td>Number</td>
+                            <td>The Best-fit motion data code</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Rate":0.5476190476190477,
+  "ActionCode":2
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="api/addRawPattern" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>api/addRawPattern</h3>
+
+                <p>/addRawPattern Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/api/addRawPattern
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>UID</td>
+                            <td>String</td>
+                            <td>Your unique user-dev-key</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>AX</td>
+                            <td>String</td>
+                            <td>G-Sensor X-directional Data Array from DONG-iOS-SDK</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>AY</td>
+                            <td>String</td>
+                            <td>G-Sensor Y-directional Data Array from DONG-iOS-SDK</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>AZ</td>
+                            <td>String</td>
+                            <td>G-Sensor Z-directional Data Array from DONG-iOS-SDK</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2", \
+     "AX":"[0.2, 0.16, -0.12]" \
+     "AY":"[0.2, 0.16, -0.12]" \
+     "AZ":"[0.2, 0.16, -0.12]"}' \
+     https://dongcloud.herokuapp.com/api/addRawPattern
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Message</td>
+                            <td>String</td>
+                            <td>Result of adding new pattern</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Message": "儲存會員Pattern成功"
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="api/addMinderPattern" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>api/addMinderPattern</h3>
+
+                <p>/addMinderPattern Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/api/addMinderPattern
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>UID</td>
+                            <td>String</td>
+                            <td>Your unique user-dev-key</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Code</td>
+                            <td>String</td>
+                            <td>One-dimensional Data Array from DONG-iOS-SDK</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2", \
+     "Code":"[1,2,3,4,2,1,3,3]"}' \
+     https://dongcloud.herokuapp.com/api/addMinderPattern
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Message</td>
+                            <td>String</td>
+                            <td>Result of adding new pattern</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Message":"儲存會員Pattern成功"
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="api/getMotionUrl" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>api/getMotionUrl</h3>
+
+                <p>/getMotionUrl Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/api/getMotionUrl
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>UID</td>
+                            <td>String</td>
+                            <td>Your unique user-dev-key</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2"}' \
+     https://dongcloud.herokuapp.com/api/getMotionUrl
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>URL</td>
+                            <td>String</td>
+                            <td>Daily refreshed API-request URL part</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "URL":"6sk6tco"
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="api/Raw/:motionurl" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>api/Raw/:motionurl</h3>
+
+                <p>/Raw/:motionurl Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/api/Raw/:motionurl
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>UID</td>
+                            <td>String</td>
+                            <td>Your unique user-dev-key</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>AX</td>
+                            <td>String</td>
+                            <td>G-Sensor X-directional Data Array from DONG-iOS-SDK</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>AY</td>
+                            <td>String</td>
+                            <td>G-Sensor Y-directional Data Array from DONG-iOS-SDK</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>AZ</td>
+                            <td>String</td>
+                            <td>G-Sensor Z-directional Data Array from DONG-iOS-SDK</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2", \
+     "AX":"[0.2, 0.16, -0.12]"' \
+     "AY":"[0.2, 0.16, -0.12]"' \
+     "AZ":"[0.2, 0.16, -0.12]"}' \
+     https://dongcloud.herokuapp.com/api/Raw/:motionurl
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Rate</td>
+                            <td>Number</td>
+                            <td>Similarity of the best-fit motion data</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>ActionCode</td>
+                            <td>Number</td>
+                            <td>The Best-fit motion data code</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Rate":0.5476190476190477,
+  "ActionCode":2
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="api/Minder/:motionurl" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>api/Minder/:motionurl</h3>
+
+                <p>/Minder/:motionurl Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/api/Minder/:motionurl
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>UID</td>
+                            <td>String</td>
+                            <td>Your unique user-dev-key</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Code</td>
+                            <td>String</td>
+                            <td>One-dimensional Data Array from DONG-iOS-SDK</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2", \
+     "Code":"[2,2,4,5,3,3,7]"}' \
+     https://dongcloud.herokuapp.com/api/Minder/:motionurl
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Rate</td>
+                            <td>Number</td>
+                            <td>Similarity of the best-fit motion data</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>ActionCode</td>
+                            <td>Number</td>
+                            <td>The Best-fit motion data code</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Rate":0.5476190476190477,
+  "ActionCode":2
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="users/register" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>users/register</h3>
+
+                <p>/users/register Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/users/register
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>UID</td>
+                            <td>String</td>
+                            <td>Your unique user-dev-key</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>String</td>
+                            <td>User's E-mail</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>UserName</td>
+                            <td>String</td>
+                            <td>User's Name</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2", \
+     "Email":"david1@gmail.com", \
+     "UserName":"David"}' \
+     https://dongcloud.herokuapp.com/users/register
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Message</td>
+                            <td>String</td>
+                            <td>Result of user registration</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Message":"您已註冊成功"
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="users/register_trial" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>users/register_trial</h3>
+
+                <p>/users/register_trial Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/users/register_trial
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>UID</td>
+                            <td>String</td>
+                            <td>Random created trial user ID</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "UID":"randomUID"}' \
+     https://dongcloud.herokuapp.com/users/register_trial
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Message</td>
+                            <td>Number</td>
+                            <td>Result of trial-user registration</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Message":"新增試用帳號成功"
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="users/login" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>users/login</h3>
+
+                <p>/users/login Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/users/login
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>UID</td>
+                            <td>String</td>
+                            <td>Your unique user-dev-key</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2"}' \
+     https://dongcloud.herokuapp.com/users/login
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Message</td>
+                            <td>String</td>
+                            <td>Result of user login</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Message":"登入成功"
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="users/logout" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>users/logout</h3>
+
+                <p>/users/logout Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/users/logout
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>UID</td>
+                            <td>String</td>
+                            <td>Your unique user-dev-key</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2"}' \
+     https://dongcloud.herokuapp.com/users/logout
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Message</td>
+                            <td>String</td>
+                            <td>Result of user logout</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Message":"已登出"
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="devapi/:devcode/LCS" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>devapi/:devcode/LCS</h3>
+
+                <p>/devapi/:devcode/LCS Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/devapi/:devcode/LCS
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>input1</td>
+                            <td>String</td>
+                            <td>One-dimensional Data Array from DONG-iOS-SDK</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>input2</td>
+                            <td>String</td>
+                            <td>One-dimensional Data Array from DONG-iOS-SDK</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "input1":"[4, 2, 4, 6, 3, 3, 1, 4, 4, 6]", \
+     "input2":"[1, 4, 4, 6, 3, 2, 2, 5, 3, 2]"}' \
+     https://dongcloud.herokuapp.com/devapi/:devcode/LCS
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Rate</td>
+                            <td>Number</td>
+                            <td>Similarity of the inputs</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>TraceBack</td>
+                            <td>String</td>
+                            <td>Related motion data between inputs</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Rate":0.5,
+  "TraceBack":"[4,4,6,3,3]"
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <h2>Copyright</h2>
+            <p class="well">
+                Copyright © 2016 PVD Plus.
+            </p>
+        </div>
+    </div>
+    <!--/row-->
+
+</div>
+<!--/.fluid-container-->
