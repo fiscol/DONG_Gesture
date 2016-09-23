@@ -280,13 +280,41 @@ function _CheckTrainingResults(_UID, _PatternCount, _TrainingCount, _MinderData,
 //RawCode
 //Similarity
 
-function _FindPassPatterns(_SampleData, _Threshold){
+function _FindPassTraceBack(_SampleData, _Threshold){
     var DataLength = _SampleData.split(',').length;
     var MaxLength = Math.floor(DataLength / _Threshold);
     var MinLength = Math.ceil(DataLength * _Threshold);
-    
-    //MaxLength
-    //
-    //MinLength
-    //
+    var TraceBackArr = [];
+    for(var i = MinLength; i <= MaxLength; i++){
+        //12345, 0.6
+        //C53
+        //C54, C43*6
+        //C55, C54*6, C53*6*6
+        //C65*6, C64*6*6
+        //C75*6*6
+        //C85*6*6*6
+
+        //12345, 0.5
+        //C53
+        //C54, C43*6, C42*6*6
+        //C55, C54*6, C53*6*6
+        //C65*6, C64*6*6, C63*6*6*6
+        //C75*6*6, C74*6*6*6
+        //C85*6*6*6, C84*6*6*6*6
+
+        //1345, 0.8
+        //C44
+        //C54 * 6
+
+        //length:42, 0.6
+        //C42 26
+        //C27 42, C26 27*6
+        //C28 42, C27 28*6, C26 28*6*6
+        //
+    }
+    //output - key TraceBacks
+}
+
+function _GetRelatedTraceBackArr (_InputArr, _ReplaceCount){
+
 }
