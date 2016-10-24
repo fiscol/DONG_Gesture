@@ -14,6 +14,17 @@ firebase.initializeApp({
 */
 var count = 0;
 
+// equalTo
+exports._equalTo = function(_Path, _ChildName, _Value, error){
+    var db = firebase.database();
+    var ref = db.ref(_Path);
+    return ref.orderByChild(_ChildName).equalTo(_Value).once("value").then(function(snapshot) {
+      return snapshot.val();
+    }, function (error) {
+        return error;
+    });
+}
+
 // set
 exports._set = function (_Path, _ChildName, _Value, error) {
     var db = firebase.database();
@@ -58,19 +69,39 @@ exports._push = function (_Path, _ChildName, _Value, error) {
 
 
 // transaction
-// exports._transaction = function(childname, path, value, error){
-// 	var db = firebase.database();
-// 	var ref = db.ref(path);
-// 	ref.child(childname).push(value);
-// 	console.log('ref.push '+ value);
-// 	if (error) {
-//       console.log("Data could not be pushed." + error);
-//   	} else {
-//   	  console.log("Data pushed successfully.");
-//   	}
-// };
+exports._transaction = function(_Path, _Value, error){
+	var db = firebase.database();
+	var ref = db.ref(_Path);
+	ref.transaction(function(currentData) {
+        if (currentData === null) {
+            return _Value;
+        } 
+        else {
+            console.log('Data already exists.');
+            return _Value; // Abort the transaction.
+        }
+    }, function(error, committed, snapshot) {
+        if (error) {
+            console.log('Transaction failed abnormally!', error);
+        } else if (!committed) {
+            console.log('We aborted the transaction (because data already exists).');
+        } else {
+            console.log('Data added!');
+        }
+        console.log("Data: ", snapshot.val());
+    })
+};
 
-
+exports._transactionCount = function(_Path, _Callback){
+	var db = firebase.database();
+	var ref = db.ref(_Path);
+	ref.transaction(function(currentRank) {
+    // If _Path has never been set, currentRank will be `null`.
+    return currentRank + 1;
+    }).then(function(_Count){
+        _Callback(_Count);
+    });
+};
 // wilmaRef.transaction(function(currentData) {
 //   if (currentData === null) {
 //     return { name: { first: 'Wilma', last: 'Flintstone' } };
