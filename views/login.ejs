@@ -11,13 +11,14 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<script>
 $(document).ready(function(){
+    var serverPath = "http://dongcloud.herokuapp.com/";
     //$("#username").hide();
     $('#login-submit').click(function(e){
     e.preventDefault();
     if($("#useremail").val().length != 0 && $("#password").val().length != 0){
         if(isEmail($("#useremail").val())){
       if($(this).attr('value') === 'Register') {
-        $.post("http://localhost:3004/users/register",{
+        $.post(serverPath + "users/register",{
                //user_name : $("#username").val(), 
                Email : $("#useremail").val(), 
                Password : $("#password").val() 
@@ -32,7 +33,7 @@ $(document).ready(function(){
         }
     });
     } else {
-        $.post("http://localhost:3004/users/login",{ 
+        $.post(serverPath + "users/login",{ 
                 Email : $("#useremail").val(), 
                 Password : $("#password").val() 
                 },function(data){
@@ -67,7 +68,7 @@ $(document).ready(function(){
     });
     $("#logout-submit").click(function(event){
         event.preventDefault();
-        $.get("http://localhost:3004/users/logout",function(data){  
+        $.get(serverPath + "users/logout",function(data){  
             if(!data.Error) {
                 alert(data.Message);
                 //alert(data.Message);

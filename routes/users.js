@@ -3,6 +3,7 @@ var session = require('express-session');
 var async = require('async');
 var usersService = require('../services/users/users.js');
 var router = express.Router();
+var serverPath = "http://dongcloud.herokuapp.com";
 
 ////20161012 Fiscol 登入測試
 router.use(session({
@@ -90,20 +91,20 @@ router.post('/login', function (req, res) {
                     req.session.isVisit++;
                     console.log(req.session);
                     //res.json({"Message": "歡迎, 這是您第 " + req.session.isVisit + "次登入頁面"});
-                    res.json({ "Index": "http://localhost:3004" });
+                    res.json({ "Index": serverPath });
                 }
                 else {
                     req.session.regenerate(function () {
                         req.session.isVisit = 1;
                         req.session.userEmail = UserData.Email;
-                        res.json({ "Index": "http://localhost:3004" });
+                        res.json({ "Index": serverPath });
                         console.log(req.session);
                     });
                 }
             } else {
                 req.session.isVisit = 1;
                 req.session.userEmail = UserData.Email;
-                res.json({ "Index": "http://localhost:3004" });
+                res.json({ "Index": serverPath });
                 console.log(req.session);
                 //res.json({"Message": "歡迎第一次登入本系統"});
             }
