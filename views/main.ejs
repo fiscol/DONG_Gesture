@@ -34,7 +34,7 @@
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script>
         $(document).ready(function(){
-            var serverPath = "http://localhost:3004/";
+            var serverPath = "http://dongcloud.herokuapp.com/";
             $("#logout-submit").on("click", function(event){
                 event.preventDefault(); $.get(serverPath + "users/logout",function(data){  
                 if(!data.Error) {
