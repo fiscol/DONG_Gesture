@@ -1,17 +1,7 @@
-<html>
-
-<head>
-	<title>PVD+ UserLogin</title>
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<% include partials/head.ejs %>
 	<script>
 $(document).ready(function(){
-    var serverPath = "http://dongcloud.herokuapp.com/";
+    var serverPath = "http://localhost:3004/";
     //$("#username").hide();
     $('#login-submit').click(function(e){
     e.preventDefault();
@@ -70,7 +60,7 @@ $(document).ready(function(){
         event.preventDefault();
         $.get(serverPath + "users/logout",function(data){  
             if(!data.Error) {
-                alert(data.Message);
+                window.location.replace(data.Index);
                 //alert(data.Message);
             } else {
                 alert(data.Error);
@@ -83,27 +73,20 @@ function isEmail(email) {
   return regex.test(email);
 }
 </script>
-</head>
+	</head>
 
-<body>
-	<nav class="navbar navbar-default navbar-fixed-top">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="#">
-				<p>Login Page</p>
-			</a>
-		</div>
-		<div class="container">
-			<p class="navbar-text navbar-right">PVD Plus</a>
-			</p>
-		</div>
-	</nav>
-	<div class="form-group" style="margin-top: 100px; width : 400px; margin-left : 50px;">
-		<!--<input type="text" id="username" placeholder="Name" class="form-control"><br>-->
-		<input type="text" id="useremail" placeholder="Email" class="form-control"><br>
-		<input type="password" id="password" placeholder="Password" class="form-control"><br>
-		<input type="button" id="login-submit" value="Log In" class="btn btn-primary">&nbsp;<a href="" id="reg">Sign up here </a><br>
-		<input type="button" id="logout-submit" value="Log Out" class="btn btn-primary">
-	</div>
-</body>
+	<body>
+		<% include partials/headerBar.ejs %>
+			<div class="form-group" style="margin-top: 100px; width : 400px; margin-left : 50px;">
+				<!--<input type="text" id="username" placeholder="Name" class="form-control"><br>-->
+				<input type="text" id="useremail" placeholder="Email" class="form-control"><br>
+				<input type="password" id="password" placeholder="Password" class="form-control"><br>
+				<input type="button" id="login-submit" value="Log In" class="btn btn-primary">&nbsp;<a href="" id="reg">Sign up here </a>
+                <% if (user != null) { %>
+                <br>
+				<input type="button" id="logout-submit" value="Log Out" class="btn btn-primary">
+                <% } %>
+			</div>
+	</body>
 
-</html>
+	</html>

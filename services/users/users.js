@@ -5,21 +5,35 @@ require('es6-promise');
 //20161011 版本 Fiscol
 
 exports._logIn = function (_UserData) {
+    return _getUserData(_UserData).then(function (_DBUserData) {
+        if (_DBUserData.Password == _UserData.Password) {
+            _updateStatus(_DBUserData.UserName, true);
+            return Promise.resolve(
+                {
+                    "UserName": _DBUserData.UserName,
+                    "UserEmail": _DBUserData.UserEmail,
+                    "NowStep": _DBUserData.NowStep
+                }
+            );
+        }
+        else {
+            return Promise.reject(new Error("密碼錯誤"));
+        }
+    }).catch((err) => {
+        return Promise.reject(err);
+    })
+}
+var _getUserData = function (_UserData) {
     return exports._checkEmail(_UserData).then(function (_DBUserData) {
         if (_DBUserData != null) {
             var UserName;
             for (var prop in _DBUserData) {
                 if (typeof _DBUserData[prop] != 'function') {
                     UserName = prop;
+                    _DBUserData[UserName].UserName = UserName;
                 }
             }
-            if (_DBUserData[UserName].Password == _UserData.Password) {
-                _updateStatus(UserName, true);
-                return Promise.resolve(UserName + "，歡迎登入。");
-            }
-            else {
-                return Promise.reject(new Error("密碼錯誤"));
-            }
+            return Promise.resolve(_DBUserData[UserName]);
         }
         else {
             return Promise.reject(new Error("找不到對應使用者資料"));
@@ -69,7 +83,11 @@ exports._register = function (_UserData) {
             "Email": _UserData.Email,
             "Password": _UserData.Password
         };
-        db._transaction(Ref, Data)
+        db._transaction(Ref, Data);
+        var NowStep = "products";
+        return _saveSteps(_UserData, NowStep).then(function(){
+            return Promise.resolve(exports._logIn(_UserData));
+        });
     }
     return exports._checkEmail(_UserData).then(function (_DBUserData) {
         if (_DBUserData === null) {
@@ -79,38 +97,29 @@ exports._register = function (_UserData) {
             return Promise.reject("您已註冊Dong服務");
         }
     })
-
 }
 /*
 case "register" :
     SQLquery = "INSERT into user_login(user_email,user_password,user_name) VALUES ('"+req.body.user_email+"','"+req.body.user_password+"','"+req.body.user_name+"')";
     break;
 */
-exports._logOut = function(_UserData){
-    return exports._checkEmail(_UserData).then(function (_DBUserData) {
-        if (_DBUserData != null) {
-            var UserName;
-            for (var prop in _DBUserData) {
-                if (typeof _DBUserData[prop] != 'function') {
-                    UserName = prop;
-                }
-            }
-            _updateStatus(UserName, false);
-            return Promise.resolve(UserName + "已登出。");
-        }
-        else {
-            return Promise.reject(new Error("找不到對應使用者資料"));
-        }
+exports._logOut = function (_UserData) {
+    return _getUserData(_UserData).then(function (_DBUserData) {
+        _updateStatus(_DBUserData.UserName, false);
+        return Promise.resolve(_DBUserData.UserName + "已登出。");
+    }).catch((err) => {
+        return Promise.reject(err);
     })
 }
+
 var _updateStatus = function (_UserName, _Status) {
     var Ref = "DONGCloud/DongService/Users";
     var ChildName = _UserName;
     //date, status
     var Data = {
-                    "Online": _Status
-               };
-    if(_Status == true){
+        "Online": _Status
+    };
+    if (_Status == true) {
         Data.LastLoginAt = calculator._dateTimeNow();
     }
     db._update(Ref, ChildName, Data);
@@ -122,7 +131,7 @@ case "addStatus" :
     SQLquery = "INSERT into user_status(user_id,user_status) VALUES ("+req.session.key["user_id"]+",'"+req.body.status+"')";
     break;
 */
-exports._getList = function(){
+exports._getList = function () {
     //online/TotalUsers
     //username/status
 }
@@ -131,6 +140,42 @@ case "getStatus" :
     SQLquery = "SELECT * FROM user_status WHERE user_id="+req.session.key["user_id"];
     break;
 */
+//紀錄使用者目前操作步驟
+var _saveSteps = function (_UserData, _NowStep) {
+    return _getUserData(_UserData).then(function (_DBUserData) {
+        var Ref = "DONGCloud/DongService/Users";
+        var ChildName = _DBUserData.UserName;
+        var Data = {
+            "NowStep": _NowStep
+        };
+        db._update(Ref, ChildName, Data);
+        return Promise.resolve("已儲存" + _DBUserData.UserName + "的使用步驟。");
+    }).catch((err) => {
+        return Promise.reject(err);
+    })
+}
+
+exports._chooseProduct = function (_UserData, _Products) {
+    return _getUserData(_UserData).then(function (_DBUserData) {
+        var Ref = "DONGCloud/DongService/Users";
+        var ChildName = _DBUserData.UserName;
+        var Data = {
+            "Products": _Products
+        };
+        db._update(Ref, ChildName, Data);
+        var NowStep = "main";
+        return _saveSteps(_UserData, NowStep).then(function(){
+            return Promise.resolve(
+                {
+                    "UserName":_DBUserData.UserName,
+                    "NowStep": NowStep
+                }
+            );
+        })
+    }).catch((err) => {
+        return Promise.reject(err);
+    })
+}
 // exports._transaction = function (_UserData) {
 //     var Ref = "DONGCloud/DongService/Users/User2";
 //     var Data = {

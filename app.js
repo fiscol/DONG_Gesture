@@ -16,7 +16,12 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-
+io.on('connection', function(socket) {
+  console.log("onConnect:" + io.engine.clientsCount);
+  socket.on('disconnect', function() {
+    console.log("onDisConnect:" + io.engine.clientsCount);
+  });
+});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

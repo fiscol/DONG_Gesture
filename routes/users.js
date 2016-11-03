@@ -3,7 +3,8 @@ var session = require('express-session');
 var async = require('async');
 var usersService = require('../services/users/users.js');
 var router = express.Router();
-var serverPath = "http://dongcloud.herokuapp.com";
+var configDB = require('../config/path.js');
+var serverPath = configDB.ServerUrl;
 
 ////20161012 Fiscol 登入測試
 router.use(session({
@@ -12,9 +13,26 @@ router.use(session({
 }));
 
 router.get('/login', function (req, res) {
-    res.render('login.ejs');
+    res.render('login.ejs', { user: req.session.userName });
 });
 
+router.get('/main', function (req, res) {
+    if (req.param('user') == req.session.userName && req.session.userName) {
+        res.render('main.ejs', { title: 'DONG UserPage', userName: req.session.userName });
+    }
+    else {
+        res.redirect('/users/login');
+    }
+});
+
+router.get('/products', function (req, res) {
+    if (req.param('user') == req.session.userName && req.session.userName) {
+        res.render('products.ejs', { title: 'DONG Products', userName: req.session.userName });
+    }
+    else {
+        res.redirect('/users/login');
+    }
+});
 //使用者註冊
 router.post('/checkEmail', function (req, res) {
     var UserData = req.body;
@@ -71,8 +89,14 @@ router.post('/register', function (req, res) {
     var RegisterData = req.body;
     //寫入使用者註冊資訊(
     usersService._register(RegisterData).then(function (data) {
+        req.session.isVisit = 1;
+        req.session.userEmail = data.UserEmail;
+        req.session.userName = data.UserName;
         //註冊成功
-        res.json({ "Message": "您已註冊成功" });
+        res.json({
+            "Message": "您已註冊成功",
+            "Index": serverPath + "users/" + data.NowStep + "?user=" + data.UserName
+        });
     }).catch((err) => {
         //註冊失敗
         res.json({ "Error": err });
@@ -84,34 +108,44 @@ router.post('/login', function (req, res) {
     var UserData = req.body;
     //取得登入狀況
     usersService._logIn(UserData).then(function (data) {
-        if (data != null) {
-            //登入成功
-            if (req.session.isVisit) {
-                if (req.session.userEmail == UserData.Email) {
-                    req.session.isVisit++;
-                    console.log(req.session);
-                    //res.json({"Message": "歡迎, 這是您第 " + req.session.isVisit + "次登入頁面"});
-                    res.json({ "Index": serverPath });
-                }
-                else {
-                    req.session.regenerate(function () {
-                        req.session.isVisit = 1;
-                        req.session.userEmail = UserData.Email;
-                        res.json({ "Index": serverPath });
-                        console.log(req.session);
-                    });
-                }
-            } else {
-                req.session.isVisit = 1;
-                req.session.userEmail = UserData.Email;
-                res.json({ "Index": serverPath });
+        //登入成功
+        if (req.session.isVisit) {
+            if (req.session.userEmail == UserData.Email) {
+                req.session.isVisit++;
                 console.log(req.session);
-                //res.json({"Message": "歡迎第一次登入本系統"});
+                //res.json({"Message": "歡迎, 這是您第 " + req.session.isVisit + "次登入頁面"});
+                res.json(
+                    {
+                        "Index": serverPath + "users/" + data.NowStep + "?user=" + data.UserName
+                    }
+                );
+            }
+            else {
+                req.session.regenerate(function () {
+                    req.session.isVisit = 1;
+                    req.session.userEmail = UserData.Email;
+                    req.session.userName = data.UserName;
+                    res.json(
+                        {
+                            "Index": serverPath + "users/" + data.NowStep + "?user=" + data.UserName
+                        }
+                    );
+                    console.log(req.session);
+                });
             }
         }
         else {
-            //權限不足
-            res.json({ "Error": "登入失敗" });
+            req.session.isVisit = 1;
+            req.session.userEmail = UserData.Email;
+            req.session.userName = data.UserName;
+            res.json(
+                {
+                    "Index": serverPath + "users/" + data.NowStep + "?user=" + data.UserName
+                }
+            );
+            //res.redirect('/users/main');
+            console.log(req.session);
+            //res.json({"Message": "歡迎第一次登入本系統"});
         }
     }).catch((err) => {
         //未傳入ID
@@ -135,31 +169,72 @@ router.post('/login', function (req, res) {
 
 //使用者登出
 router.get('/logout', function (req, res) {
-    if(req.session.userEmail){
+    if (req.session.userEmail) {
         var UserData = {
             Email: req.session.userEmail
         }
         //取得登入狀況
         usersService._logOut(UserData).then(function (data) {
-            if (data != null) {
-                //登出成功
-                req.session.destroy(function () {
-                    res.json({ "Message": "已登出" });
-                });
-            }
-            else {
-                //權限不足
-                res.json({ "Error": "登出失敗" });
-            }
+            //登出成功
+            req.session.destroy(function () {
+                res.json(
+                    {
+                        "Index": serverPath + "users/login"
+                    }
+                );
+            });
         }).catch((err) => {
             //未傳入ID
             res.json({ "Error": "登出失敗" });
         })
     }
-    else{
-        res.json({"Error": "目前沒有登入的使用者"});
+    else {
+        res.json({ "Error": "目前沒有登入的使用者" });
     }
 })
+
+//紀錄使用者目前操作步驟
+// router.post('/saveSteps', function (req, res) {
+//     if (req.session.userEmail && req.body.NowStep) {
+//         var UserData = {
+//             Email: req.session.userEmail
+//         }
+//         var NowStep = req.body.NowStep;
+//         usersService._saveSteps(UserData, NowStep).then(function (data) {
+//             if (data != null) {
+//                 res.json({ "Message": data });
+//             }
+//         }).catch((err) => {
+//             res.json({ "Error": data });
+//         })
+//     }
+//     else {
+//         res.json({ "Error": "沒有傳入使用者帳號或操作步驟" });
+//     }
+// })
+
+//儲存使用者選擇產品
+router.post('/saveProduct', function (req, res) {
+    if (req.session.userEmail && req.body["Products[]"]) {
+        var UserData = {
+            Email: req.session.userEmail
+        }
+        var Products = req.body["Products[]"];
+        usersService._chooseProduct(UserData, Products).then(function (data) {
+            res.json(
+                {
+                    "Index": serverPath + "users/" + data.NowStep + "?user=" + data.UserName
+                }
+            );
+        }).catch((err) => {
+            res.json({ "Error": data });
+        })
+    }
+    else {
+        res.json({ "Error": "沒有傳入使用者帳號或商品" });
+    }
+})
+
 
 //使用者登出
 // router.post('/logout', function (req, res) {

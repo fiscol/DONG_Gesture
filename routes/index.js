@@ -3,7 +3,15 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'DONG Cloud Monitor Page' });
+  res.render('index', { title: 'DONG Cloud Monitor Page', userName:"Dong User" });
+});
+
+router.get('/products', function (req, res) {
+    res.render('products.ejs');
+});
+
+router.get('/main', function (req, res) {
+    res.render('main.ejs', { title: 'DONG UserPage', userName:req.userName });
 });
 
 router.get('/user', function(req, res, next){

@@ -95,11 +95,11 @@ exports._transaction = function(_Path, _Value, error){
 exports._transactionCount = function(_Path, _Callback){
 	var db = firebase.database();
 	var ref = db.ref(_Path);
-	ref.transaction(function(currentRank) {
+	return ref.transaction(function(currentRank) {
     // If _Path has never been set, currentRank will be `null`.
     return currentRank + 1;
     }).then(function(_Count){
-        _Callback(_Count);
+        return Promise.resolve(_Callback(_Count));
     });
 };
 // wilmaRef.transaction(function(currentData) {
