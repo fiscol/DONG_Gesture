@@ -11,7 +11,7 @@ exports._logIn = function (_UserData) {
             return Promise.resolve(
                 {
                     "UserName": _DBUserData.UserName,
-                    "UserEmail": _DBUserData.UserEmail,
+                    "UserEmail": _DBUserData.Email,
                     "NowStep": _DBUserData.NowStep
                 }
             );
