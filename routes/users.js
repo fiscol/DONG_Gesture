@@ -18,7 +18,7 @@ router.get('/login', function (req, res) {
 
 router.get('/main', function (req, res) {
     if (req.param('user') == req.session.userName && req.session.userName) {
-        res.render('main.ejs', { title: 'DONG UserPage', userName: req.session.userName });
+        res.render('main.ejs', { title: 'DONG UserPage', userName: req.session.userName, products:req.session.products });
     }
     else {
         res.redirect('/users/login');
@@ -109,6 +109,9 @@ router.post('/login', function (req, res) {
     //取得登入狀況
     usersService._logIn(UserData).then(function (data) {
         //登入成功
+        if(data.Products){
+            req.session.products = data.Products;
+        }
         if (req.session.isVisit) {
             if (req.session.userEmail == UserData.Email) {
                 req.session.isVisit++;

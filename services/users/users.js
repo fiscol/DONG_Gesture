@@ -12,7 +12,8 @@ exports._logIn = function (_UserData) {
                 {
                     "UserName": _DBUserData.UserName,
                     "UserEmail": _DBUserData.Email,
-                    "NowStep": _DBUserData.NowStep
+                    "NowStep": _DBUserData.NowStep,
+                    "Products": (_DBUserData.Products != null)? _DBUserData.Products : null
                 }
             );
         }
