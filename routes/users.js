@@ -92,7 +92,6 @@ router.post('/register', function (req, res) {
         req.session.isVisit = 1;
         req.session.userEmail = data.UserEmail;
         req.session.userName = data.UserName;
-        req.session.products = data.Products;
         //註冊成功
         res.json({
             "Message": "您已註冊成功",
@@ -225,6 +224,7 @@ router.post('/saveProduct', function (req, res) {
         }
         var Products = req.body["Products[]"];
         usersService._chooseProduct(UserData, Products).then(function (data) {
+            req.session.products = data.Products;
             res.json(
                 {
                     "Index": serverPath + "users/" + data.NowStep + "?user=" + data.UserName

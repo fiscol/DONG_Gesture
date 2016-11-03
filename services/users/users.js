@@ -169,7 +169,8 @@ exports._chooseProduct = function (_UserData, _Products) {
             return Promise.resolve(
                 {
                     "UserName":_DBUserData.UserName,
-                    "NowStep": NowStep
+                    "NowStep": NowStep,
+                    "Products": _DBUserData.Products
                 }
             );
         })
