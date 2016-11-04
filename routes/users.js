@@ -71,9 +71,6 @@ router.post('/login', function (req, res) {
     //取得登入狀況
     usersService._logIn(UserData).then(function (data) {
         //登入成功
-        if(data.Products){
-            req.session.products = data.Products;
-        }
         if (req.session.isVisit) {
             if (req.session.userEmail == UserData.Email) {
                 req.session.isVisit++;
@@ -90,6 +87,9 @@ router.post('/login', function (req, res) {
                     req.session.isVisit = 1;
                     req.session.userEmail = UserData.Email;
                     req.session.userName = data.UserName;
+                    if(data.Products){
+            req.session.products = data.Products;
+        }
                     res.json(
                         {
                             "Index": serverPath + "users/" + data.NowStep + "?user=" + data.UserName
@@ -103,6 +103,9 @@ router.post('/login', function (req, res) {
             req.session.isVisit = 1;
             req.session.userEmail = UserData.Email;
             req.session.userName = data.UserName;
+            if(data.Products){
+            req.session.products = data.Products;
+        }
             res.json(
                 {
                     "Index": serverPath + "users/" + data.NowStep + "?user=" + data.UserName
