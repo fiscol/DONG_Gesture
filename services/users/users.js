@@ -170,7 +170,7 @@ exports._chooseProduct = function (_UserData, _Products) {
                 {
                     "UserName":_DBUserData.UserName,
                     "NowStep": NowStep,
-                    "Products": _DBUserData.Products
+                    "Products": _Products
                 }
             );
         })

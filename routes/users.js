@@ -46,44 +46,6 @@ router.post('/checkEmail', function (req, res) {
     })
 })
 
-////Digital Taipei 使用者區塊
-//使用者登入(VIPCode)
-// router.post('/RegisterVIP', function (req, res) {
-//     var RegisterData = req.body;
-//     usersService._registerVIP(RegisterData).then(function (data) {
-//         res.json({ "Message": data });
-//     }).catch((err) => {
-//         //註冊失敗
-//         res.json({ "Error": err.message });
-//     })
-// })
-
-//測試遞增transaction API
-router.post('/transaction', function (req, res) {
-    var RegisterData = req.body;
-    //寫入使用者註冊資訊(
-    usersService._transaction(RegisterData).then(function (data) {
-        //註冊成功
-        res.json({ "Message": "您已註冊成功" });
-    }).catch((err) => {
-        //註冊失敗
-        res.json({ "Error": "未傳入使用者Email/UserName，或註冊時出現問題" });
-    })
-})
-
-//測試遞增transaction API
-router.get('/transactionCount', function (req, res) {
-    //var RegisterData = req.body;
-    //寫入使用者註冊資訊(
-    usersService._transactionCount().then(function (data) {
-        //註冊成功
-        res.json({ "Message": "您已更新User Count" });
-    }).catch((err) => {
-        //註冊失敗
-        res.json({ "Error": "更新User Count出現問題" });
-    })
-})
-
 //使用者註冊
 router.post('/register', function (req, res) {
     var RegisterData = req.body;
@@ -156,19 +118,7 @@ router.post('/login', function (req, res) {
     })
 })
 
-//試用帳號註冊
-//由Client傳入一組UID註冊
-// router.post('/register_trial', function (req, res) {
-//     var TrialUserData = req.body;
-//     //寫入使用者註冊資訊(
-//     usersService._registerTrial(TrialUserData).then(function (data) {
-//         //註冊成功
-//         res.json({ "Message": "新增試用帳號成功" });
-//     }).catch((err) => {
-//         //註冊失敗
-//         res.json({ "Error": "未傳入UID，或試用帳號建立時出現問題" });
-//     })
-// })
+
 
 //使用者登出
 router.get('/logout', function (req, res) {
@@ -196,25 +146,7 @@ router.get('/logout', function (req, res) {
     }
 })
 
-//紀錄使用者目前操作步驟
-// router.post('/saveSteps', function (req, res) {
-//     if (req.session.userEmail && req.body.NowStep) {
-//         var UserData = {
-//             Email: req.session.userEmail
-//         }
-//         var NowStep = req.body.NowStep;
-//         usersService._saveSteps(UserData, NowStep).then(function (data) {
-//             if (data != null) {
-//                 res.json({ "Message": data });
-//             }
-//         }).catch((err) => {
-//             res.json({ "Error": data });
-//         })
-//     }
-//     else {
-//         res.json({ "Error": "沒有傳入使用者帳號或操作步驟" });
-//     }
-// })
+
 
 //儲存使用者選擇產品
 router.post('/saveProduct', function (req, res) {
@@ -239,6 +171,31 @@ router.post('/saveProduct', function (req, res) {
     }
 })
 
+//測試遞增transaction API
+// router.post('/transaction', function (req, res) {
+//     var RegisterData = req.body;
+//     //寫入使用者註冊資訊(
+//     usersService._transaction(RegisterData).then(function (data) {
+//         //註冊成功
+//         res.json({ "Message": "您已註冊成功" });
+//     }).catch((err) => {
+//         //註冊失敗
+//         res.json({ "Error": "未傳入使用者Email/UserName，或註冊時出現問題" });
+//     })
+// })
+
+//測試遞增transaction API
+// router.get('/transactionCount', function (req, res) {
+//     //var RegisterData = req.body;
+//     //寫入使用者註冊資訊(
+//     usersService._transactionCount().then(function (data) {
+//         //註冊成功
+//         res.json({ "Message": "您已更新User Count" });
+//     }).catch((err) => {
+//         //註冊失敗
+//         res.json({ "Error": "更新User Count出現問題" });
+//     })
+// })
 
 //使用者登出
 // router.post('/logout', function (req, res) {
@@ -253,6 +210,52 @@ router.post('/saveProduct', function (req, res) {
 //         //未傳入使用者資訊
 //         res.json({ "Error": "未傳入使用者ID，或登出時出現問題" });
 //     })
+// })
+
+////Digital Taipei 使用者區塊
+//使用者登入(VIPCode)
+// router.post('/RegisterVIP', function (req, res) {
+//     var RegisterData = req.body;
+//     usersService._registerVIP(RegisterData).then(function (data) {
+//         res.json({ "Message": data });
+//     }).catch((err) => {
+//         //註冊失敗
+//         res.json({ "Error": err.message });
+//     })
+// })
+
+//試用帳號註冊
+//由Client傳入一組UID註冊
+// router.post('/register_trial', function (req, res) {
+//     var TrialUserData = req.body;
+//     //寫入使用者註冊資訊(
+//     usersService._registerTrial(TrialUserData).then(function (data) {
+//         //註冊成功
+//         res.json({ "Message": "新增試用帳號成功" });
+//     }).catch((err) => {
+//         //註冊失敗
+//         res.json({ "Error": "未傳入UID，或試用帳號建立時出現問題" });
+//     })
+// })
+
+//紀錄使用者目前操作步驟
+// router.post('/saveSteps', function (req, res) {
+//     if (req.session.userEmail && req.body.NowStep) {
+//         var UserData = {
+//             Email: req.session.userEmail
+//         }
+//         var NowStep = req.body.NowStep;
+//         usersService._saveSteps(UserData, NowStep).then(function (data) {
+//             if (data != null) {
+//                 res.json({ "Message": data });
+//             }
+//         }).catch((err) => {
+//             res.json({ "Error": data });
+//         })
+//     }
+//     else {
+//         res.json({ "Error": "沒有傳入使用者帳號或操作步驟" });
+//     }
 // })
 
 //測試加入Object屬性用
