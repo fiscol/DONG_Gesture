@@ -25,7 +25,26 @@ router.get('/editProducts', function (req, res) {
 
 })
 ////API
+//管理者登入
+router.post('/adminLogin', function (req, res) {
 
+})
+//管理者登出
+router.post('/adminLogout', function (req, res) {
+
+})
+//新增管理者
+router.post('/addNewAdmin', function (req, res) {
+
+})
+//取得管理者資訊
+router.get('/getAdminInfo', function (req, res) {
+
+})
+//編輯管理者資訊
+router.post('/updateAdminInfo', function (req, res) {
+
+})
 //取得產品清單
 router.get('/getProducts', function (req, res) {
 

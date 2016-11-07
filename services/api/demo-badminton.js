@@ -1,5 +1,5 @@
 //觸發DongServices(DEMO CASE使用)
-exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _MinderThreshold, _Localurl){
+exports._TriggerDongServices = function (req, _UID, _MinderCode, _MinderResult, _MinderThreshold, _Localurl) {
     //160815 Fiscol DEMO用，監控頁面當Rate > 0.5時才觸發DashBoard動畫
     if (_MinderResult.Rate >= _MinderThreshold) {
         // Send RealTimeData to View
@@ -12,7 +12,7 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
             ActionCode: _MinderResult.ActionCode,
             UID: _UID
         });
-    }else{
+    } else {
         req.io.sockets.emit('RealTimeData', {
             MaxSpeed: (Math.floor((Math.random() * 10) + 1)) * 17,
             MaxPower: (Math.floor((Math.random() * 10) + 1)) * 37,
@@ -31,7 +31,7 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
             Rate: _MinderResult.Rate,
             ActionCode: _MinderResult.ActionCode
         });
-    }else{
+    } else {
         // Send DBdata to View
         req.io.sockets.emit('DBData', {
             Name: _UID,
@@ -43,23 +43,36 @@ exports._TriggerDongServices = function(req, _UID, _MinderCode, _MinderResult, _
 
     // 過門檻值則觸發DONGSlide, DongMotion
     var DongServices = require('../../libraries/tool/dongservices.js');
-        // if (_MinderResult.Rate >= _MinderThreshold) {
-            var SignRate = _MinderResult.Rate;
-            var ActionCode = _MinderResult.ActionCode;
+    // if (_MinderResult.Rate >= _MinderThreshold) {
+    var SignRate = _MinderResult.Rate;
+    var ActionCode = _MinderResult.ActionCode;
+    if (_UID == "DigitalTaipei") {
+        if (_MinderResult.ActionCode == 1 && _MinderResult.Rate >= 0.5) {
+            DongServices._requestDongYoutube(SignRate, ActionCode);
+        }
+        else if (_MinderResult.ActionCode == 2 && _MinderResult.Rate > 0.4) {
             DongServices._requestDongSlide(SignRate, ActionCode);
-            console.log('_requestDongSlide Good')
-            if (_MinderResult.ActionCode == 1 && _MinderResult.Rate >= 0.55) {
-                console.log(_MinderResult.Rate);
-                DongServices._requestDongMotionSign(_Localurl);
-                console.log('Dong Services Sign.');
-                // DongServices._requestDongMotionKnock(_Localurl);
-                // console.log('Dong Services Knock.');
-            } else if (_MinderResult.ActionCode == 2 && _MinderResult.Rate > 0.4) {
-                // 2016/09/12 IOT Salon Demo Youtube Play
-                console.log(_MinderResult.Rate);
-                DongServices._requestDongMotionYoutubePlay(_Localurl);
-                console.log('Dong Services YoutubePlay.');
-
-            };
-        // };
+        };
     }
+    else {
+        DongServices._requestDongSlide(SignRate, ActionCode);
+    }
+
+    console.log('_requestDongSlide Good')
+    if (_UID != "DigitalTaipei") {
+        if (_MinderResult.ActionCode == 1 && _MinderResult.Rate >= 0.55) {
+            console.log(_MinderResult.Rate);
+            DongServices._requestDongMotionSign(_Localurl);
+            console.log('Dong Services Sign.');
+            // DongServices._requestDongMotionKnock(_Localurl);
+            // console.log('Dong Services Knock.');
+        } else if (_MinderResult.ActionCode == 2 && _MinderResult.Rate > 0.4) {
+            // 2016/09/12 IOT Salon Demo Youtube Play
+            console.log(_MinderResult.Rate);
+            DongServices._requestDongMotionYoutubePlay(_Localurl);
+            console.log('Dong Services YoutubePlay.');
+
+        };
+    }
+    // };
+}
