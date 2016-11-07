@@ -46,11 +46,11 @@ exports._TriggerDongServices = function (req, _UID, _MinderCode, _MinderResult, 
     // if (_MinderResult.Rate >= _MinderThreshold) {
     var SignRate = _MinderResult.Rate;
     var ActionCode = _MinderResult.ActionCode;
-    if (_UID == "DigitalTaipei") {
-        if (_MinderResult.ActionCode == 1 && _MinderResult.Rate >= 0.5) {
+    if (_UID == "70Hfhlb3P9VFEIeIozSqfoFy3eA2") {
+        if (_MinderResult.ActionCode == 7 && _MinderResult.Rate >= 0.5) {
             DongServices._requestDongYoutube(SignRate, ActionCode);
         }
-        else if (_MinderResult.ActionCode == 2 && _MinderResult.Rate > 0.4) {
+        else if (_MinderResult.ActionCode == 8 && _MinderResult.Rate > 0.4) {
             DongServices._requestDongSlide(SignRate, ActionCode);
         };
     }
@@ -59,7 +59,7 @@ exports._TriggerDongServices = function (req, _UID, _MinderCode, _MinderResult, 
     }
 
     console.log('_requestDongSlide Good')
-    if (_UID != "DigitalTaipei") {
+    if (_UID != "70Hfhlb3P9VFEIeIozSqfoFy3eA2") {
         if (_MinderResult.ActionCode == 1 && _MinderResult.Rate >= 0.55) {
             console.log(_MinderResult.Rate);
             DongServices._requestDongMotionSign(_Localurl);
