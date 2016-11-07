@@ -44,7 +44,7 @@ exports._requestDongYoutube = function (Rate, Code) {
       return
     }
   })
-
+}
 // 傳到DongMotion測試
 exports._requestDongMotionSign = function (_LocalURL) {
   var request = require('request');
