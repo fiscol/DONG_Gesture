@@ -47,7 +47,7 @@ exports._TriggerDongServices = function (req, _UID, _MinderCode, _MinderResult, 
     var SignRate = _MinderResult.Rate;
     var ActionCode = _MinderResult.ActionCode;
     if (_UID == "70Hfhlb3P9VFEIeIozSqfoFy3eA2") {
-        if (_MinderResult.ActionCode == 7 && _MinderResult.Rate >= 0.5) {
+        if (_MinderResult.ActionCode == 7 && _MinderResult.Rate >= 0.45) {
             DongServices._requestDongYoutube(SignRate, ActionCode);
         }
         else if (_MinderResult.ActionCode == 8 && _MinderResult.Rate > 0.4) {
