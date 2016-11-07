@@ -12,10 +12,13 @@ router.use(session({
     cookie: { maxAge: 60 * 1000 * 60 * 24 * 14 } //cookie存在兩週
 }));
 
+////頁面相關API
+//登入頁面
 router.get('/login', function (req, res) {
     res.render('login.ejs', { user: req.session.userName });
 });
 
+//主頁面
 router.get('/main', function (req, res) {
     if (req.param('user') == req.session.userName && req.session.userName) {
         res.render('main.ejs', { title: 'DONG UserPage', userName: req.session.userName, products:req.session.products });
@@ -25,6 +28,7 @@ router.get('/main', function (req, res) {
     }
 });
 
+//選擇商品頁面
 router.get('/products', function (req, res) {
     if (req.param('user') == req.session.userName && req.session.userName) {
         res.render('products.ejs', { title: 'DONG Products', userName: req.session.userName });
@@ -33,18 +37,8 @@ router.get('/products', function (req, res) {
         res.redirect('/users/login');
     }
 });
-//使用者註冊
-router.post('/checkEmail', function (req, res) {
-    var UserData = req.body;
-    //寫入使用者註冊資訊(
-    usersService._checkEmail(UserData).then(function (data) {
-        //註冊成功
-        res.json(data);
-    }).catch((err) => {
-        //註冊失敗
-        res.json({ "Error": "未傳入使用者Email，或查詢時出現問題" });
-    })
-})
+
+////Input with output API
 
 //使用者註冊
 router.post('/register', function (req, res) {
@@ -111,7 +105,6 @@ router.post('/login', function (req, res) {
                     "Index": serverPath + "users/" + data.NowStep + "?user=" + data.UserName
                 }
             );
-            //res.redirect('/users/main');
             console.log(req.session);
             //res.json({"Message": "歡迎第一次登入本系統"});
         }
@@ -120,8 +113,6 @@ router.post('/login', function (req, res) {
         res.json({ "Error": "登入失敗" });
     })
 })
-
-
 
 //使用者登出
 router.get('/logout', function (req, res) {
@@ -149,8 +140,6 @@ router.get('/logout', function (req, res) {
     }
 })
 
-
-
 //儲存使用者選擇產品
 router.post('/saveProduct', function (req, res) {
     if (req.session.userEmail && req.body["Products[]"]) {
@@ -173,6 +162,19 @@ router.post('/saveProduct', function (req, res) {
         res.json({ "Error": "沒有傳入使用者帳號或商品" });
     }
 })
+
+//以Email查詢使用者
+// router.post('/checkEmail', function (req, res) {
+//     var UserData = req.body;
+//     //寫入使用者註冊資訊(
+//     usersService._checkEmail(UserData).then(function (data) {
+//         //註冊成功
+//         res.json(data);
+//     }).catch((err) => {
+//         //註冊失敗
+//         res.json({ "Error": "未傳入使用者Email，或查詢時出現問題" });
+//     })
+// })
 
 //測試遞增transaction API
 // router.post('/transaction', function (req, res) {

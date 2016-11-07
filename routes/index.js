@@ -18,10 +18,6 @@ router.get('/user', function(req, res, next){
   res.render('userPage');
 });
 
-router.get('/admin', function(req, res, next){
-  res.render('admin');
-});
-
 router.get('/doc', function(req, res, next){
   res.render('docPage/docIndex');
 });
