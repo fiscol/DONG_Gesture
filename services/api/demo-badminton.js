@@ -54,9 +54,9 @@ exports._TriggerDongServices = function (req, _UID, _MinderCode, _MinderResult, 
             DongServices._requestDongSlide(SignRate, ActionCode);
         };
     }
-    else {
-        DongServices._requestDongSlide(SignRate, ActionCode);
-    }
+    // else {
+    //     DongServices._requestDongSlide(SignRate, ActionCode);
+    // }
 
     console.log('_requestDongSlide Good')
     if (_UID != "70Hfhlb3P9VFEIeIozSqfoFy3eA2") {
