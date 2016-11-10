@@ -5,6 +5,11 @@ var adminService = require('../services/admin/admin.js');
 var router = express.Router();
 var configDB = require('../config/path.js');
 var serverPath = configDB.ServerUrl;
+
+router.use(session({
+    secret: 'PVDPlusAdminLogin',
+    cookie: { maxAge: 60 * 1000 * 60 * 24 * 14 } //cookie存在兩週
+}));
 ////頁面
 
 //主頁面
