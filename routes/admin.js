@@ -1,7 +1,7 @@
 var express = require('express');
 var session = require('express-session');
 var async = require('async');
-var usersService = require('../services/users/users.js');
+var adminService = require('../services/admin/admin.js');
 var router = express.Router();
 var configDB = require('../config/path.js');
 var serverPath = configDB.ServerUrl;
@@ -9,7 +9,7 @@ var serverPath = configDB.ServerUrl;
 
 //主頁面
 router.get('/', function (req, res) {
-    if (req.param('user') == req.session.userName && req.session.userName) {
+    if (req.param('admin') == req.session.userName && req.session.userName) {
         res.render('admin.ejs', { title: 'DONG Admin', user: req.session.userName });
     }
     else {
@@ -27,7 +27,47 @@ router.get('/editProducts', function (req, res) {
 ////API
 //管理者登入
 router.post('/adminLogin', function (req, res) {
-
+    var AdminData = req.body;
+    //取得登入狀況
+    adminService._adminLogin(AdminData).then(function (data) {
+        //登入成功
+        if (req.session.Name && req.session.Rights) {
+            if (req.session.Name == AdminData.Name) {
+                console.log(req.session);
+                res.json(
+                    {
+                        "Index": serverPath + "admin?admin=" + AdminData.Name
+                    }
+                );
+            }
+            else {
+                req.session.regenerate(function () {
+                    req.session.Name = AdminData.Name;
+                    req.session.Rights = data.Rights;
+                    req.session.AdminID = data.AdminID;
+                    res.json(
+                        {
+                            "Index": serverPath + "admin?admin=" + AdminData.Name
+                        }
+                    );
+                    console.log(req.session);
+                });
+            }
+        }
+        else {
+            req.session.Name = AdminData.Name;
+            req.session.Rights = data.Rights;
+            req.session.AdminID = data.AdminID;
+            res.json(
+                {
+                    "Index": serverPath + "admin?admin=" + AdminData.Name
+                }
+            );
+            console.log(req.session);
+        }
+    }).catch((err) => {
+        res.json({ "Error": "登入失敗" });
+    })
 })
 //管理者登出
 router.post('/adminLogout', function (req, res) {

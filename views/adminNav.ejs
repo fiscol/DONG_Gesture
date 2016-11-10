@@ -159,6 +159,7 @@
 						<li>
 							<a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Products <i class="fa fa-fw fa-caret-down"></i></a>
 							<ul id="demo" class="collapse">
+								<% if(products != null){ %>
                                 <% if(typeof products == 'string'){ %>
                                 <li>
                                     <a href="#"><%= products %></a>
@@ -171,6 +172,7 @@
 									</li>
 									<% } %>
                                    <% } %> 
+								   <% } %> 
 							</ul>
 						</li>
 					</ul>
