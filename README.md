@@ -54,6 +54,8 @@
  - Edit Page(/doc): DOC內文格式 *_(BigQ)_*  
   **2016/11/07**  
  - Update User Login API(/users) *_(Fiscol)_*  
+  **2016/11/10**  
+ - Add Admin and Product API(/admin) *_(Fiscol)_*  
 
 
 # DONG Cloud Document

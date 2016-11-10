@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 // routes(controllers)
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var admin = require('./routes/admin');
 var api = require('./routes/api');
 var devapi = require('./routes/devapi');
 
@@ -41,6 +42,7 @@ app.use(function(req,res,next){
 });
 app.use('/', routes);
 app.use('/users', users);
+app.use('/admin', admin);
 app.use('/api', api); //api
 app.use('/devapi', devapi); //devapi
 
