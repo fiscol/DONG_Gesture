@@ -1,3 +1,3 @@
 module.exports = {
-  ServerUrl: 'http://dongcloud.herokuapp.com/',
+  ServerUrl: 'http://localhost:3004/',
 };

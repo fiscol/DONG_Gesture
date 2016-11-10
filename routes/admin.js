@@ -20,6 +20,10 @@ router.get('/', function (req, res) {
 router.get('/login', function (req, res) {
     res.render('login.ejs', { user: req.session.Name });
 })
+//編輯管理者資訊頁面
+router.get('/editAdmin', function (req, res) {
+
+})
 //編輯產品資訊頁面
 router.get('/editProducts', function (req, res) {
 
@@ -204,3 +208,5 @@ router.post('/getProductFrequency', function (req, res) {
 router.get('/getList', function (req, res) {
 
 })
+
+module.exports = router;
