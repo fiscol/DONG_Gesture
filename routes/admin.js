@@ -85,7 +85,7 @@ router.get('/adminLogout', function (req, res) {
             Name: req.session.Name
         }
         //取得登入狀況
-        adminService._logOut(AdminData).then(function (data) {
+        adminService._adminLogout(AdminData).then(function (data) {
             //登出成功
             req.session.destroy(function () {
                 res.json(

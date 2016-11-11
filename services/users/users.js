@@ -8,13 +8,14 @@ require('es6-promise');
 exports._logIn = function (_UserData) {
     return _getUserData(_UserData).then(function (_DBUserData) {
         if (_DBUserData.Password == _UserData.Password) {
-            _updateStatus(_DBUserData.UserName, true);
+            _updateStatus(_DBUserData.UserID, true);
             return Promise.resolve(
                 {
-                    "UserName": _DBUserData.UserName,
+                    "UserID": _DBUserData.UserID,
+                    "Name": _DBUserData.Name,
                     "UserEmail": _DBUserData.Email,
                     "NowStep": _DBUserData.NowStep,
-                    "Products": (_DBUserData.Products != null)? _DBUserData.Products : null
+                    "Products": (_DBUserData.Products != null) ? _DBUserData.Products : null
                 }
             );
         }
@@ -39,24 +40,17 @@ case "checkEmail" :
 
 //使用者註冊
 exports._register = function (_UserData) {
-    // var Ref = "DONGCloud/DongService/Users";
-    // var ChildName = _UserData.UserName;
-    // var Data = {
-    //     "Email": _UserData.Email,
-    //     "Password": _UserData.Password
-    // };
-    // db._set(Ref, ChildName, Data);
-    // return Promise.resolve("註冊完成");
     var Ref = "DONGCloud/DongService/Users/TotalUsers";
     var Callback = function (count) {
         Ref = "DONGCloud/DongService/Users/User" + count.snapshot.val();
         var Data = {
+            "Name": _UserData.Name,
             "Email": _UserData.Email,
             "Password": _UserData.Password
         };
         db._transaction(Ref, Data);
         var NowStep = "products";
-        return _saveSteps(_UserData, NowStep).then(function(){
+        return _saveSteps(_UserData, NowStep).then(function () {
             return Promise.resolve(exports._logIn(_UserData));
         });
     }
@@ -78,8 +72,8 @@ case "register" :
 //使用者登出
 exports._logOut = function (_UserData) {
     return _getUserData(_UserData).then(function (_DBUserData) {
-        _updateStatus(_DBUserData.UserName, false);
-        return Promise.resolve(_DBUserData.UserName + "已登出。");
+        _updateStatus(_DBUserData.UserID, false);
+        return Promise.resolve(_DBUserData.Name + "已登出。");
     }).catch((err) => {
         return Promise.reject(err);
     })
@@ -96,20 +90,33 @@ case "getStatus" :
     break;
 */
 
+//取得使用者商品清單
+exports._getProductList = function () {
+    // DB Table
+    var RefPath = "DONGCloud/DongService";
+    // UserID
+    var ChildName = "Products";
+    // 讀取商品資料, 回傳
+
+    return Promise.resolve(db._onValuePromise(RefPath, ChildName));
+
+}
+
 //儲存使用者選擇的商品
 exports._chooseProduct = function (_UserData, _Products) {
     return _getUserData(_UserData).then(function (_DBUserData) {
         var Ref = "DONGCloud/DongService/Users";
-        var ChildName = _DBUserData.UserName;
+        var ChildName = _DBUserData.UserID;
         var Data = {
             "Products": _Products
         };
         db._update(Ref, ChildName, Data);
         var NowStep = "main";
-        return _saveSteps(_UserData, NowStep).then(function(){
+        return _saveSteps(_UserData, NowStep).then(function () {
             return Promise.resolve(
                 {
-                    "UserName":_DBUserData.UserName,
+                    "UserID": _DBUserData.UserID,
+                    "Name":_DBUserData.Name,
                     "NowStep": NowStep,
                     "Products": _Products
                 }
@@ -118,6 +125,11 @@ exports._chooseProduct = function (_UserData, _Products) {
     }).catch((err) => {
         return Promise.reject(err);
     })
+}
+
+//以Email查詢使用者(對外函式)
+exports._checkUserByEmail = function (_UserData) {
+    return _checkEmail(_UserData);
 }
 
 //以Email查詢使用者
@@ -130,7 +142,7 @@ var _checkEmail = function (_UserData) {
     var Email = _UserData.Email;
     // 讀取使用者資料, 回傳
 
-    if (ChildName) {
+    if (Email) {
         //return Promise.resolve(db._onValuePromise(RefPath, ChildName));
         return Promise.resolve(db._equalTo(RefPath, ChildName, Email, null));
     }
@@ -143,14 +155,14 @@ var _checkEmail = function (_UserData) {
 var _getUserData = function (_UserData) {
     return _checkEmail(_UserData).then(function (_DBUserData) {
         if (_DBUserData != null) {
-            var UserName;
+            var UserID;
             for (var prop in _DBUserData) {
                 if (typeof _DBUserData[prop] != 'function') {
-                    UserName = prop;
-                    _DBUserData[UserName].UserName = UserName;
+                    UserID = prop;
+                    _DBUserData[UserID].UserID = UserID;
                 }
             }
-            return Promise.resolve(_DBUserData[UserName]);
+            return Promise.resolve(_DBUserData[UserID]);
         }
         else {
             return Promise.reject(new Error("找不到對應使用者資料"));
@@ -162,21 +174,21 @@ var _getUserData = function (_UserData) {
 var _saveSteps = function (_UserData, _NowStep) {
     return _getUserData(_UserData).then(function (_DBUserData) {
         var Ref = "DONGCloud/DongService/Users";
-        var ChildName = _DBUserData.UserName;
+        var ChildName = _DBUserData.UserID;
         var Data = {
             "NowStep": _NowStep
         };
         db._update(Ref, ChildName, Data);
-        return Promise.resolve("已儲存" + _DBUserData.UserName + "的使用步驟。");
+        return Promise.resolve("已儲存" + _DBUserData.Name + "的使用步驟。");
     }).catch((err) => {
         return Promise.reject(err);
     })
 }
 
 //更新使用者上線狀態
-var _updateStatus = function (_UserName, _Status) {
+var _updateStatus = function (_UserID, _Status) {
     var Ref = "DONGCloud/DongService/Users";
-    var ChildName = _UserName;
+    var ChildName = _UserID;
     //date, status
     var Data = {
         "Online": _Status

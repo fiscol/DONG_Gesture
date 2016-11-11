@@ -37,13 +37,13 @@ exports._addNewAdmin = function (_AdminData) {
         var Callback = function (count) {
             Ref = "DONGCloud/DongService/Admin/" + count.snapshot.val();
             var Data = {
-                "Name": _AdminData.Email,
+                "Name": _AdminData.Name,
                 "Password": _AdminData.Password,
                 "Rights": _AdminData.Rights
             };
             db._transaction(Ref, Data);
 
-            return Promise.resolve(exports._logIn(_AdminData));
+            return Promise.resolve(exports._adminLogin(_AdminData));
 
         }
         return _checkAdmin(_AdminData).then(function (_DBAdminData) {

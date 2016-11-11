@@ -21,7 +21,7 @@ router.get('/login', function (req, res) {
 //主頁面
 router.get('/main', function (req, res) {
     if (req.param('user') == req.session.userName && req.session.userName) {
-        res.render('main.ejs', { title: 'DONG UserPage', userName: req.session.userName, products:req.session.products });
+        res.render('main.ejs', { title: 'DONG UserPage', userName: req.session.userName, products: req.session.products });
     }
     else {
         res.redirect('/users/login');
@@ -43,19 +43,24 @@ router.get('/products', function (req, res) {
 //使用者註冊
 router.post('/register', function (req, res) {
     var RegisterData = req.body;
-    //寫入使用者註冊資訊(
+    //寫入使用者註冊資訊
     usersService._register(RegisterData).then(function (data) {
         req.session.isVisit = 1;
         req.session.userEmail = data.UserEmail;
-        req.session.userName = data.UserName;
+        req.session.userName = data.Name;
+        req.session.userID = data.UserID;
         //註冊成功
         res.json({
-            "Message": "您已註冊成功",
-            "Index": serverPath + "users/" + data.NowStep + "?user=" + data.UserName
+            "Message": "Success",
+            "Index": serverPath + "users/" + data.NowStep + "?user=" + data.Name,
+            "Page": data.NowStep
         });
     }).catch((err) => {
         //註冊失敗
-        res.json({ "Error": err });
+        res.json({
+            "Error": err,
+            "Message": "Failed"
+        });
     })
 })
 
@@ -72,7 +77,9 @@ router.post('/login', function (req, res) {
                 //res.json({"Message": "歡迎, 這是您第 " + req.session.isVisit + "次登入頁面"});
                 res.json(
                     {
-                        "Index": serverPath + "users/" + data.NowStep + "?user=" + data.UserName
+                        "Message": "Success",
+                        "Index": serverPath + "users/" + data.NowStep + "?user=" + data.Name,
+                        "Page": data.NowStep
                     }
                 );
             }
@@ -80,13 +87,16 @@ router.post('/login', function (req, res) {
                 req.session.regenerate(function () {
                     req.session.isVisit = 1;
                     req.session.userEmail = UserData.Email;
-                    req.session.userName = data.UserName;
-                    if(data.Products){
-            req.session.products = data.Products;
-        }
+                    req.session.userName = data.Name;
+                    req.session.userID = data.UserID;
+                    if (data.Products) {
+                        req.session.products = data.Products;
+                    }
                     res.json(
                         {
-                            "Index": serverPath + "users/" + data.NowStep + "?user=" + data.UserName
+                            "Message": "Success",
+                            "Index": serverPath + "users/" + data.NowStep + "?user=" + data.Name,
+                            "Page": data.NowStep
                         }
                     );
                     console.log(req.session);
@@ -96,13 +106,16 @@ router.post('/login', function (req, res) {
         else {
             req.session.isVisit = 1;
             req.session.userEmail = UserData.Email;
-            req.session.userName = data.UserName;
-            if(data.Products){
-            req.session.products = data.Products;
-        }
+            req.session.userName = data.Name;
+            req.session.userID = data.UserID;
+            if (data.Products) {
+                req.session.products = data.Products;
+            }
             res.json(
                 {
-                    "Index": serverPath + "users/" + data.NowStep + "?user=" + data.UserName
+                    "Message": "Success",
+                    "Index": serverPath + "users/" + data.NowStep + "?user=" + data.Name,
+                    "Page": data.NowStep
                 }
             );
             console.log(req.session);
@@ -110,7 +123,10 @@ router.post('/login', function (req, res) {
         }
     }).catch((err) => {
         //未傳入ID
-        res.json({ "Error": "登入失敗" });
+        res.json({
+            "Error": err,
+            "Message": "Failed"
+        });
     })
 })
 
@@ -126,17 +142,87 @@ router.get('/logout', function (req, res) {
             req.session.destroy(function () {
                 res.json(
                     {
+                        "Message": "Success",
                         "Index": serverPath + "users/login"
                     }
                 );
             });
         }).catch((err) => {
             //未傳入ID
-            res.json({ "Error": "登出失敗" });
+            res.json({
+                "Error": err,
+                "Message": "Failed"
+            });
         })
     }
     else {
         res.json({ "Error": "目前沒有登入的使用者" });
+    }
+})
+
+//確認是否有使用者登入
+router.get('/checkUser', function (req, res) {
+    if (req.session.userEmail) {
+        var UserData = {
+            "Email": req.session.userEmail
+        }
+        //取得登入狀況
+        usersService._checkUserByEmail(UserData).then(function (data) {
+            //登出成功
+            req.session.destroy(function () {
+                res.json(
+                    {
+                        "Message": "Success",
+                        "Index": serverPath + "users/login"
+                    }
+                );
+            });
+        }).catch((err) => {
+            //未傳入ID
+            res.json({
+                "Error": err,
+                "Message": "Failed"
+            });
+        })
+    }
+    else {
+        res.json({
+            "Error": "目前沒有登入的使用者",
+            "Message": "Failed"
+        })
+    }
+})
+////需調整前後端的產品ＡＰＩ
+//取得產品清單與選購紀錄
+router.get('/getProductList', function (req, res) {
+    if (req.session.userEmail) {
+        var Products;
+        usersService._getProductList().then(function (data) {
+            Products = data;
+            if (req.session.products) {
+                for (var i = 1; i <= Products.TotalProducts; i++) {
+                    Products["Product" + i]["Purchased"] = false;
+                    for (var j = 0; j < req.session.products.length; j++) {
+                        if (Products["Product" + i].Name == req.session.products[j]) {
+                            Products["Product" + i]["Purchased"] = true;
+                        }
+                    }
+                }
+                res.json(Products);
+            }
+            else {
+                for (var i = 0; i < Products.TotalProducts; i++) {
+                    Products["Product" + i]["Purchased"] = false;
+                }
+                res.json(Products);
+            }
+        });
+    }
+    else {
+        res.json({
+            "Error": "沒有登入的使用者, 無法選擇產品",
+            "Message": "Failed"
+        })
     }
 })
 
@@ -151,11 +237,15 @@ router.post('/saveProduct', function (req, res) {
             req.session.products = data.Products;
             res.json(
                 {
-                    "Index": serverPath + "users/" + data.NowStep + "?user=" + data.UserName
+                    "Message": "Success",
+                    "Index": serverPath + "users/" + data.NowStep + "?user=" + data.Name
                 }
             );
         }).catch((err) => {
-            res.json({ "Error": data });
+            res.json({
+                "Error": err,
+                "Message": "Failed"
+            });
         })
     }
     else {
@@ -163,6 +253,35 @@ router.post('/saveProduct', function (req, res) {
     }
 })
 
+//測試session
+router.get('/setSession', function (req, res) {
+    req.session.user = "Mark";
+    res.json({ "Message": "已存入session" });
+})
+
+router.get('/checkSession', function (req, res) {
+    if (req.session.user) {
+        res.json({
+            "Message": "找到session了",
+            "user": req.session.user
+        });
+    }
+    else {
+        res.json({
+            "Message": "沒有找到session"
+        });
+    }
+})
+
+router.get('/removeSession', function (req, res) {
+    req.session.destroy(function () {
+        res.json(
+            {
+                "Message": "移除session了"
+            }
+        );
+    });
+})
 //以Email查詢使用者
 // router.post('/checkEmail', function (req, res) {
 //     var UserData = req.body;

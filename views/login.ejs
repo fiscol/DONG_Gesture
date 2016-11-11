@@ -1,15 +1,15 @@
 <% include partials/head.ejs %>
 	<script>
 $(document).ready(function(){
-    var serverPath = "http://dongcloud.herokuapp.com/";
-    //$("#username").hide();
+    var serverPath = "http://localhost:3004/";
+    $("#username").hide();
     $('#login-submit').click(function(e){
     e.preventDefault();
     if($("#useremail").val().length != 0 && $("#password").val().length != 0){
         if(isEmail($("#useremail").val())){
       if($(this).attr('value') === 'Register') {
         $.post(serverPath + "users/register",{
-               //user_name : $("#username").val(), 
+               Name : $("#username").val(), 
                Email : $("#useremail").val(), 
                Password : $("#password").val() 
              },function(data){
@@ -18,7 +18,7 @@ $(document).ready(function(){
         } else {
             alert(data.Message);
             window.location.replace(data.Index);
-            //$("#username").hide();
+            $("#username").hide();
             //$("#login-submit").prop('value','Log in');
         }
     });
@@ -46,7 +46,7 @@ $(document).ready(function(){
     });
     $("#reg").click(function(event){
         event.preventDefault();
-        //$("#username").show('slow');
+        $("#username").show('slow');
         if($("#login-submit").val() == "Log In"){
             $("#reg").prop('text','Login with another account');
             $("#login-submit").prop('value','Register');
@@ -78,7 +78,7 @@ function isEmail(email) {
 	<body>
 		<% include partials/headerBar.ejs %>
 			<div class="form-group" style="margin-top: 100px; width : 400px; margin-left : 50px;">
-				<!--<input type="text" id="username" placeholder="Name" class="form-control"><br>-->
+				<input type="text" id="username" placeholder="Name" class="form-control"><br>
 				<input type="text" id="useremail" placeholder="Email" class="form-control"><br>
 				<input type="password" id="password" placeholder="Password" class="form-control"><br>
 				<input type="button" id="login-submit" value="Log In" class="btn btn-primary">&nbsp;<a href="" id="reg">Sign up here </a>
