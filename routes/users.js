@@ -254,9 +254,15 @@ router.post('/saveProduct', function (req, res) {
 })
 
 //測試session
-router.get('/setSession', function (req, res) {
-    req.session.user = "Mark";
-    res.json({ "Message": "已存入session" });
+router.post('/setSession', function (req, res) {
+    var Data = req.body;
+    if (Data.User) {
+        req.session.user = Data.User;
+        res.json({ "Message": "已存入session" });
+    }
+    else{
+        res.json({ "Message": "沒有傳入User, 本次未存入session" });
+    }
 })
 
 router.get('/checkSession', function (req, res) {
