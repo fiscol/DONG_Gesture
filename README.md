@@ -56,6 +56,8 @@
  - Update User Login API(/users) *_(Fiscol)_*  
   **2016/11/10**  
  - Add Admin and Product API(/admin) *_(Fiscol)_*  
+  **2016/11/12**  
+ - 配合資料庫重構，更新相關API *_(Fiscol)_*  
 
 
 # DONG Cloud Document

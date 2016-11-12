@@ -1,4 +1,4 @@
-var db = require('../../libraries/firebase_db.js');
+var pattern = require('../api/pattern.js')
 
 exports._RawProcess = function (_RawData) {
     /*
@@ -10,13 +10,14 @@ exports._RawProcess = function (_RawData) {
     var Threshold = 0.18;
     // 轉換為一列編碼
     var UID = _RawData.UID;
+    var Product = _RawData.Product;
     var ProcessedCode = ProcessBetaService._processData(_RawData, Threshold).mixBinaryCodes;
     var MinderThreshold = 0.5;
     var PatternModel = 1;
     var PatternType = 1;
     // 運算Rate, Pattern 
     return MinderBetaService._lcsRateComputing(
-        UID, ProcessedCode, MinderThreshold, PatternModel, PatternType).then(function (_MinderResult) {
+        UID, Product, ProcessedCode, MinderThreshold, PatternModel, PatternType).then(function (_MinderResult) {
             /*
     Unit Part
     */
@@ -38,10 +39,9 @@ exports._RawProcess = function (_RawData) {
             DB Part
             */
             // 存到DB
-            var IsTrial = false;
-            return db._GetRequestCount(UID, IsTrial).then(function (_Count) {
-                db._SaveMotion(UID, DataFinish, _Count);
-                db._AddRequestCount(UID, IsTrial, _Count);
+            return pattern._GetRequestCount(UID, Product).then(function (_Count) {
+                pattern._SaveMotion(UID, Product, DataFinish, _Count);
+                pattern._AddRequestCount(UID, Product, _Count);
                 return _MinderResult;
             });
 
@@ -56,13 +56,14 @@ exports._MinderProcess = function (_MinderData) {
     // 運算Rate, Pattern
     var MinderBetaService = require('../unit/kernal/minderbeta.js');
     var UID = _MinderData.UID;
+    var Product = _MinderData.Product;
     var ProcessedCode = JSON.parse(_MinderData.Code);
     var MinderThreshold = 0.5;
     var PatternModel = 1;
     var PatternType = 1;
     // 運算Rate, Pattern 
     return MinderBetaService._lcsRateComputing(
-        UID, ProcessedCode, MinderThreshold, PatternModel, PatternType).then(function (_MinderResult) {
+        UID, Product, ProcessedCode, MinderThreshold, PatternModel, PatternType).then(function (_MinderResult) {
             /*
     Unit Part
     */
@@ -83,10 +84,9 @@ exports._MinderProcess = function (_MinderData) {
             DB Part
             */
             // 存到DB
-            var IsTrial = false;
-            return db._GetRequestCount(UID, IsTrial).then(function (_Count) {
-                db._SaveMotion(UID, DataFinish, _Count);
-                db._AddRequestCount(UID, IsTrial, _Count);
+            return pattern._GetRequestCount(UID, Product).then(function (_Count) {
+                pattern._SaveMotion(UID, Product, DataFinish, _Count);
+                pattern._AddRequestCount(UID, Product, _Count);
                 return _MinderResult;
             });
         });

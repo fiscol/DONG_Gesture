@@ -1,4 +1,5 @@
 var express = require('express');
+var patternServices = require('../services/api/pattern.js');
 var minderBetaService = require('../services/unit/kernal/minderbeta.js');
 var processBetaService = require('../services/unit/kernal/processbeta.js');
 var train = require('../services/api/train.js');
@@ -31,38 +32,40 @@ router.post('/:devcode/LCS', function (req, res, next) {
 //Add New User Pattern(Private)
 router.post('/:devcode/AddPattern', function (req, res, next) {
     var UID = req.body.UID;
-    if (UID) {
+    var Product = req.body.Product;
+    if (UID && Product) {
         var DataRaw = req.body;
         var MinderData = JSON.parse(DataRaw.Code).toString();
-        db._GetPatternCount(UID, false).then(function (_PatternCount) {
-            db._GetSampleCount(UID, false).then(function (_SampleArr) {
+        patternServices._GetPatternCount(UID, Product).then(function (_PatternCount) {
+            patternServices._GetSampleCount(UID, Product).then(function (_SampleArr) {
                 var SampleArr = _SampleArr.split(',');
                 var SampleCount = SampleArr[_PatternCount - 1];
                 var Threshold = DataRaw.Threshold;
-                train._AddNewSample(UID, _PatternCount, SampleCount, SampleArr, MinderData, Threshold).then(function (_Result) {
+                train._AddNewSample(UID, Product, _PatternCount, SampleCount, SampleArr, MinderData, Threshold).then(function (_Result) {
                     res.json(_Result);
                 })
             });
         })
     }
     else {
-        res.json({ "Error": "未傳入會員ID" });
+        res.json({ "Error": "未傳入會員ID或商品" });
     }
 })
 
 router.post('/:devcode/CheckPattern', function (req, res, next) {
     var UID = req.body.UID;
-    if (UID) {
+    var Product = req.body.Product;
+    if (UID && Product) {
         var DataRaw = req.body;
         var MinderData = JSON.parse(DataRaw.Code).toString();
         var CheckResult = "Fail";
-        db._GetPatternCount(UID, false).then(function (_PatternCount) {
-            db._GetSampleCount(UID, false).then(function (_SampleArr) {
+        patternServices._GetPatternCount(UID, Product).then(function (_PatternCount) {
+            patternServices._GetSampleCount(UID, Product).then(function (_SampleArr) {
                 for (var i = 1; i <= _PatternCount; i++) {
                     var Threshold = 0.6;
                     var SampleArr = _SampleArr.split(',');
                     var SampleCount = SampleArr[i - 1];
-                    train._CheckResults(UID, i, SampleCount, MinderData, Threshold).then(function (_Result) {
+                    train._CheckResults(UID, Product, i, SampleCount, MinderData, Threshold).then(function (_Result) {
                         if (_Result.Message == "Pass") {
                             CheckResult = "Pass";
                             var punch = (_Result.Pattern == 1) ? "heavy" : "normal";

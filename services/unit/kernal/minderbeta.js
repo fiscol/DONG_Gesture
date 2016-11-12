@@ -1,5 +1,5 @@
 var lcsLength = require("./lcslength.js");
-var db = require('../../../libraries/firebase_db.js');
+var Pattern = require('../../api/pattern.js');
 var String = require("../../../libraries/tool/string.js");
 var FinalCode = [];
 var PatternTypeNumPhone = 1;
@@ -9,7 +9,7 @@ var PatternTypeNumPhone = 1;
 //     'LCSActionCode': _lcsRateComputing(FinalCode, 0.55, 1, PatternTypeNumPhone).ActionCode
 // };
 
-exports._lcsRateComputing = function (_UID, _Input, _Threshold, _PatternModel, _PatternType) {
+exports._lcsRateComputing = function (_UID, _Product, _Input, _Threshold, _PatternModel, _PatternType) {
     var PatternCase = new Array(30);
     var LCSScore = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     var LCSRate = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
@@ -18,7 +18,7 @@ exports._lcsRateComputing = function (_UID, _Input, _Threshold, _PatternModel, _
 
     //=============Test Code=============
     if (_PatternModel === 1) {
-        return db._GetUserPatterns(_UID).then(function (_PatternData) {
+        return Pattern._GetUserPatterns(_UID, _Product).then(function (_PatternData) {
             for (var i = 0; i < Object.keys(_PatternData).length; i++) {
                 var Key = String._format("Pattern{0}", i + 1);
                 PatternCase[i] = _PatternData[Key].split(',').map(Number);

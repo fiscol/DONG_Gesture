@@ -31,7 +31,13 @@ router.get('/main', function (req, res) {
 //選擇商品頁面
 router.get('/products', function (req, res) {
     if (req.param('user') == req.session.userName && req.session.userName) {
-        res.render('products.ejs', { title: 'DONG Products', userName: req.session.userName });
+        var Products;
+        _getProductList(req).then(function (data) {
+            Products = data;
+            res.render('products.ejs', { title: 'DONG Products', userName: req.session.userName, products:Products });
+        }).catch((err) => {
+            res.redirect('/users/login');
+        });
     }
     else {
         res.redirect('/users/login');
@@ -194,10 +200,10 @@ router.get('/checkUser', function (req, res) {
 })
 ////需調整前後端的產品ＡＰＩ
 //取得產品清單與選購紀錄
-router.get('/getProductList', function (req, res) {
+var _getProductList = function (req) {
     if (req.session.userEmail) {
         var Products;
-        usersService._getProductList().then(function (data) {
+        return usersService._getProductList().then(function (data) {
             Products = data;
             if (req.session.products) {
                 for (var i = 1; i <= Products.TotalProducts; i++) {
@@ -208,22 +214,30 @@ router.get('/getProductList', function (req, res) {
                         }
                     }
                 }
-                res.json(Products);
+                return Promise.resolve(Products);
             }
             else {
                 for (var i = 0; i < Products.TotalProducts; i++) {
                     Products["Product" + i]["Purchased"] = false;
                 }
-                res.json(Products);
+                return Promise.resolve(Products);
             }
         });
     }
     else {
-        res.json({
+        return Promise.reject({
             "Error": "沒有登入的使用者, 無法選擇產品",
             "Message": "Failed"
-        })
+        });
     }
+}
+router.get('/getProductList', function (req, res) {
+    _getProductList(req).then(function (data) {
+        res.json(data);
+    }).catch((err) => {
+        //未傳入ID
+        res.json(err);
+    });
 })
 
 //儲存使用者選擇產品
@@ -260,7 +274,7 @@ router.post('/setSession', function (req, res) {
         req.session.user = Data.User;
         res.json({ "Message": "已存入session" });
     }
-    else{
+    else {
         res.json({ "Message": "沒有傳入User, 本次未存入session" });
     }
 })

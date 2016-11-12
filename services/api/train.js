@@ -1,5 +1,6 @@
 //先記一些TIP
 var db = require('../../libraries/firebase_db.js');
+var pattern = require('../api/pattern.js')
 var minderBetaService = require('../unit/kernal/minderbeta.js');
 //General
 
@@ -7,12 +8,12 @@ var minderBetaService = require('../unit/kernal/minderbeta.js');
 
 //Add 3 Sample For Initial Pattern
 //Return Added Sample Count, Message Succeeded or Failed
-exports._AddNewSample = function (_UID, _PatternCount, _SampleCount, _SampleArr, _MinderData, _Threshold) {
+exports._AddNewSample = function (_UID, _Product, _PatternCount, _SampleCount, _SampleArr, _MinderData, _Threshold) {
     var AddResult = false;
     var ErrorMessage = "";
     //_SampleCount != 1  --->  Use Sample1 / Sample2 to Calculate Rate and TraceBack
     if (_SampleCount >= 1 && _SampleCount < 3) {
-        var RefPath = "DONGCloud/PatternData/" + _UID;
+        var RefPath = "DONGCloud/PatternData/" + _Product + "/" + _UID;
         var ChildName = "Pattern" + _PatternCount;
         //Compare New Sample Pattern with Added Sample Pattern
         return db._onValuePromise(RefPath, ChildName).then(function (_Data) {
@@ -25,7 +26,7 @@ exports._AddNewSample = function (_UID, _PatternCount, _SampleCount, _SampleArr,
             //Update SampleCount and Add New Sample Pattern
             if (AddResult == true) {
                 //Update SampleCount
-                var RefPath = "DONGCloud/DongService";
+                var RefPath = "DONGCloud/DongService/Stats/" + _Product + "/UserData";
                 var ChildName = _UID;
                 _SampleArr[_SampleArr.length - 1] = (Number(_SampleCount) + 1);
                 var Data = {
@@ -33,7 +34,7 @@ exports._AddNewSample = function (_UID, _PatternCount, _SampleCount, _SampleArr,
                 }
                 db._update(RefPath, ChildName, Data);
                 //Add New Sample Pattern
-                RefPath = "DONGCloud/PatternData/" + _UID + "/Pattern" + _PatternCount;
+                RefPath = "DONGCloud/PatternData/" + _Product + "/" + _UID + "/Pattern" + _PatternCount;
                 ChildName = "Sample" + (Number(_SampleCount) + 1);
                 Data = {
                     "MinderData": _MinderData,
@@ -53,7 +54,7 @@ exports._AddNewSample = function (_UID, _PatternCount, _SampleCount, _SampleArr,
     }
     else if (_SampleCount == 3) {
         //Update PatternCount and SampleCount
-        var RefPath = "DONGCloud/DongService";
+        var RefPath = "DONGCloud/DongService/Stats/" + _Product + "/UserData";
         var ChildName = _UID;
         _PatternCount++;
         _SampleArr.push(1);
@@ -63,7 +64,7 @@ exports._AddNewSample = function (_UID, _PatternCount, _SampleCount, _SampleArr,
         }
         db._update(RefPath, ChildName, Data);
         //Add New Sample Pattern
-        RefPath = "DONGCloud/PatternData/" + _UID + "/Pattern" + _PatternCount;
+        RefPath = "DONGCloud/PatternData/" + _Product + "/" + _UID + "/Pattern" + _PatternCount;
         _SampleCount = 1;
         ChildName = "Sample" + _SampleCount;
         Data = {
@@ -85,14 +86,14 @@ exports._AddNewSample = function (_UID, _PatternCount, _SampleCount, _SampleArr,
 }
 //Set Threshold (Strict, Medium, Easy)
 //Return Message Succeeded or Failed
-exports._SetPatternLevel = function (UID, _PatternCount, _ThresholdLevel) {
+exports._SetPatternLevel = function (UID, _Product, _PatternCount, _ThresholdLevel) {
     //Strict=>0.8
     //Medium=>0.6
     //Easy=>0.5
 }
 //Reset 3 Sample For Initial Pattern
 //Return Reseted Sample Count, Message Succeeded or Failed
-exports._ResetPattern = function (_UID, _PatternCount, _SampleCount) {
+exports._ResetPattern = function (_UID, _Product, _PatternCount, _SampleCount) {
     //Clear Pattern Sample
     //
 }
@@ -100,8 +101,8 @@ exports._ResetPattern = function (_UID, _PatternCount, _SampleCount) {
 
 
 //Check and Update Results
-exports._CheckResults = function (_UID, _PatternCount, _SampleCount, _MinderData, _Threshold) {
-    var RefPath = "DONGCloud/PatternData/" + _UID;
+exports._CheckResults = function (_UID, _Product, _PatternCount, _SampleCount, _MinderData, _Threshold) {
+    var RefPath = "DONGCloud/PatternData/" + _Product + "/" + _UID;
     var ChildName = "Pattern" + _PatternCount;
     return db._onValuePromise(RefPath, ChildName).then(function (_Data) {
         var RateArr = [];
@@ -127,18 +128,18 @@ exports._CheckResults = function (_UID, _PatternCount, _SampleCount, _MinderData
                 UpdateData.TotalCount = _Data["Sample" + i].TotalCount + 1;
                 UpdateData.StandardDeviation = _StandardDeviation(UpdateData.RateArr.split(','), UpdateData.AVGRate, UpdateData.TotalCount);
 
-                var RefPath = "DONGCloud/PatternData/" + _UID + "/Pattern" + _PatternCount;
+                var RefPath = "DONGCloud/PatternData/" + _Product + "/" + _UID + "/Pattern" + _PatternCount;
 
                 var ChildName = "Sample" + i;
                 db._update(RefPath, ChildName, UpdateData);
 
                 if (Rate < _Data["Sample" + i].Threshold && (Rate >= UpdateData.AVGRate - UpdateData.StandardDeviation || Rate <= UpdateData.AVGRate + UpdateData.StandardDeviation)) {
-                    db._GetTrainingCount(_UID, false).then(function (_TrainingCount) {
+                    pattern._GetTrainingCount(_UID, false).then(function (_TrainingCount) {
                         if (_TrainingCount != null) {
-                            _CheckTrainingResults(_UID, _PatternCount, _TrainingCount, _MinderData, _Threshold);
+                            _CheckTrainingResults(_UID, _Product, _PatternCount, _TrainingCount, _MinderData, _Threshold);
                         }
                         else {
-                            _AddTrainingData(_UID, _PatternCount, _TrainingCount, _MinderData, _Threshold);
+                            _AddTrainingData(_UID, _Product, _PatternCount, _TrainingCount, _MinderData, _Threshold);
                         }
                     })
                 }
@@ -183,8 +184,8 @@ function _StandardDeviation(_RateArr, _AVG, _TotalCount) {
 
 //Interval
 //Rate < Threshold && Rate between AVGRate +- 1σ
-function _AddTrainingData(_UID, _PatternCount, _TrainingCount, _MinderData, _Threshold) {
-    var RefPath = "DONGCloud/DongService";
+function _AddTrainingData(_UID, _Product, _PatternCount, _TrainingCount, _MinderData, _Threshold) {
+    var RefPath = "DONGCloud/DongService/Stats/" + _Product + "/UserData";
     var ChildName = _UID;
     var TrainingArr = (_TrainingCount == null) ? [] : _TrainingCount.split(',');
     if (_TrainingCount == null || TrainingArr.length < _PatternCount) {
@@ -198,7 +199,7 @@ function _AddTrainingData(_UID, _PatternCount, _TrainingCount, _MinderData, _Thr
     };
     db._update(RefPath, ChildName, Data);
 
-    var RefPath = "DONGCloud/PatternData/" + _UID + "/Pattern" + _PatternCount;
+    var RefPath = "DONGCloud/PatternData/" + _Product + "/" + _UID + "/Pattern" + _PatternCount;
     var ChildName = "Training" + TrainingArr[_PatternCount - 1];
     var Data = {
         "MinderData": _MinderData,
@@ -220,8 +221,8 @@ function _AddTrainingData(_UID, _PatternCount, _TrainingCount, _MinderData, _Thr
     //PASS/Total = 20/32
 }
 
-function _CheckTrainingResults(_UID, _PatternCount, _TrainingCount, _MinderData, _Threshold) {
-    var RefPath = "DONGCloud/PatternData/" + _UID;
+function _CheckTrainingResults(_UID, _Product, _PatternCount, _TrainingCount, _MinderData, _Threshold) {
+    var RefPath = "DONGCloud/PatternData/" + _Product + "/" + _UID;
     var ChildName = "Pattern" + _PatternCount;
     return db._onValuePromise(RefPath, ChildName).then(function (_Data) {
         var RateArr = [];
@@ -241,7 +242,7 @@ function _CheckTrainingResults(_UID, _PatternCount, _TrainingCount, _MinderData,
             UpdateData.TotalCount = _Data["Training" + i].TotalCount + 1;
             UpdateData.StandardDeviation = _StandardDeviation(UpdateData.RateArr.split(','), UpdateData.AVGRate, UpdateData.TotalCount);
 
-            var RefPath = "DONGCloud/PatternData/" + _UID + "/Pattern" + _PatternCount;
+            var RefPath = "DONGCloud/PatternData/" + _Product + "/" + _UID + "/Pattern" + _PatternCount;
 
             var ChildName = "Training" + i;
             db._update(RefPath, ChildName, UpdateData);
@@ -250,7 +251,7 @@ function _CheckTrainingResults(_UID, _PatternCount, _TrainingCount, _MinderData,
             }
         }
         if (HasSameMinderData == false) {
-            _AddTrainingData(_UID, _PatternCount, _TrainingCount, _MinderData, _Threshold);
+            _AddTrainingData(_UID, _Product, _PatternCount, _TrainingCount, _MinderData, _Threshold);
         }
     });
 }

@@ -7,6 +7,7 @@ api.js
 */
 var express = require('express');
 var unitServices = require('../services/api/unit.js');
+var patternServices = require('../services/api/pattern.js');
 var demoServices = require('../services/api/demo-badminton.js');
 var boxingServices = require('../services/api/demo-boxing.js');
 var minderBetaService = require('../services/unit/kernal/minderbeta.js');
@@ -26,6 +27,9 @@ router.post('/iOS/Raw', function (req, res, next) {
         var MinderThreshold = 0.6;
         res.json(_MinderResult);
         demoServices._TriggerDongServices(req, RawData.UID, MinderCode, _MinderResult, MinderThreshold, localurl);
+    }).catch((err) => {
+        //註冊失敗
+        res.json({ "Error": err.message });
     });
 });
 
@@ -47,44 +51,44 @@ router.post('/iOS/Minder', function (req, res, next) {
     }).catch((err) => {
         //註冊失敗
         res.json({ "Error": err.message });
-    })
+    });
 });
 
 
 //加入使用者的RawPattern
 router.post('/addRawPattern', function (req, res) {
     var UID = req.body.UID;
-    if (UID) {
+    var Product = req.body.Product;
+    if (UID && Product) {
         var DataRaw = req.body;
         var Threshold = 0.18;
         var ProcessedCode = processBetaService._processData(DataRaw, Threshold).mixBinaryCodes.toString();
-        var IsTrial = false;
-        db._GetPatternCount(UID, IsTrial).then(function (_PatternCount) {
-            db._AddUserPattern(UID, ProcessedCode, _PatternCount);
-            db._AddPatternCount(UID, IsTrial, _PatternCount);
+        patternServices._GetPatternCount(UID, Product).then(function (_PatternCount) {
+            patternServices._AddUserPattern(UID, Product, ProcessedCode, _PatternCount);
+            patternServices._AddPatternCount(UID, Product, _PatternCount);
             res.json({ "Message": "儲存會員Pattern成功" });
         })
     }
     else {
-        res.json({ "Error": "未傳入會員ID" });
+        res.json({ "Error": "未傳入會員ID或商品" });
     }
 });
 
 //加入使用者的MinderPattern
 router.post('/addMinderPattern', function (req, res) {
     var UID = req.body.UID;
-    if (UID) {
+    var Product = req.body.Product;
+    if (UID && Product) {
         var DataRaw = req.body;
         var ProcessedCode = JSON.parse(DataRaw.Code).toString();
-        var IsTrial = false;
-        db._GetPatternCount(UID, IsTrial).then(function (_PatternCount) {
-            db._AddUserPattern(UID, ProcessedCode, _PatternCount);
-            db._AddPatternCount(UID, IsTrial, _PatternCount);
+        patternServices._GetPatternCount(UID, Product).then(function (_PatternCount) {
+            patternServices._AddUserPattern(UID, Product, ProcessedCode, _PatternCount);
+            patternServices._AddPatternCount(UID, Product, _PatternCount);
             res.json({ "Message": "儲存會員Pattern成功" });
         })
     }
     else {
-        res.json({ "Error": "未傳入會員ID" });
+        res.json({ "Error": "未傳入會員ID或商品" });
     }
 });
 
@@ -135,7 +139,6 @@ router.post("/Minder/:motionurl", function (req, res) {
     var MinderData = req.body;
     //var MinderCode = JSON.parse(MinderData.Code);
     unitServices._MinderProcess(MinderData).then(function (_MinderResult) {
-
         res.json(_MinderResult);
     });
 });
@@ -157,7 +160,7 @@ router.post("/Raw/:motionurl", function (req, res) {
 router.post('/getMotionUrl', function (req, res) {
     var UID = req.body.UID;
     if (UID) {
-        db._CheckUserType(UID).then(function (_UserData) {
+        patternServices._CheckUserType(UID).then(function (_UserData) {
             (_UserData != null) ? res.json({ "URL": motionUrl }) : res.json({ "Error": "不是正式會員" });
         }).catch(function (err) {
             res.json({ "Error": "確認會員資格出現錯誤" });
@@ -194,7 +197,7 @@ router.post('/Recognize', function(req, res){
 
 //Get Signature Results
 router.get('/SignResult', function(req, res){
-    db._GetSignResult().then(function (_Data) {  
+    patternServices._GetSignResult().then(function (_Data) {  
         res.json(_Data);
     }).catch((err) => {
         //註冊失敗

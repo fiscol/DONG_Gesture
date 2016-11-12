@@ -36,26 +36,23 @@ $(document).ready(function(){
     var serverPath = "http://localhost:3004/";
     $('#product-submit').click(function(e){
         e.preventDefault();
-        if($("#cbox1").is(':checked') || $("#cbox2").is(':checked') || $("#cbox3").is(':checked')){
-            var Products = [];
-            if($("#cbox1").is(':checked')){ 
-                Products.push($("#cbox1").val());
-            }
-            if($("#cbox2").is(':checked')){ 
-                Products.push($("#cbox2").val());
-            }
-            if($("#cbox3").is(':checked')){ 
-                Products.push($("#cbox3").val());
+
+        var Products = [];
+        if($('input:checkbox:checked').length > 0){
+            for(var i = 1; i <= $('input:checkbox').length; i++){
+                if($("#cbox" + i).is(':checked')){
+                    Products.push($("#cbox" + i).val());
+                }
             }
             $.post(serverPath + "users/saveProduct",{
-               Products : Products 
-             },function(data){
-            if(data.Error) {
-                alert(data.Error);
-            } 
-            else {
-                window.location.replace(data.Index);
-            }
+                Products : $.serialize(Products) 
+                },function(data){
+                if(data.Error) {
+                    alert(data.Error);
+                } 
+                else {
+                    window.location.replace(data.Index);
+                }
             });
         }
         else{
@@ -72,9 +69,14 @@ $(document).ready(function(){
 			<a>
 				<%= userName %>，請選擇產品。</a><br>
 			<% } %>
-				<label><input type="checkbox" id="cbox1" value="Sports">Sports Training</label><br>
-				<label><input type="checkbox" id="cbox2" value="Drone">Drone Controler</label><br>
-				<label><input type="checkbox" id="cbox3" value="Developer">Developer Package</label><br>
+				<div id="ProductsDiv">
+					<% if (products != null) { %>
+						<% for(var i=0; i < products.TotalProducts; i++) {%>
+							<label>
+                                <input type="checkbox" id='<%= "cbox" + (i+1) %>' value= '<%= products["Product" + (i+1)].Name %>' ><%= products["Product" + (i+1)].Name %></label><br>
+							<% } %>
+								<% } %>
+				</div>
 				<input type="button" id="product-submit" value="Add to cart" class="btn btn-primary">
 	</div>
 </body>
