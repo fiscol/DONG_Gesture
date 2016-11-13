@@ -34,7 +34,7 @@ router.get('/products', function (req, res) {
         var Products;
         _getProductList(req).then(function (data) {
             Products = data;
-            res.render('products.ejs', { title: 'DONG Products', userName: req.session.userName, products:Products });
+            res.render('products.ejs', { title: 'DONG Products', userName: req.session.userName, products: Products });
         }).catch((err) => {
             res.redirect('/users/login');
         });
@@ -44,6 +44,20 @@ router.get('/products', function (req, res) {
     }
 });
 
+//加入Pattern頁面
+//選擇商品頁面
+router.post('/addPattern', function (req, res) {
+    var Body = req.body;
+
+    if (req.session.userName) {
+        res.render('partials/addPattern.ejs', {user:Body.User, product:Body.Product, path:serverPath + "api/addMinderPattern"}, function (err, html) {
+            res.send(html);
+        });
+    }
+    else {
+        res.redirect('/users/login');
+    }
+});
 ////Input with output API
 
 //使用者註冊
@@ -217,7 +231,7 @@ var _getProductList = function (req) {
                 return Promise.resolve(Products);
             }
             else {
-                for (var i = 0; i < Products.TotalProducts; i++) {
+                for (var i = 1; i <= Products.TotalProducts; i++) {
                     Products["Product" + i]["Purchased"] = false;
                 }
                 return Promise.resolve(Products);

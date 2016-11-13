@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div>
+            <form>
+                PatternData: <input type="text" id="patternText">
+                <input type="submit" value="Submit" id="savePattern">
+            </form>
+        </div>
+    </body>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+    // Socket Client
+    var socket = io.connect();
+    // Refresh Pattern Data
+    socket.on('DBData', function (DBdata) {
+        $('#patternText').val(DBdata.Rawdata);
+    })
+    $("#savePattern").on("click", function(event){
+        event.preventDefault();
+        $.post("<%= path %>",{
+            Product : "<%= product %>", UID : "<%= user %>", Code : "[" + $("#patternText").val() + "]"
+            },function(data){
+                alert(data);
+        });
+    });
+    </script>
+</html>

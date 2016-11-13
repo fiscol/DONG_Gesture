@@ -32,7 +32,7 @@ router.post('/:devcode/LCS', function (req, res, next) {
 //Add New User Pattern(Private)
 router.post('/:devcode/AddPattern', function (req, res, next) {
     var UID = req.body.UID;
-    var Product = req.body.Product;
+    var Product = req.body.Product || "Drone";
     if (UID && Product) {
         var DataRaw = req.body;
         var MinderData = JSON.parse(DataRaw.Code).toString();
@@ -54,7 +54,7 @@ router.post('/:devcode/AddPattern', function (req, res, next) {
 
 router.post('/:devcode/CheckPattern', function (req, res, next) {
     var UID = req.body.UID;
-    var Product = req.body.Product;
+    var Product = req.body.Product || "Drone";
     if (UID && Product) {
         var DataRaw = req.body;
         var MinderData = JSON.parse(DataRaw.Code).toString();

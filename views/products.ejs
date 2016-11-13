@@ -45,7 +45,7 @@ $(document).ready(function(){
                 }
             }
             $.post(serverPath + "users/saveProduct",{
-                Products : $.serialize(Products) 
+                Products : Products 
                 },function(data){
                 if(data.Error) {
                     alert(data.Error);

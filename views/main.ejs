@@ -35,16 +35,47 @@
 	<script>
         $(document).ready(function(){
             var serverPath = "http://localhost:3004/";
+			var User = "<%= userName %>";
+			var Product;
             $("#logout-submit").on("click", function(event){
-                event.preventDefault(); $.get(serverPath + "users/logout",function(data){  
-                if(!data.Error) {
-                    window.location.replace(data.Index);
-                //alert(data.Message);
-                } else {
-                    alert(data.Error);
-                }
-            });
-        });
+                event.preventDefault();
+				$.get(serverPath + "users/logout",function(data){  
+					if(!data.Error) {
+						window.location.replace(data.Index);
+					//alert(data.Message);
+					} else {
+						alert(data.Error);
+					}
+            	});
+        	});
+			$(".addPattern").on("click", function(event){
+                event.preventDefault();
+				Product = _getProductName($(this), "addPattern");
+				$.post(serverPath + "users/addPattern",{
+					Product : Product, User : User
+					},function(data){
+						$("#mainTop").html(data);
+				});
+        	});
+			$(".patternList").on("click", function(event){
+                event.preventDefault();
+				alert(_getProductName($(this), "patternList"));
+        	});
+			$(".records").on("click", function(event){
+                event.preventDefault();
+				alert(_getProductName($(this), "records"));
+        	});
+			$(".motion").on("click", function(event){
+                event.preventDefault();
+				alert(_getProductName($(this), "motion"));
+        	});
+			var _getProductName = function(self, className){
+				var ClassArr = self.attr("class").split(' ');
+				ClassArr.splice(ClassArr.indexOf(className), 1);
+				ClassArr.splice(ClassArr.indexOf("products"), 1);
+				var Product = ClassArr[0];
+				return Product;
+			}
         });
         
     </script>
@@ -72,12 +103,12 @@
 					<!-- /.row -->
 
 					<div class="row">
-						<div class="col-lg-12">
+						<div class="col-lg-12" id="mainTop">
 							<% include ../views/adminPie %>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-lg-12">
+						<div class="col-lg-12" id="mainBottom">
 							<% include ../views/adminTable %>
 						</div>
 					</div>

@@ -10,7 +10,7 @@ exports._RawProcess = function (_RawData) {
     var Threshold = 0.18;
     // 轉換為一列編碼
     var UID = _RawData.UID;
-    var Product = _RawData.Product;
+    var Product = _RawData.Product || "Drone";
     var ProcessedCode = ProcessBetaService._processData(_RawData, Threshold).mixBinaryCodes;
     var MinderThreshold = 0.5;
     var PatternModel = 1;
@@ -56,7 +56,7 @@ exports._MinderProcess = function (_MinderData) {
     // 運算Rate, Pattern
     var MinderBetaService = require('../unit/kernal/minderbeta.js');
     var UID = _MinderData.UID;
-    var Product = _MinderData.Product;
+    var Product = _MinderData.Product || "Drone";
     var ProcessedCode = JSON.parse(_MinderData.Code);
     var MinderThreshold = 0.5;
     var PatternModel = 1;

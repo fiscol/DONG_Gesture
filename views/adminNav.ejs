@@ -157,18 +157,46 @@
 				<div class="collapse navbar-collapse navbar-ex1-collapse">
 					<ul class="nav navbar-nav side-nav">
 						<li>
-							<a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Products <i class="fa fa-fw fa-caret-down"></i></a>
-							<ul id="demo" class="collapse">
+							<a href="javascript:;" data-toggle="collapse" data-target="#productList"><i class="fa fa-fw fa-arrows-v"></i> Products <i class="fa fa-fw fa-caret-down"></i></a>
+							<ul id="productList" class="collapse">
 								<% if(products != null){ %>
                                 <% if(typeof products == 'string'){ %>
                                 <li>
-                                    <a href="#"><%= products %></a>
+									<a href="javascript:;" data-toggle="collapse" data-target='#<%= products + "List" %>'><i class="fa fa-fw fa-arrows-v"></i> <%= products %> <i class="fa fa-fw fa-caret-down"></i></a>
+										<ul id='<%= products + "List" %>' class="collapse">
+											<li>
+												<a href="#" class="addPattern <%= products %> products">Add Pattern</a>
+											</li>
+											<li>
+												<a href="#" class="patternList <%= products %> products">PatternList</a>
+											</li>
+											<li>
+												<a href="#" class="records <%= products %> products">Records/Analysis</a>
+											</li>
+											<li>
+												<a href="#" class="motion <%= products %> products">Motion Recognition</a>
+											</li>
+										</ul>
                                     </li>
                                 <% } %>
                                 <% if(typeof products != 'string'){ %>
 								<% for(var i = 0; i < products.length; i++) {%>
 									<li>
-										<a href="#"><%= products[i] %></a>
+										<a href="javascript:;" data-toggle="collapse" data-target='#<%= products[i] + "List" %>'><i class="fa fa-fw fa-arrows-v"></i> <%= products[i] %> <i class="fa fa-fw fa-caret-down"></i></a>
+										<ul id='<%= products[i] + "List" %>' class="collapse">
+											<li>
+												<a href="#" class="addPattern <%= products[i] %> products">Add Pattern</a>
+											</li>
+											<li>
+												<a href="#" class="patternList <%= products[i] %> products">PatternList</a>
+											</li>
+											<li>
+												<a href="#" class="records <%= products[i] %> products">Records/Analysis</a>
+											</li>
+											<li>
+												<a href="#" class="motion <%= products[i] %> products">Motion Recognition</a>
+											</li>
+										</ul>
 									</li>
 									<% } %>
                                    <% } %> 

@@ -58,7 +58,7 @@ router.post('/iOS/Minder', function (req, res, next) {
 //加入使用者的RawPattern
 router.post('/addRawPattern', function (req, res) {
     var UID = req.body.UID;
-    var Product = req.body.Product;
+    var Product = req.body.Product || "Drone";
     if (UID && Product) {
         var DataRaw = req.body;
         var Threshold = 0.18;
@@ -77,7 +77,7 @@ router.post('/addRawPattern', function (req, res) {
 //加入使用者的MinderPattern
 router.post('/addMinderPattern', function (req, res) {
     var UID = req.body.UID;
-    var Product = req.body.Product;
+    var Product = req.body.Product || "Drone";
     if (UID && Product) {
         var DataRaw = req.body;
         var ProcessedCode = JSON.parse(DataRaw.Code).toString();
