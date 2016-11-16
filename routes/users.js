@@ -2,6 +2,7 @@ var express = require('express');
 var session = require('express-session');
 var async = require('async');
 var usersService = require('../services/users/users.js');
+var patternServices = require('../services/api/pattern.js');
 var router = express.Router();
 var configDB = require('../config/path.js');
 var serverPath = configDB.ServerUrl;
@@ -45,14 +46,34 @@ router.get('/products', function (req, res) {
 });
 
 //加入Pattern頁面
-//選擇商品頁面
 router.post('/addPattern', function (req, res) {
     var Body = req.body;
 
-    if (req.session.userName) {
-        res.render('partials/addPattern.ejs', {user:Body.User, product:Body.Product, path:serverPath + "api/addMinderPattern"}, function (err, html) {
+    if (req.session.userName && req.session.userName == Body.User) {
+        res.render('partials/addPattern.ejs', { user: Body.User, product: Body.Product, path: serverPath + "api/addMinderPattern" }, function (err, html) {
             res.send(html);
         });
+    }
+    else {
+        res.redirect('/users/login');
+    }
+});
+
+//取得PatternList頁面
+router.post('/getPatternList', function (req, res) {
+    var Body = req.body;
+
+    if (req.session.userName && req.session.userName == Body.User) {
+        patternServices._GetUserPatterns(Body.User, Body.Product).then(function (_data) {
+            res.render('partials/patternList.ejs', {
+                user: Body.User,
+                product: Body.Product,
+                path: serverPath + "api/deleteUserPattern",
+                patterns: _data
+            }, function (err, html) {
+                res.send(html);
+            });
+        })
     }
     else {
         res.redirect('/users/login');

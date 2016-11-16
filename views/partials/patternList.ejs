@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div>
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>PatternID</th>
+                    <th>PatternData</th>
+                    <th>Edit</th>
+                    <th>Note</th>
+                </tr>
+            </thead>
+            <% for(var i in patterns) {%>
+                <tbody>
+                    <tr>
+                        <td>
+                            <%= i %>
+                        </td>
+                        <td>
+                            <%= patterns[i]["Data"] %>
+                        </td>
+                        <td>
+                            <% if(patterns[i]["Deleted"] == 'false'){ %>
+                            <input type="button" value="Delete" id="<%= i %>" class="deletePattern">
+                            <% } %>
+                        </td>
+                        <td>
+                            <%= (patterns[i]["Note"] == 'null')? "":patterns[i]["Note"] %>
+                        </td>
+                    </tr>
+                </tbody>
+                <% } %>
+        </table>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+    var User = "<%= user %>";
+    // Socket Client
+    var Socket = io.connect();
+    // Refresh Pattern Data
+    Socket.on('DBData', function (DBdata) {
+        if(DBdata.Name.indexOf(User) != -1){
+            $('#patternText').val(DBdata.Rawdata);
+        }
+    })
+    $(".deletePattern").on("click", function(event){
+        event.preventDefault();
+        $.post("<%= path %>",{
+            Product : "<%= product %>", UID : "<%= user %>", PatternID : this.id
+            },function(data){
+                alert(data.Message);
+        });
+    });
+    </script>
+
+</html>

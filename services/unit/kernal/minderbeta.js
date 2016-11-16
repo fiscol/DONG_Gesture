@@ -21,7 +21,7 @@ exports._lcsRateComputing = function (_UID, _Product, _Input, _Threshold, _Patte
         return Pattern._GetUserPatterns(_UID, _Product).then(function (_PatternData) {
             for (var i = 0; i < Object.keys(_PatternData).length; i++) {
                 var Key = String._format("Pattern{0}", i + 1);
-                PatternCase[i] = _PatternData[Key].split(',').map(Number);
+                PatternCase[i] = _PatternData[Key]["Data"].split(',').map(Number);
             }
             PatternStart = 0;
             PatternEnd = Object.keys(_PatternData).length - 1;

@@ -92,6 +92,23 @@ router.post('/addMinderPattern', function (req, res) {
     }
 });
 
+//移除使用者的PatternData
+router.post('/deleteUserPattern', function (req, res) {
+    var UID = req.body.UID;
+    var Product = req.body.Product || "Drone";
+    var PatternID = req.body.PatternID;
+    if (UID && Product && PatternID) {
+        var DataRaw = req.body;
+        patternServices._DeleteUserPattern(UID, Product, PatternID).then(function (_Data) {
+            
+            res.json({ "Message": "移除會員Pattern成功" });
+        })
+    }
+    else {
+        res.json({ "Error": "未傳入會員ID, 商品或動作代號" });
+    }
+});
+
 var localurl;
 router.post('/localurl', function (req, res, next) {
     localurl = req.body.url;

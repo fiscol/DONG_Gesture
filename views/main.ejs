@@ -34,7 +34,7 @@
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script>
         $(document).ready(function(){
-            var serverPath = "http://dongcloud.herokuapp.com/";
+            var serverPath = "http://localhost:3004/";
 			var User = "<%= userName %>";
 			var Product;
             $("#logout-submit").on("click", function(event){
@@ -59,7 +59,12 @@
         	});
 			$(".patternList").on("click", function(event){
                 event.preventDefault();
-				alert(_getProductName($(this), "patternList"));
+				Product = _getProductName($(this), "patternList");
+				$.post(serverPath + "users/getPatternList",{
+					Product : Product, User : User
+					},function(data){
+						$("#mainTop").html(data);
+				});
         	});
 			$(".records").on("click", function(event){
                 event.preventDefault();

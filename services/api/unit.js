@@ -41,6 +41,8 @@ exports._RawProcess = function (_RawData) {
             // 存到DB
             return pattern._GetRequestCount(UID, Product).then(function (_Count) {
                 pattern._SaveMotion(UID, Product, DataFinish, _Count);
+                var PatternID = "Pattern" + _MinderResult.ActionCode;
+                pattern._AddPatternUseCount(UID, Product, PatternID);
                 pattern._AddRequestCount(UID, Product, _Count);
                 return _MinderResult;
             });
@@ -86,6 +88,8 @@ exports._MinderProcess = function (_MinderData) {
             // 存到DB
             return pattern._GetRequestCount(UID, Product).then(function (_Count) {
                 pattern._SaveMotion(UID, Product, DataFinish, _Count);
+                var PatternID = "Pattern" + _MinderResult.ActionCode;
+                pattern._AddPatternUseCount(UID, Product, PatternID);
                 pattern._AddRequestCount(UID, Product, _Count);
                 return _MinderResult;
             });

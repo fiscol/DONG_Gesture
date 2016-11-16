@@ -52,6 +52,17 @@ exports._SaveMotion = function (_UID, _Product, _DataResult, _RequestCount) {
 }
 
 /*
+更新Pattern Count總數到DB
+*/
+exports._AddPatternUseCount = function (_UID, _Product, _PatternID) {
+    // DB Path
+    var RefPath = "DONGCloud/PatternData/";
+    RefPath += _Product + "/" + _UID + "/" + _PatternID + "/Count";
+    // 存到DB
+    return Promise.resolve(db._transactionCount(RefPath, function(_Count){}));
+}
+
+/*
 更新Request總數到DB
 */
 exports._AddRequestCount = function (_UID, _Product, _RequestCount) {
@@ -98,8 +109,31 @@ exports._AddUserPattern = function (_UID, _Product, _MinderData, _PatternCount) 
     // Child Name
     _PatternCount++;
     var ChildName = "Pattern" + _PatternCount;
+    var Data = {
+        "Data": _MinderData,
+        "Note": null,
+        "Count": 0,
+        "Deleted": false
+    };
     // 存到DB
-    db._set(RefPath, ChildName, _MinderData);
+    db._set(RefPath, ChildName, Data);
+}
+
+/*
+移除DB Pattern
+*/
+exports._DeleteUserPattern = function (_UID, _Product, _PatternID) {
+    // DB Path
+    var RefPath = "DONGCloud/PatternData/";
+    RefPath += _Product + "/" + _UID;
+    // Child Name
+    var ChildName = _PatternID;
+    var Data = {
+        "Deleted": true
+    };
+    // 存到DB
+    db._update(RefPath, ChildName, Data);
+    return Promise.resolve("已移除Pattern");
 }
 
 /*

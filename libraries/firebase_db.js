@@ -97,7 +97,7 @@ exports._transactionCount = function(_Path, _Callback){
 	var ref = db.ref(_Path);
 	return ref.transaction(function(currentRank) {
     // If _Path has never been set, currentRank will be `null`.
-    return currentRank + 1;
+    return Number(currentRank) + 1;
     }).then(function(_Count){
         return Promise.resolve(_Callback(_Count));
     });

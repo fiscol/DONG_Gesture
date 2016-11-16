@@ -7,7 +7,7 @@
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped">
+                    <table class="table table-bordered table-hover table-striped" id="RealTimeMotionTable">
                         <thead>
                             <tr>
                                 <th>UserName</th>
@@ -32,7 +32,7 @@
     console.log('chart connect')
     // Get socket event from app.js
     socket.on('DBData', function (DBdata) {
-        $('table').append(
+        $('#RealTimeMotionTable').append(
             "<tbody>"
             +"<tr><td>" + DBdata.Name
             +"</td><td>" + DBdata.Rawdata 

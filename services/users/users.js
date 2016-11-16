@@ -111,12 +111,13 @@ exports._chooseProduct = function (_UserData, _Products) {
             "Products": _Products
         };
         db._update(Ref, ChildName, Data);
+        _addProductUserDetail(_Products, _DBUserData.Name);
         var NowStep = "main";
         return _saveSteps(_UserData, NowStep).then(function () {
             return Promise.resolve(
                 {
                     "UserID": _DBUserData.UserID,
-                    "Name":_DBUserData.Name,
+                    "Name": _DBUserData.Name,
                     "NowStep": NowStep,
                     "Products": _Products
                 }
@@ -200,6 +201,51 @@ var _updateStatus = function (_UserID, _Status) {
     //checkemail
     //transactioncount
 }
+
+//初始化商品相關的使用者Data
+var _addProductUserDetail = function (_Products, _UID) {
+    if (typeof (_Products) == "string") {
+        _Products = [_Products];
+    }
+    for (var i = 0; i < _Products.length; i++) {
+        //查詢個別商品總用戶
+        // DB Table
+        var RefPath = "DONGCloud/DongService/Products";
+        // Child
+        var ChildName = "Name";
+        var ProductName = _Products[i];
+        //取得DB商品資料
+        db._equalTo(RefPath, ChildName, ProductName, null).then(function (_ProductData) {
+            var ProductID;
+            for (var prop in _ProductData) {
+                if (typeof _ProductData[prop] != 'function') {
+                    ProductID = prop;
+                    _ProductData[ProductID].ProductID = ProductID;
+                }
+            }
+            RefPath = RefPath + "/" + ProductID + "/TotalUsers";
+            //用Transaction調整Product/TotalUsers
+            db._transactionCount(RefPath, function (count) {
+                //新增Stats/Product/UserData
+                _addStatsUser(ProductName, _UID);
+            });
+        })
+    }
+}
+//新增Stats/Product/UserData
+var _addStatsUser = function (_ProductName, _UID) {
+    var Ref = "DONGCloud/DongService/Stats/" + _ProductName + "/UserData";
+    var ChildName = _UID;
+    var Data = {
+        "EnabledDate": calculator._dateTimeNow(),
+        "RequestCount": 0,
+        "PatternCount": 0,
+        "SampleCount": 0
+    };
+    db._set(Ref, ChildName, Data);
+    return Promise.resolve("Stats UserData Added");
+}
+
 // exports._transaction = function (_UserData) {
 //     var Ref = "DONGCloud/DongService/Users/User2";
 //     var Data = {

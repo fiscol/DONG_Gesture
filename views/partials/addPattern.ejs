@@ -11,11 +11,14 @@
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
+    var User = "<%= user %>";
     // Socket Client
-    var socket = io.connect();
+    var Socket = io.connect();
     // Refresh Pattern Data
-    socket.on('DBData', function (DBdata) {
-        $('#patternText').val(DBdata.Rawdata);
+    Socket.on('DBData', function (DBdata) {
+        if(DBdata.Name.indexOf(User) != -1){
+            $('#patternText').val(DBdata.Rawdata);
+        }
     })
     $("#savePattern").on("click", function(event){
         event.preventDefault();
