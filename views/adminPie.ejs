@@ -58,7 +58,7 @@
 
 
     var successNum,failNum,RegRate,RegSum;
-    $.get("api/SignResult", function(data){
+    $.get("api/v1/SignResult", function(data){
         successNum = data.Pass;
         failNum = data.Fail;
     });

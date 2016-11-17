@@ -37,7 +37,7 @@
                     </tr>
                     <tr>
                         <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                            <a href="#api/iOS/Raw">api/iOS/Raw</a>
+                            <a href="#api/v1/iOS/Raw">api/v1/iOS/Raw</a>
                         </td>
                         <td>POST</td>
                         <td>Calculate with input g-sensor values, retrieve Rate and ActionCode output.</td>
@@ -45,49 +45,49 @@
                     </tr>
                     <tr>
                         <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                            <a href="#api/iOS/Minder">api/iOS/Minder</a>
+                            <a href="#api/v1/iOS/Minder">api/v1/iOS/Minder</a>
                         </td>
                         <td>POST</td>
                         <td>Calculate with input one-dimentional processed Minder values, retrieve Rate and ActionCode output.</td>
                     </tr>
                     <tr>
                         <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                            <a href="#api/addRawPattern">api/addRawPattern</a>
+                            <a href="#api/v1/addRawPattern">api/v1/addRawPattern</a>
                         </td>
                         <td>POST</td>
                         <td>Use G-Sensor data as source, generate one-dimentional Minder pattern.</td>
                     </tr>
                     <tr>
                         <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                            <a href="#api/addMinderPattern">api/addMinderPattern</a>
+                            <a href="#api/v1/addMinderPattern">api/v1/addMinderPattern</a>
                         </td>
                         <td>POST</td>
                         <td>Use one-dimentional Minder data as pattern.</td>
                     </tr>
                     <tr>
                         <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                            <a href="#api/deleteUserPattern">api/deleteUserPattern</a>
+                            <a href="#api/v1/deleteUserPattern">api/v1/deleteUserPattern</a>
                         </td>
                         <td>POST</td>
                         <td>Delete user's specific Product Pattern with Pattern ID.</td>
                     </tr>
                     <tr>
                         <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                            <a href="#api/getMotionUrl">api/getMotionUrl</a>
+                            <a href="#api/v1/getMotionUrl">api/v1/getMotionUrl</a>
                         </td>
                         <td>POST</td>
                         <td>Use UID as input, return daily refreshed random motion URL.</td>
                     </tr>
                     <tr>
                         <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                            <a href="#api/Raw/:motionurl">api/Raw/:motionurl</a>
+                            <a href="#api/v1/Raw/:motionurl">api/v1/Raw/:motionurl</a>
                         </td>
                         <td>POST</td>
                         <td>Calculate with input g-sensor values, retrieve Rate and ActionCode output.</td>
                     </tr>
                     <tr>
                         <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
-                            <a href="#api/Minder/:motionurl">api/Minder/:motionurl</a>
+                            <a href="#api/v1/Minder/:motionurl">api/v1/Minder/:motionurl</a>
                         </td>
                         <td>POST</td>
                         <td>Calculate with input one-dimentional processed Minder values, retrieve Rate and ActionCode output.</td>
@@ -165,13 +165,13 @@
 
             <br>
             <!-- API Content Start -->
-            <a name="api/iOS/Raw" class="jumptarget"></a>
+            <a name="api/v1/iOS/Raw" class="jumptarget"></a>
             <div class="API-Content">
-                <h3>api/iOS/Raw</h3>
+                <h3>api/v1/iOS/Raw</h3>
 
                 <p>/iOS/Raw Description</p>
                 <p class="well note">
-                    <code>POST</code> https://dongcloud.herokuapp.com/api/iOS/Raw
+                    <code>POST</code> https://dongcloud.herokuapp.com/api/v1/iOS/Raw
                 </p>
                 <h4>Headers</h4>
 
@@ -245,7 +245,7 @@ curl -H "Content-Type: application/json" \
      "AX":"[0.2, 0.16, -0.12]" \
      "AY":"[0.2, 0.16, -0.12]" \
      "AZ":"[0.2, 0.16, -0.12]"}' \
-     https://dongcloud.herokuapp.com/api/iOS/Raw
+     https://dongcloud.herokuapp.com/api/v1/iOS/Raw
 
               </code></pre>
                 <h4>Response</h4>
@@ -284,13 +284,13 @@ curl -H "Content-Type: application/json" \
             </div>
             <!-- API Content End -->
             <!-- API Content Start -->
-            <a name="api/iOS/Minder" class="jumptarget"></a>
+            <a name="api/v1/iOS/Minder" class="jumptarget"></a>
             <div class="API-Content">
-                <h3>api/iOS/Minder</h3>
+                <h3>api/v1/iOS/Minder</h3>
 
                 <p>/iOS/Minder Description</p>
                 <p class="well note">
-                    <code>POST</code> https://dongcloud.herokuapp.com/api/iOS/Minder
+                    <code>POST</code> https://dongcloud.herokuapp.com/api/v1/iOS/Minder
                 </p>
                 <h4>Headers</h4>
 
@@ -350,7 +350,7 @@ curl -H "Content-Type: application/json" \
      "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2", \
      "Product":"Drone", \
      "Code":"[2,2,4,5,3,3,7]"}' \
-     https://dongcloud.herokuapp.com/api/iOS/Minder
+     https://dongcloud.herokuapp.com/api/v1/iOS/Minder
 
               </code></pre>
                 <h4>Response</h4>
@@ -389,13 +389,13 @@ curl -H "Content-Type: application/json" \
             </div>
             <!-- API Content End -->
             <!-- API Content Start -->
-            <a name="api/addRawPattern" class="jumptarget"></a>
+            <a name="api/v1/addRawPattern" class="jumptarget"></a>
             <div class="API-Content">
-                <h3>api/addRawPattern</h3>
+                <h3>api/v1/addRawPattern</h3>
 
                 <p>/addRawPattern Description</p>
                 <p class="well note">
-                    <code>POST</code> https://dongcloud.herokuapp.com/api/addRawPattern
+                    <code>POST</code> https://dongcloud.herokuapp.com/api/v1/addRawPattern
                 </p>
                 <h4>Headers</h4>
 
@@ -469,7 +469,7 @@ curl -H "Content-Type: application/json" \
      "AX":"[0.2, 0.16, -0.12]" \
      "AY":"[0.2, 0.16, -0.12]" \
      "AZ":"[0.2, 0.16, -0.12]"}' \
-     https://dongcloud.herokuapp.com/api/addRawPattern
+     https://dongcloud.herokuapp.com/api/v1/addRawPattern
 
               </code></pre>
                 <h4>Response</h4>
@@ -501,13 +501,13 @@ curl -H "Content-Type: application/json" \
             </div>
             <!-- API Content End -->
             <!-- API Content Start -->
-            <a name="api/addMinderPattern" class="jumptarget"></a>
+            <a name="api/v1/addMinderPattern" class="jumptarget"></a>
             <div class="API-Content">
-                <h3>api/addMinderPattern</h3>
+                <h3>api/v1/addMinderPattern</h3>
 
                 <p>/addMinderPattern Description</p>
                 <p class="well note">
-                    <code>POST</code> https://dongcloud.herokuapp.com/api/addMinderPattern
+                    <code>POST</code> https://dongcloud.herokuapp.com/api/v1/addMinderPattern
                 </p>
                 <h4>Headers</h4>
 
@@ -567,7 +567,7 @@ curl -H "Content-Type: application/json" \
      "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2", \
      "Product":"Drone", \
      "Code":"[1,2,3,4,2,1,3,3]"}' \
-     https://dongcloud.herokuapp.com/api/addMinderPattern
+     https://dongcloud.herokuapp.com/api/v1/addMinderPattern
 
               </code></pre>
                 <h4>Response</h4>
@@ -599,13 +599,13 @@ curl -H "Content-Type: application/json" \
             </div>
             <!-- API Content End -->
             <!-- API Content Start -->
-            <a name="api/deleteUserPattern" class="jumptarget"></a>
+            <a name="api/v1/deleteUserPattern" class="jumptarget"></a>
             <div class="API-Content">
-                <h3>api/deleteUserPattern</h3>
+                <h3>api/v1/deleteUserPattern</h3>
 
                 <p>/deleteUserPattern Description</p>
                 <p class="well note">
-                    <code>POST</code> https://dongcloud.herokuapp.com/api/deleteUserPattern
+                    <code>POST</code> https://dongcloud.herokuapp.com/api/v1/deleteUserPattern
                 </p>
                 <h4>Headers</h4>
 
@@ -665,7 +665,7 @@ curl -H "Content-Type: application/json" \
      "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2", \
      "Product":"Drone", \
      "PatternID":"Pattern1"}' \
-     https://dongcloud.herokuapp.com/api/deleteUserPattern
+     https://dongcloud.herokuapp.com/api/v1/deleteUserPattern
 
               </code></pre>
                 <h4>Response</h4>
@@ -697,13 +697,13 @@ curl -H "Content-Type: application/json" \
             </div>
             <!-- API Content End -->
             <!-- API Content Start -->
-            <a name="api/getMotionUrl" class="jumptarget"></a>
+            <a name="api/v1/getMotionUrl" class="jumptarget"></a>
             <div class="API-Content">
-                <h3>api/getMotionUrl</h3>
+                <h3>api/v1/getMotionUrl</h3>
 
                 <p>/getMotionUrl Description</p>
                 <p class="well note">
-                    <code>POST</code> https://dongcloud.herokuapp.com/api/getMotionUrl
+                    <code>POST</code> https://dongcloud.herokuapp.com/api/v1/getMotionUrl
                 </p>
                 <h4>Headers</h4>
 
@@ -749,7 +749,7 @@ curl -H "Content-Type: application/json" \
 curl -H "Content-Type: application/json" \ 
      -X POST -d '{ \
      "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2"}' \
-     https://dongcloud.herokuapp.com/api/getMotionUrl
+     https://dongcloud.herokuapp.com/api/v1/getMotionUrl
 
               </code></pre>
                 <h4>Response</h4>
@@ -781,13 +781,13 @@ curl -H "Content-Type: application/json" \
             </div>
             <!-- API Content End -->
             <!-- API Content Start -->
-            <a name="api/Raw/:motionurl" class="jumptarget"></a>
+            <a name="api/v1/Raw/:motionurl" class="jumptarget"></a>
             <div class="API-Content">
-                <h3>api/Raw/:motionurl</h3>
+                <h3>api/v1/Raw/:motionurl</h3>
 
                 <p>/Raw/:motionurl Description</p>
                 <p class="well note">
-                    <code>POST</code> https://dongcloud.herokuapp.com/api/Raw/:motionurl
+                    <code>POST</code> https://dongcloud.herokuapp.com/api/v1/Raw/:motionurl
                 </p>
                 <h4>Headers</h4>
 
@@ -861,7 +861,7 @@ curl -H "Content-Type: application/json" \
      "AX":"[0.2, 0.16, -0.12]"' \
      "AY":"[0.2, 0.16, -0.12]"' \
      "AZ":"[0.2, 0.16, -0.12]"}' \
-     https://dongcloud.herokuapp.com/api/Raw/:motionurl
+     https://dongcloud.herokuapp.com/api/v1/Raw/:motionurl
 
               </code></pre>
                 <h4>Response</h4>
@@ -900,13 +900,13 @@ curl -H "Content-Type: application/json" \
             </div>
             <!-- API Content End -->
             <!-- API Content Start -->
-            <a name="api/Minder/:motionurl" class="jumptarget"></a>
+            <a name="api/v1/Minder/:motionurl" class="jumptarget"></a>
             <div class="API-Content">
-                <h3>api/Minder/:motionurl</h3>
+                <h3>api/v1/Minder/:motionurl</h3>
 
                 <p>/Minder/:motionurl Description</p>
                 <p class="well note">
-                    <code>POST</code> https://dongcloud.herokuapp.com/api/Minder/:motionurl
+                    <code>POST</code> https://dongcloud.herokuapp.com/api/v1/Minder/:motionurl
                 </p>
                 <h4>Headers</h4>
 
@@ -966,7 +966,7 @@ curl -H "Content-Type: application/json" \
      "UID":"70Hfhlb3P9VFEIeIozSqfoFy3eA2", \
      "Product":"Drone", \
      "Code":"[2,2,4,5,3,3,7]"}' \
-     https://dongcloud.herokuapp.com/api/Minder/:motionurl
+     https://dongcloud.herokuapp.com/api/v1/Minder/:motionurl
 
               </code></pre>
                 <h4>Response</h4>

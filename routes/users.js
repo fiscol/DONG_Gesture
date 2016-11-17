@@ -50,7 +50,7 @@ router.post('/addPattern', function (req, res) {
     var Body = req.body;
 
     if (req.session.userName && req.session.userName == Body.User) {
-        res.render('partials/addPattern.ejs', { user: Body.User, product: Body.Product, path: serverPath + "api/addMinderPattern" }, function (err, html) {
+        res.render('partials/addPattern.ejs', { user: Body.User, product: Body.Product, path: serverPath + "api/v1/addMinderPattern" }, function (err, html) {
             res.send(html);
         });
     }
@@ -68,7 +68,7 @@ router.post('/getPatternList', function (req, res) {
             res.render('partials/patternList.ejs', {
                 user: Body.User,
                 product: Body.Product,
-                path: serverPath + "api/deleteUserPattern",
+                path: serverPath + "api/v1/deleteUserPattern",
                 patterns: _data
             }, function (err, html) {
                 res.send(html);

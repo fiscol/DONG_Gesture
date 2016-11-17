@@ -43,7 +43,7 @@ app.use(function(req,res,next){
 app.use('/', routes);
 app.use('/users', users);
 app.use('/admin', admin);
-app.use('/api', api); //api
+app.use('/api/v1', api); //api
 app.use('/devapi', devapi); //devapi
 
 // catch 404 and forward to error handler
