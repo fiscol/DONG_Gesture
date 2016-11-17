@@ -184,7 +184,8 @@ router.get('/logout', function (req, res) {
                 res.json(
                     {
                         "Message": "Success",
-                        "Index": serverPath + "users/login"
+                        "Index": serverPath + "users/login",
+                        "Page": "login"
                     }
                 );
             });
@@ -287,7 +288,8 @@ router.post('/saveProduct', function (req, res) {
             res.json(
                 {
                     "Message": "Success",
-                    "Index": serverPath + "users/" + data.NowStep + "?user=" + data.Name
+                    "Index": serverPath + "users/" + data.NowStep + "?user=" + data.Name,
+                    "Page": data.NowStep
                 }
             );
         }).catch((err) => {
