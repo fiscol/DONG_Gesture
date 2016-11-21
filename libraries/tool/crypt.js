@@ -1,7 +1,7 @@
 var crypto = require('crypto');
 var crypto_algorithm = "aes-256-ctr";
-var crypto_key = "3zTvzr3p67VC61jmV54rIYu1545x4TlY";
-var crypto_IV = "0123456789012345";
+var crypto_key = "pvd1234567890plus12345678901user".toString("utf8");
+var crypto_IV = "pvd234567890plus".toString("utf8");
 
 //帳密加密
 exports._encrypt = function (_Code) {

@@ -8,10 +8,22 @@ var configDB = require('../config/path.js');
 var serverPath = configDB.ServerUrl;
 
 ////20161012 Fiscol 登入測試
-router.use(session({
-    secret: 'PVDPlusUserLogin',
-    cookie: { maxAge: 60 * 1000 * 60 * 24 * 14 } //cookie存在兩週
-}));
+// router.use(session({
+//     secret: 'PVDPlusUserLogin',
+//     cookie: { maxAge: 60 * 1000 * 60 * 24 * 14 } //cookie存在兩週
+// }));
+
+router.post('/crypt', function (req, res) {
+    var Body = req.body;
+    var Encrypted = usersService._crypt(Body);
+    res.json({ "Data": Encrypted });
+});
+
+router.post('/decrypt', function (req, res) {
+    var Body = req.body;
+    var Decrypted = usersService._decrypt(Body);
+    res.json({ "Data": Decrypted });
+});
 
 ////頁面相關API
 //登入頁面

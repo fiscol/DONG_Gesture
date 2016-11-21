@@ -1,4 +1,5 @@
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -17,9 +18,9 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-io.on('connection', function(socket) {
+io.on('connection', function (socket) {
   console.log("onConnect:" + io.engine.clientsCount);
-  socket.on('disconnect', function() {
+  socket.on('disconnect', function () {
     console.log("onDisConnect:" + io.engine.clientsCount);
   });
 });
@@ -35,10 +36,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  secret: 'PVDPlusUser',
+  cookie: { maxAge: 60 * 1000 * 60 * 24 * 14 }, //cookie存在兩週
+  resave: false,
+  saveUninitialized: true
+}));
+
 // Pass Socket.io to routes 
-app.use(function(req,res,next){
-    req.io = io;
-    next();
+app.use(function (req, res, next) {
+  req.io = io;
+  next();
 });
 app.use('/', routes);
 app.use('/users', users);
@@ -47,7 +55,7 @@ app.use('/api/v1', api); //api
 app.use('/devapi', devapi); //devapi
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -58,7 +66,7 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
+  app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
@@ -69,7 +77,7 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
@@ -78,4 +86,4 @@ app.use(function(err, req, res, next) {
 });
 
 
-module.exports = {app: app, server: server};
+module.exports = { app: app, server: server };

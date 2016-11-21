@@ -1,30 +1,42 @@
 var db = require('../../libraries/firebase_db.js');
 var calculator = require('../../libraries/tool/gettime.js');
+var crypt = require('../../libraries/tool/crypt.js');
 require('es6-promise');
 
 //20161011 版本 Fiscol
+exports._crypt = function(_CryptData){
+    return crypt._encrypt(_CryptData.Data);
+}
+exports._decrypt = function(_CryptData){
+    return crypt._decrypt(_CryptData.Data);
+}
 
 //使用者登入
 exports._logIn = function (_UserData) {
-    return _getUserData(_UserData).then(function (_DBUserData) {
-        if (_DBUserData.Password == _UserData.Password) {
-            _updateStatus(_DBUserData.UserID, true);
-            return Promise.resolve(
-                {
-                    "UserID": _DBUserData.UserID,
-                    "Name": _DBUserData.Name,
-                    "UserEmail": _DBUserData.Email,
-                    "NowStep": _DBUserData.NowStep,
-                    "Products": (_DBUserData.Products != null) ? _DBUserData.Products : null
-                }
-            );
-        }
-        else {
-            return Promise.reject(new Error("密碼錯誤"));
-        }
-    }).catch((err) => {
-        return Promise.reject(err);
-    })
+    // if (crypt._decrypt(_UserData.Password)) {
+        return _getUserData(_UserData).then(function (_DBUserData) {
+            if (_DBUserData.Password == _UserData.Password) {
+                _updateStatus(_DBUserData.UserID, true);
+                return Promise.resolve(
+                    {
+                        "UserID": _DBUserData.UserID,
+                        "Name": _DBUserData.Name,
+                        "UserEmail": _DBUserData.Email,
+                        "NowStep": _DBUserData.NowStep,
+                        "Products": (_DBUserData.Products != null) ? _DBUserData.Products : null
+                    }
+                );
+            }
+            else {
+                return Promise.reject(new Error("密碼錯誤"));
+            }
+        }).catch((err) => {
+            return Promise.reject(err);
+        })
+    // }
+    // else {
+    //     return Promise.reject("Password crypt service errored, login failed.");
+    // }
 }
 
 /*
@@ -40,28 +52,33 @@ case "checkEmail" :
 
 //使用者註冊
 exports._register = function (_UserData) {
-    var Ref = "DONGCloud/DongService/Users/TotalUsers";
-    var Callback = function (count) {
-        Ref = "DONGCloud/DongService/Users/User" + count.snapshot.val();
-        var Data = {
-            "Name": _UserData.Name,
-            "Email": _UserData.Email,
-            "Password": _UserData.Password
-        };
-        db._transaction(Ref, Data);
-        var NowStep = "products";
-        return _saveSteps(_UserData, NowStep).then(function () {
-            return Promise.resolve(exports._logIn(_UserData));
-        });
-    }
-    return _checkEmail(_UserData).then(function (_DBUserData) {
-        if (_DBUserData === null) {
-            return Promise.resolve(db._transactionCount(Ref, Callback));
+    // if (crypt._decrypt(_UserData.Password)) {
+        var Ref = "DONGCloud/DongService/Users/TotalUsers";
+        var Callback = function (count) {
+            Ref = "DONGCloud/DongService/Users/User" + count.snapshot.val();
+            var Data = {
+                "Name": _UserData.Name,
+                "Email": _UserData.Email,
+                "Password": _UserData.Password
+            };
+            db._transaction(Ref, Data);
+            var NowStep = "products";
+            return _saveSteps(_UserData, NowStep).then(function () {
+                return Promise.resolve(exports._logIn(_UserData));
+            });
         }
-        else {
-            return Promise.reject("您已註冊Dong服務");
-        }
-    })
+        return _checkEmail(_UserData).then(function (_DBUserData) {
+            if (_DBUserData === null) {
+                return Promise.resolve(db._transactionCount(Ref, Callback));
+            }
+            else {
+                return Promise.reject("This account has been registered.");
+            }
+        })
+    // }
+    // else {
+    //     return Promise.reject("Password crypt service errored, register failed.");
+    // }
 }
 /*
 case "register" :

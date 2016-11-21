@@ -6,6 +6,7 @@
 api.js
 */
 var express = require('express');
+var session = require('express-session');
 var unitServices = require('../services/api/unit.js');
 var patternServices = require('../services/api/pattern.js');
 var demoServices = require('../services/api/demo-badminton.js');
@@ -17,8 +18,16 @@ var db = require('../libraries/firebase_db.js');
 var router = express.Router();
 
 ////開發測試區塊
+//session檢查，沒有登入的狀況不能呼叫API
+function checkAuth(req, res, next) {
+  if (!req.session.userEmail && !req.session.userName) {
+    res.send('You are not authorized to use api.');
+  } else {
+    next();
+  }
+}
 //原始G-Sensor Data，輸出Rate和ActionCode，滿足門檻值觸發其他服務
-router.post('/iOS/Raw', function (req, res, next) {
+router.post('/iOS/Raw', checkAuth, function (req, res, next) {
     // 解析body
     var RawData = req.body;
     var Threshold = 0.18;
@@ -34,7 +43,7 @@ router.post('/iOS/Raw', function (req, res, next) {
 });
 
 //一列編碼，輸出Rate和ActionCode，滿足門檻值觸發其他服務
-router.post('/iOS/Minder', function (req, res, next) {
+router.post('/iOS/Minder', checkAuth, function (req, res, next) {
     // 解析body
     var MinderData = req.body;
     var MinderCode = JSON.parse(MinderData.Code);
@@ -56,7 +65,7 @@ router.post('/iOS/Minder', function (req, res, next) {
 
 
 //加入使用者的RawPattern
-router.post('/addRawPattern', function (req, res) {
+router.post('/addRawPattern', checkAuth, function (req, res) {
     var UID = req.body.UID;
     var Product = req.body.Product || "Drone";
     if (UID && Product) {
@@ -75,7 +84,7 @@ router.post('/addRawPattern', function (req, res) {
 });
 
 //加入使用者的MinderPattern
-router.post('/addMinderPattern', function (req, res) {
+router.post('/addMinderPattern', checkAuth, function (req, res) {
     var UID = req.body.UID;
     var Product = req.body.Product || "Drone";
     if (UID && Product) {
@@ -93,7 +102,7 @@ router.post('/addMinderPattern', function (req, res) {
 });
 
 //移除使用者的PatternData
-router.post('/deleteUserPattern', function (req, res) {
+router.post('/deleteUserPattern', checkAuth, function (req, res) {
     var UID = req.body.UID;
     var Product = req.body.Product || "Drone";
     var PatternID = req.body.PatternID;
@@ -138,7 +147,7 @@ function _GenerateURL() {
 startInterval(1, _GenerateURL);
 
 //驗證motionUrl片段
-router.param("motionurl", function (req, res, next, _MotionUrl) {
+router.param("motionurl", checkAuth, function (req, res, next, _MotionUrl) {
     //驗證通過
     if (_MotionUrl == motionUrl) {
         next();
@@ -152,7 +161,7 @@ router.param("motionurl", function (req, res, next, _MotionUrl) {
 /*
 minderbeta API 測試
 */
-router.post("/Minder/:motionurl", function (req, res) {
+router.post("/Minder/:motionurl", checkAuth, function (req, res) {
     var MinderData = req.body;
     //var MinderCode = JSON.parse(MinderData.Code);
     unitServices._MinderProcess(MinderData).then(function (_MinderResult) {
@@ -163,7 +172,7 @@ router.post("/Minder/:motionurl", function (req, res) {
 /* 
 processbeta API 測試
 */
-router.post("/Raw/:motionurl", function (req, res) {
+router.post("/Raw/:motionurl", checkAuth, function (req, res) {
     // 解析body
     var RawData = req.body;
     var Threshold = 0.18;
@@ -174,7 +183,7 @@ router.post("/Raw/:motionurl", function (req, res) {
 })
 
 //使用者是付費會員，回傳特定格式的URL片段
-router.post('/getMotionUrl', function (req, res) {
+router.post('/getMotionUrl', checkAuth, function (req, res) {
     var UID = req.body.UID;
     if (UID) {
         patternServices._CheckUserType(UID).then(function (_UserData) {
