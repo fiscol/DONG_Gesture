@@ -12,7 +12,7 @@ exports._crypt = function (_CryptData) {
 exports._logIn = function (_UserData) {
     return _getUserData(_UserData).then(function (_DBUserData) {
         //密碼正確
-        if (_DBUserData.Password == exports._crypt({"Data_decrepted":_UserData.Password}).Data_encrypted) {
+        if (_DBUserData.Password == exports._crypt({"Data_decrypted":_UserData.Password}).Data_encrypted) {
             var ReturnData = {
                 "UserID": _DBUserData.UserID,
                 "Name": _DBUserData.Name,
@@ -64,7 +64,7 @@ exports._register = function (_UserData) {
     var Ref = "DONGCloud/DongService/Users/TotalUsers";
     var Callback = function (count) {
         Ref = "DONGCloud/DongService/Users/User" + count.snapshot.val();
-        var EncryptedPassword = exports._crypt({"Data_decrepted":_UserData.Password}).Data_encrypted;
+        var EncryptedPassword = exports._crypt({"Data_decrypted":_UserData.Password}).Data_encrypted;
         var Data = {
             "Name": _UserData.Name,
             "Email": _UserData.Email,
