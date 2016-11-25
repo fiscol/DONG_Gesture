@@ -7,8 +7,8 @@ exports._crypt = function (_Code) {
     if(_Code.Data_encrypted){
         return _decrypt(_Code.Data_encrypted);
     }
-    else if(_Code.Data_decrepted){
-        return _encrypt(_Code.Data_decrepted);
+    else if(_Code.Data_decrypted){
+        return _encrypt(_Code.Data_decrypted);
     }
     else{
         return {"Error":"Params error."};
