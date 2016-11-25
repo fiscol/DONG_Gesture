@@ -13,16 +13,11 @@ var serverPath = configDB.ServerUrl;
 //     cookie: { maxAge: 60 * 1000 * 60 * 24 * 14 } //cookie存在兩週
 // }));
 
+//加解密API
 router.post('/crypt', function (req, res) {
     var Body = req.body;
-    var Encrypted = usersService._crypt(Body);
-    res.json({ "Data": Encrypted });
-});
-
-router.post('/decrypt', function (req, res) {
-    var Body = req.body;
-    var Decrypted = usersService._decrypt(Body);
-    res.json({ "Data": Decrypted });
+    var ResultJson = usersService._crypt(Body);
+    res.json(ResultJson);
 });
 
 ////頁面相關API
@@ -120,10 +115,18 @@ router.post('/register', function (req, res) {
 //使用者登入
 router.post('/login', function (req, res) {
     var UserData = req.body;
+    UserData.SessionID = req.sessionID;
     //取得登入狀況
     usersService._logIn(UserData).then(function (data) {
+        if (data.TryLoginError) {
+            req.namespace.in(data.SessionID).emit('other_try_login', { msg: '您的帳號正在其他裝置被嘗試登入', sid: data.SessionID });
+            res.json({
+                "Error": "密碼錯誤",
+                "Message": "Failed"
+            });
+        }
         //登入成功
-        if (req.session.isVisit) {
+        else if (req.session.isVisit) {
             if (req.session.userEmail == UserData.Email) {
                 req.session.isVisit++;
                 console.log(req.session);
@@ -136,6 +139,7 @@ router.post('/login', function (req, res) {
                     }
                 );
             }
+            //不同帳號, 同瀏覽器登入
             else {
                 req.session.regenerate(function () {
                     req.session.isVisit = 1;
@@ -157,10 +161,16 @@ router.post('/login', function (req, res) {
             }
         }
         else {
+            //在其他裝置已登入
+            if (data.MultiLogined) {
+                //透過Socket登出其他帳號
+                req.namespace.in(data.SessionID).emit('other_logined', { msg: '您已在其他裝置登入', sid: data.SessionID });
+            }
             req.session.isVisit = 1;
             req.session.userEmail = UserData.Email;
             req.session.userName = data.Name;
             req.session.userID = data.UserID;
+
             if (data.Products) {
                 req.session.products = data.Products;
             }
@@ -177,7 +187,7 @@ router.post('/login', function (req, res) {
     }).catch((err) => {
         //未傳入ID
         res.json({
-            "Error": err,
+            "Error": "密碼錯誤",
             "Message": "Failed"
         });
     })
@@ -212,6 +222,18 @@ router.get('/logout', function (req, res) {
     else {
         res.json({ "Error": "目前沒有登入的使用者" });
     }
+})
+
+//強迫其他瀏覽器登出
+router.post('/forcelogout', function (req, res) {
+    var SessionID = req.body.sid;
+    req.sessionStore.destroy(SessionID, function (err) {
+        res.json({
+            "Message": "Success",
+            "Index": serverPath + "users/login",
+            "Page": "login"
+        })
+    });
 })
 
 //確認是否有使用者登入

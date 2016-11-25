@@ -18,12 +18,7 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-io.on('connection', function (socket) {
-  console.log("onConnect:" + io.engine.clientsCount);
-  socket.on('disconnect', function () {
-    console.log("onDisConnect:" + io.engine.clientsCount);
-  });
-});
+var namespace = io.of('/DongService');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -46,6 +41,7 @@ app.use(session({
 // Pass Socket.io to routes 
 app.use(function (req, res, next) {
   req.io = io;
+  req.namespace = namespace;
   next();
 });
 app.use('/', routes);
@@ -53,6 +49,23 @@ app.use('/users', users);
 app.use('/admin', admin);
 app.use('/api/v1', api); //api
 app.use('/devapi', devapi); //devapi
+
+
+namespace.on('connection', function (client) {
+  console.log('someone connected');
+  //廣播
+  // namespace.emit('hi', 'everyone!');
+  var SessionID = client.handshake.headers.cookie.split(" ")[1].split("connect.sid=s%3A").pop().split('.')[0];
+  client.join(SessionID);
+  //單獨
+  // namespace.to(client.id).emit("hello", 'you cute!');
+  //對同一組Session廣播
+  // namespace.in(SessionID).emit('other_try_login', {msg: '有人正在嘗試使用您的帳號登入系統'});
+  // namespace.in(SessionID).emit('other_logined', {msg: '您已在其他裝置登入'});
+  client.on('disconnect', function () {
+    console.log('someone disconnected');
+  });
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -31,11 +31,27 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script>
         $(document).ready(function(){
-            var serverPath = "http://localhost:3004/";
+            var serverPath = "http://dongcloud.herokuapp.com/";
 			var User = "<%= userName %>";
+			var socket = io('/DongService');
+			// socket.on('hi', function (message) {
+			// 	alert(message);
+			// })
+			socket.on('other_try_login', function (data) {
+				alert(data.msg);
+			})
+			socket.on('other_logined', function (data) {
+				alert(data.msg);
+				//$("#logout-submit").click();
+				$.post(serverPath + "users/forcelogout",{
+					sid : data.sid
+					},function(data){
+						window.location.replace(data.Index);
+				});
+			})
 			var Product;
             $("#logout-submit").on("click", function(event){
                 event.preventDefault();

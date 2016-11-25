@@ -29,6 +29,7 @@ body {
 <script type="text/javascript" src="demo/demo-boxing/js/gm14.min.js"></script>
 <script type="text/javascript">
 	// Socket Client
+	// 目前的var socket = io.connect();會影響server端計算上線人數
     var socket = io.connect();
     console.log('Boxing game connect.')
     // Get socket event from app.js

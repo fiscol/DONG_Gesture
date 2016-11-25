@@ -13,7 +13,6 @@
     <script type="text/javascript">
     var User = "<%= user %>";
     // Socket Client
-    var Socket = io.connect();
     // Refresh Pattern Data
     Socket.on('DBData', function (DBdata) {
         if(DBdata.Name.indexOf(User) != -1){

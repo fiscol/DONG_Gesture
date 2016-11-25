@@ -4,39 +4,47 @@ var crypt = require('../../libraries/tool/crypt.js');
 require('es6-promise');
 
 //20161011 版本 Fiscol
-exports._crypt = function(_CryptData){
-    return crypt._encrypt(_CryptData.Data);
-}
-exports._decrypt = function(_CryptData){
-    return crypt._decrypt(_CryptData.Data);
+exports._crypt = function (_CryptData) {
+    return crypt._crypt(_CryptData);
 }
 
 //使用者登入
 exports._logIn = function (_UserData) {
-    // if (crypt._decrypt(_UserData.Password)) {
-        return _getUserData(_UserData).then(function (_DBUserData) {
-            if (_DBUserData.Password == _UserData.Password) {
-                _updateStatus(_DBUserData.UserID, true);
-                return Promise.resolve(
-                    {
-                        "UserID": _DBUserData.UserID,
-                        "Name": _DBUserData.Name,
-                        "UserEmail": _DBUserData.Email,
-                        "NowStep": _DBUserData.NowStep,
-                        "Products": (_DBUserData.Products != null) ? _DBUserData.Products : null
-                    }
-                );
+    return _getUserData(_UserData).then(function (_DBUserData) {
+        //密碼正確
+        if (_DBUserData.Password == exports._crypt({"Data_decrepted":_UserData.Password}).Data_encrypted) {
+            var ReturnData = {
+                "UserID": _DBUserData.UserID,
+                "Name": _DBUserData.Name,
+                "UserEmail": _DBUserData.Email,
+                "NowStep": _DBUserData.NowStep,
+                "Products": (_DBUserData.Products != null) ? _DBUserData.Products : null,
+                "MultiLogined": false
+            };
+            //已在其他裝置登入
+            if (_UserData.SessionID != _DBUserData.SessionID && _DBUserData.SessionID != "") {
+                ReturnData.MultiLogined = true;
+                ReturnData.SessionID = _DBUserData.SessionID;
+            }
+            _updateStatus(_DBUserData.UserID, true, _UserData.SessionID);
+            return Promise.resolve(ReturnData);
+        }
+        //密碼錯誤
+        else {
+            //已在其他裝置登入
+            if (_UserData.SessionID != _DBUserData.SessionID && _DBUserData.SessionID != "") {
+                return Promise.resolve({
+                    "SessionID":_DBUserData.SessionID,
+                    "TryLoginError":true
+                });
             }
             else {
                 return Promise.reject(new Error("密碼錯誤"));
             }
-        }).catch((err) => {
-            return Promise.reject(err);
-        })
-    // }
-    // else {
-    //     return Promise.reject("Password crypt service errored, login failed.");
-    // }
+        }
+    }).catch((err) => {
+        return Promise.reject(err);
+    })
 }
 
 /*
@@ -53,28 +61,29 @@ case "checkEmail" :
 //使用者註冊
 exports._register = function (_UserData) {
     // if (crypt._decrypt(_UserData.Password)) {
-        var Ref = "DONGCloud/DongService/Users/TotalUsers";
-        var Callback = function (count) {
-            Ref = "DONGCloud/DongService/Users/User" + count.snapshot.val();
-            var Data = {
-                "Name": _UserData.Name,
-                "Email": _UserData.Email,
-                "Password": _UserData.Password
-            };
-            db._transaction(Ref, Data);
-            var NowStep = "products";
-            return _saveSteps(_UserData, NowStep).then(function () {
-                return Promise.resolve(exports._logIn(_UserData));
-            });
+    var Ref = "DONGCloud/DongService/Users/TotalUsers";
+    var Callback = function (count) {
+        Ref = "DONGCloud/DongService/Users/User" + count.snapshot.val();
+        var EncryptedPassword = exports._crypt({"Data_decrepted":_UserData.Password}).Data_encrypted;
+        var Data = {
+            "Name": _UserData.Name,
+            "Email": _UserData.Email,
+            "Password": EncryptedPassword
+        };
+        db._transaction(Ref, Data);
+        var NowStep = "products";
+        return _saveSteps(_UserData, NowStep).then(function () {
+            return Promise.resolve(exports._logIn(_UserData));
+        });
+    }
+    return _checkEmail(_UserData).then(function (_DBUserData) {
+        if (_DBUserData === null) {
+            return Promise.resolve(db._transactionCount(Ref, Callback));
         }
-        return _checkEmail(_UserData).then(function (_DBUserData) {
-            if (_DBUserData === null) {
-                return Promise.resolve(db._transactionCount(Ref, Callback));
-            }
-            else {
-                return Promise.reject("This account has been registered.");
-            }
-        })
+        else {
+            return Promise.reject("This account has been registered.");
+        }
+    })
     // }
     // else {
     //     return Promise.reject("Password crypt service errored, register failed.");
@@ -89,7 +98,7 @@ case "register" :
 //使用者登出
 exports._logOut = function (_UserData) {
     return _getUserData(_UserData).then(function (_DBUserData) {
-        _updateStatus(_DBUserData.UserID, false);
+        _updateStatus(_DBUserData.UserID, false, "");
         return Promise.resolve(_DBUserData.Name + "已登出。");
     }).catch((err) => {
         return Promise.reject(err);
@@ -204,12 +213,13 @@ var _saveSteps = function (_UserData, _NowStep) {
 }
 
 //更新使用者上線狀態
-var _updateStatus = function (_UserID, _Status) {
+var _updateStatus = function (_UserID, _Status, _SessionID) {
     var Ref = "DONGCloud/DongService/Users";
     var ChildName = _UserID;
     //date, status
     var Data = {
-        "Online": _Status
+        "Online": _Status,
+        "SessionID": _SessionID
     };
     if (_Status == true) {
         Data.LastLoginAt = calculator._dateTimeNow();
