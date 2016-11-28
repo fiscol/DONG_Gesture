@@ -8,7 +8,7 @@ exports._TriggerDongServicesDemoSign = function(req, _MinderResult){
         if (_MinderResult.Rate >= 0.5) {
         var SignRate = _MinderResult.Rate;
         var ActionCode = _MinderResult.ActionCode;
-        DongServices._requestDongSlide(SignRate, ActionCode);
+        DongServices._requestDongSlide(SignRate, ActionCode, req.body.UID);
         
     };
 }
