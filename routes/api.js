@@ -48,7 +48,7 @@ router.post('/iOS/Minder', checkAuth, function (req, res, next) {
     var MinderData = req.body;
     var MinderCode = JSON.parse(MinderData.Code);
     unitServices._MinderProcess(MinderData).then(function (_MinderResult) {
-        var MinderThreshold = 0.6;
+        var MinderThreshold = 0.4;
         demoServices._TriggerDongServices(req, MinderData.UID, MinderCode, _MinderResult, MinderThreshold, localurl);
 
         // For DT DEMO
