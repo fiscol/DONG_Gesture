@@ -33,9 +33,9 @@ router.post('/iOS/Raw', checkAuth, function (req, res, next) {
     var Threshold = 0.18;
     var MinderCode = processBetaService._processData(RawData, Threshold).mixBinaryCodes;
     unitServices._RawProcess(RawData).then(function (_MinderResult) {
-        var MinderThreshold = 0.6;
-        res.json(_MinderResult);
+        var MinderThreshold = 0.4;
         demoServices._TriggerDongServices(req, RawData.UID, MinderCode, _MinderResult, MinderThreshold, localurl);
+        res.json(_MinderResult);
     }).catch((err) => {
         //註冊失敗
         res.json({ "Error": err.message });
