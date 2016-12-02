@@ -10,7 +10,7 @@ exports._requestDongSlide = function (Rate, Code, UID) {
   if(UID == "MarkVen"){
     postData.name = "mark";
   }
-  else if(UID == "Tony"){
+  else if(UID == "Tony" || UID == "70Hfhlb3P9VFEIeIozSqfoFy3eA2"){
     postData.name = "tony";
   }
   var url = 'http://dongslide.herokuapp.com/api/MotionID'

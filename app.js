@@ -12,6 +12,7 @@ var users = require('./routes/users');
 var admin = require('./routes/admin');
 var api = require('./routes/api');
 var devapi = require('./routes/devapi');
+var oldapi = require('./routes/oldapi');
 
 
 var app = express();
@@ -49,6 +50,7 @@ app.use('/users', users);
 app.use('/admin', admin);
 app.use('/api/v1', api); //api
 app.use('/devapi', devapi); //devapi
+app.use('/api', oldapi); //oldapi
 
 
 namespace.on('connection', function (client) {
