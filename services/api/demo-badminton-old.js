@@ -1,6 +1,6 @@
 //觸發DongServices(DEMO CASE使用)
 exports._TriggerDongServices = function (req, _UID, _MinderCode, _MinderResult, _MinderThreshold, _Localurl) {
-    if (_UID == "70Hfhlb3P9VFEIeIozSqfoFy3eA2" && _MinderResult.ActionCode <= 3) {
+    if (_UID == "70Hfhlb3P9VFEIeIozSqfoFy3eA2" && _MinderResult.ActionCode > 3) {
         //160815 Fiscol DEMO用，監控頁面當Rate > 0.4時才觸發DashBoard動畫
         if (_MinderResult.Rate >= _MinderThreshold) {
             // Send RealTimeData to View
@@ -51,10 +51,10 @@ exports._TriggerDongServices = function (req, _UID, _MinderCode, _MinderResult, 
     var ActionCode = _MinderResult.ActionCode;
     //Apicta 正昌DEMO使用
     if (_UID == "70Hfhlb3P9VFEIeIozSqfoFy3eA2") {
-        if (_MinderResult.ActionCode == 4 && _MinderResult.Rate >= 0.4) {
+        if (_MinderResult.ActionCode == 1 && _MinderResult.Rate >= 0.4) {
             DongServices._requestDongYoutube(SignRate, ActionCode);
         }
-        else if (_MinderResult.ActionCode == 5 && _MinderResult.Rate > 0.4) {
+        else if (_MinderResult.ActionCode == 2 && _MinderResult.Rate >= 0.4) {
             DongServices._requestDongSlide(SignRate, ActionCode, _UID);
         };
     }
