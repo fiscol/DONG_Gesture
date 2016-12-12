@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div>
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>AdminID</th>
+                    <th>Name</th>
+                    <th>Rights</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i in adminData) {%>
+                    <% if(i != "TotalAdmin"){ %>
+                        <tr>
+                            <td>
+                                <%= i %>
+                            </td>
+                            <td class="Name" style="white-space:nowrap"><%= adminData[i]["Name"] %></td>
+                            <td class="Rights" style="white-space:nowrap"><%= (adminData[i]["Rights"] == 'null')? "":adminData[i]["Rights"] %></td>
+                            <td>
+                                <input type="button" value="Edit" class="editAdminData">
+                                <input type="button" value="Update" id="<%= i %>" class="updateAdminData">
+                                <input type="button" value="Cancel" class="cancelEditData">
+                            </td>
+                        </tr>
+                    <% } %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <hr>
+        <h2>Add New Admin</h2>
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Password</th>
+                    <th>Rights</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class='Name' contenteditable='true'></td>
+                    <td class='Password' contenteditable='true'></td>
+                    <td class='Rights' contenteditable='true'></td>
+                    <td>
+                        <input type="button" value="Add" class="addNewAdmin">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+    var Admin = "<%= adminName %>";
+    var UserBeforeEdit = {};
+    $(".editAdminData").on("click", function(event){
+        var Name = $(this).parents('tr').find('.Name');
+        Name.prop('contenteditable', true);
+        UserBeforeEdit["Name"] = Name.text();
+        var Rights = $(this).parents('tr').find('.Rights');
+        Rights.prop('contenteditable', true);
+        UserBeforeEdit["Rights"] = Rights.text();
+    });
+    $(".cancelEditData").on("click", function(event){
+        var Name = $(this).parents('tr').find('.Name');
+        Name.prop('contenteditable', false);
+        Name.text(UserBeforeEdit["Name"]);
+        var Rights = $(this).parents('tr').find('.Rights');
+        Rights.prop('contenteditable', false);
+        Rights.text(UserBeforeEdit["Rights"]);
+
+        UserBeforeEdit = {};
+    });
+    $(".updateAdminData").on("click", function(event){
+        event.preventDefault();
+
+        var Name = $(this).parents('tr').find('.Name');
+        Name.prop('contenteditable', false);
+        var Rights = $(this).parents('tr').find('.Rights');
+        Rights.prop('contenteditable', false);
+
+        UserBeforeEdit = {};
+
+        $.post("<%= updatePath %>",{
+            AdminID : this.id, Name:Name.text(), Rights:Rights.text()
+            },function(data){
+                alert(data.Message);
+        });
+    });
+    $(".addNewAdmin").on("click", function(event){
+        event.preventDefault();
+
+        var Name = $(this).parents('tr').find('.Name');
+        var Password = $(this).parents('tr').find('.Password');
+        var Rights = $(this).parents('tr').find('.Rights');
+
+        UserBeforeEdit = {};
+
+        $.post("<%= addNewPath %>",{
+            Name:Name.text(), Password:Password.text(), Rights:Rights.text()
+            },function(data){
+                alert(data.Message);
+                $.post("<%= refreshPath %>",{
+					Admin : Admin
+					},function(data){
+						$("#mainTop").html(data);
+				});
+        });
+    });
+    </script>
+</html>

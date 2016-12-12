@@ -35,27 +35,27 @@
 	<script>
         $(document).ready(function(){
             var serverPath = "http://localhost:3004/";
-			var User = "<%= userName %>";
-			var socket = io('/DongService');
+			var Admin = "<%= adminName %>";
+			// var socket = io('/DongService');
 			// socket.on('hi', function (message) {
 			// 	alert(message);
 			// })
-			socket.on('other_try_login', function (data) {
-				alert(data.msg);
-			})
-			socket.on('other_logined', function (data) {
-				alert(data.msg);
-				//$("#logout-submit").click();
-				$.post(serverPath + "users/forcelogout",{
-					sid : data.sid
-					},function(data){
-						window.location.replace(data.Index);
-				});
-			})
-			var Product;
+			// socket.on('other_try_login', function (data) {
+			// 	alert(data.msg);
+			// })
+			// socket.on('other_logined', function (data) {
+			// 	alert(data.msg);
+			// 	//$("#logout-submit").click();
+			// 	$.post(serverPath + "users/forcelogout",{
+			// 		sid : data.sid
+			// 		},function(data){
+			// 			window.location.replace(data.Index);
+			// 	});
+			// })
+			// var Product;
             $("#logout-submit").on("click", function(event){
                 event.preventDefault();
-				$.get(serverPath + "users/logout",function(data){  
+				$.get(serverPath + "admin/adminLogout",function(data){  
 					if(!data.Error) {
 						window.location.replace(data.Index);
 					//alert(data.Message);
@@ -64,49 +64,40 @@
 					}
             	});
         	});
-			$(".addPattern").on("click", function(event){
+            $(".editAdmin").on("click", function(event){
                 event.preventDefault();
-				Product = _getProductName($(this), "addPattern");
-				$.post(serverPath + "users/addPattern",{
-					Product : Product, User : User
+				$.post(serverPath + "admin/editAdmin",{
+					Admin : Admin
 					},function(data){
 						$("#mainTop").html(data);
 				});
         	});
-			$(".patternList").on("click", function(event){
+            $(".editProducts").on("click", function(event){
                 event.preventDefault();
-				Product = _getProductName($(this), "patternList");
-				$.post(serverPath + "users/getPatternList",{
-					Product : Product, User : User
+				$.post(serverPath + "admin/editProducts",{
+					Admin : Admin
 					},function(data){
 						$("#mainTop").html(data);
 				});
         	});
-			$(".records").on("click", function(event){
+            $(".searchUser").on("click", function(event){
                 event.preventDefault();
-				alert(_getProductName($(this), "records"));
+				$.post(serverPath + "admin/searchUser",{
+					Admin : Admin
+					},function(data){
+						$("#mainTop").html(data);
+				});
         	});
-			$(".motion").on("click", function(event){
-                event.preventDefault();
-				alert(_getProductName($(this), "motion"));
-        	});
-			var _getProductName = function(self, className){
-				var ClassArr = self.attr("class").split(' ');
-				ClassArr.splice(ClassArr.indexOf(className), 1);
-				ClassArr.splice(ClassArr.indexOf("products"), 1);
-				var Product = ClassArr[0];
-				return Product;
-			}
         });
         
     </script>
 </head>
 
 <body>
-
+<html>
 	<div id="wrapper">
 
-		<% include ../views/partials/users/nav %>
+		<% include ../views/partials/admin/nav %>
 
 			<div id="page-wrapper">
 
@@ -121,31 +112,22 @@
 
 						</div>
 					</div>
-					<!-- /.row -->
-
-					<div class="row">
+                    <div class="row">
 						<div class="col-lg-12" id="mainTop">
-							<% include ../views/partials/users/pie %>
 						</div>
 					</div>
+					<!-- /.row -->
 					<div class="row">
 						<div class="col-lg-12" id="mainBottom">
-							<% include ../views/partials/users/table %>
 						</div>
 					</div>
-
-
-
-
 				</div>
 				<!-- /.container-fluid -->
-
 			</div>
 			<!-- /#page-wrapper -->
-
 	</div>
 	<!-- /#wrapper -->
-
+</html>
 	<!-- jQuery -->
 	<script src="../admin_page/js/jquery.js"></script>
 
@@ -156,11 +138,4 @@
 	<script src="../admin_page/js/plugins/morris/raphael.min.js"></script>
 	<script src="../admin_page/js/plugins/morris/morris.min.js"></script>
 	<script src="../admin_page/js/plugins/morris/morris-data.js"></script>
-
-
-
-
-
 </body>
-
-</html>

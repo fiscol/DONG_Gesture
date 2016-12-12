@@ -35,7 +35,7 @@ exports._addNewAdmin = function (_AdminData) {
     if (_AdminData.Name && _AdminData.Password && _AdminData.Rights) {
         var Ref = "DONGCloud/DongService/Admin/TotalAdmin";
         var Callback = function (count) {
-            Ref = "DONGCloud/DongService/Admin/" + count.snapshot.val();
+            Ref = "DONGCloud/DongService/Admin/Admin" + count.snapshot.val();
             var Data = {
                 "Name": _AdminData.Name,
                 "Password": _AdminData.Password,
@@ -78,7 +78,7 @@ exports._getAdminInfo = function (_AdminName) {
         var RefPath = "DONGCloud/DongService";
         var ChildName = "Admin";
         // 回傳所有產品
-        return Promise.resolve(this._onValuePromise(RefPath, ChildName));
+        return Promise.resolve(db._onValuePromise(RefPath, ChildName));
     }
 }
 //編輯管理者資訊
@@ -90,7 +90,7 @@ exports._updateAdminInfo = function (_AdminData) {
         var ChildName = _AdminData.AdminID;
         var Data = {};
         for (var prop in _AdminData) {
-            if (typeof _AdminData[prop] != 'function' && prop != "AdminID") {
+            if (typeof _AdminData[prop] != 'function' && (prop == "Rights" || prop == "Name" || prop == "Password")) {
                 Data[prop] = _AdminData[prop];
             }
         }
@@ -107,7 +107,7 @@ exports._getProducts = function () {
     var RefPath = "DONGCloud/DongService";
     var ChildName = "Products";
     // 回傳所有產品
-    return Promise.resolve(this._onValuePromise(RefPath, ChildName));
+    return Promise.resolve(db._onValuePromise(RefPath, ChildName));
 }
 //各產品用戶數量
 exports._getUserCount = function (_ProductName) {
@@ -139,7 +139,7 @@ exports._addNewProduct = function (_ProductData) {
     if (_ProductData.Name && _ProductData.Description && _ProductData.NeedVerify) {
         var Ref = "DONGCloud/DongService/Products/TotalProducts";
         var Callback = function (count) {
-            Ref = "DONGCloud/DongService/Products/" + count.snapshot.val();
+            Ref = "DONGCloud/DongService/Products/Product" + count.snapshot.val();
             var Data = {
                 "Name": _ProductData.Name,
                 "Description": _ProductData.Description,
@@ -156,7 +156,7 @@ exports._addNewProduct = function (_ProductData) {
     }
 }
 //編輯產品
-exports._editProduct = function (_ProductData) {
+exports._updateProduct = function (_ProductData) {
     if (_ProductData.ProductID && (_ProductData.Description || _ProductData.Name || _ProductData.NeedVerify)) {
         // DB Table
         var RefPath = "DONGCloud/DongService/Products";
@@ -164,7 +164,7 @@ exports._editProduct = function (_ProductData) {
         var ChildName = _ProductData.ProductID;
         var Data = {};
         for (var prop in _ProductData) {
-            if (typeof _ProductData[prop] != 'function' && prop != "ProductID") {
+            if (typeof _ProductData[prop] != 'function' && (prop == "Description" || prop == "Name" || prop == "NeedVerify")) {
                 Data[prop] = _ProductData[prop];
             }
         }
@@ -223,9 +223,10 @@ exports._getProductFrequency = function () {
 
 }
 //目前線上使用者清單
-exports._getList = function () {
+exports._getUsersList = function () {
     //online/TotalUsers
     //username/status
+    //socket:sports room clientcount
 }
 
 //以Name查詢管理者

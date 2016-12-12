@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div>
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>ProductID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>NeedVerify</th>
+                    <th>Edit</th>
+                    <th>TotalUsers</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i in productData) {%>
+                    <% if(i != "TotalProducts"){ %>
+                        <tr>
+                            <td>
+                                <%= i %>
+                            </td>
+                            <td class="Name" style="white-space:nowrap"><%= productData[i]["Name"] %></td>
+                            <td class="Description" style="white-space:nowrap"><%= (productData[i]["Description"] == 'null')? "":productData[i]["Description"] %></td>
+                            <td class="NeedVerify" style="white-space:nowrap"><%= (productData[i]["NeedVerify"] == 'null')? "":productData[i]["NeedVerify"] %></td>
+                            <td>
+                                <input type="button" value="Edit" class="editProductData">
+                                <input type="button" value="Update" id="<%= i %>" class="updateProductData">
+                                <input type="button" value="Cancel" class="cancelEditData">
+                            </td>
+                            <td class="TotalUsers" style="white-space:nowrap"><%= productData[i]["TotalUsers"] %></td>
+                        </tr>
+                    <% } %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <hr>
+        <h2>Add New Product</h2>
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>NeedVerify</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class='Name' contenteditable='true'></td>
+                    <td class='Description' contenteditable='true'></td>
+                    <td class='NeedVerify' contenteditable='true'></td>
+                    <td>
+                        <input type="button" value="Add" class="addNewProduct">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+    var Admin = "<%= adminName %>";
+    var ProductBeforeEdit = {};
+    $(".editProductData").on("click", function(event){
+        var Name = $(this).parents('tr').find('.Name');
+        Name.prop('contenteditable', true);
+        ProductBeforeEdit["Name"] = Name.text();
+        var Description = $(this).parents('tr').find('.Description');
+        Description.prop('contenteditable', true);
+        ProductBeforeEdit["Description"] = Description.text();
+        var NeedVerify = $(this).parents('tr').find('.NeedVerify');
+        NeedVerify.prop('contenteditable', true);
+        ProductBeforeEdit["NeedVerify"] = NeedVerify.text();
+    });
+    $(".cancelEditData").on("click", function(event){
+        var Name = $(this).parents('tr').find('.Name');
+        Name.prop('contenteditable', false);
+        Name.text(ProductBeforeEdit["Name"]);
+        var Description = $(this).parents('tr').find('.Description');
+        Description.prop('contenteditable', false);
+        Description.text(ProductBeforeEdit["Description"]);
+        var NeedVerify = $(this).parents('tr').find('.NeedVerify');
+        NeedVerify.prop('contenteditable', false);
+        NeedVerify.text(ProductBeforeEdit["NeedVerify"]);
+
+        ProductBeforeEdit = {};
+    });
+    $(".updateProductData").on("click", function(event){
+        event.preventDefault();
+
+        var Name = $(this).parents('tr').find('.Name');
+        Name.prop('contenteditable', false);
+        var Description = $(this).parents('tr').find('.Description');
+        Description.prop('contenteditable', false);
+        var NeedVerify = $(this).parents('tr').find('.NeedVerify');
+        NeedVerify.prop('contenteditable', false);
+
+        ProductBeforeEdit = {};
+
+        $.post("<%= updatePath %>",{
+            ProductID : this.id, Name:Name.text(), Description:Description.text(), NeedVerify:NeedVerify.text()
+            },function(data){
+                alert(data.Message);
+        });
+    });
+    $(".addNewProduct").on("click", function(event){
+        event.preventDefault();
+
+        var Name = $(this).parents('tr').find('.Name');
+        var Description = $(this).parents('tr').find('.Description');
+        var NeedVerify = $(this).parents('tr').find('.NeedVerify');
+
+        ProductBeforeEdit = {};
+
+        $.post("<%= addNewPath %>",{
+            Name:Name.text(), Description:Description.text(), NeedVerify:NeedVerify.text()
+            },function(data){
+                alert(data.Message);
+                $.post("<%= refreshPath %>",{
+					Admin : Admin
+					},function(data){
+						$("#mainTop").html(data);
+				});
+        });
+    });
+    </script>
+</html>

@@ -6,16 +6,12 @@ var router = express.Router();
 var configDB = require('../config/path.js');
 var serverPath = configDB.ServerUrl;
 
-// router.use(session({
-//     secret: 'PVDPlusAdminLogin',
-//     cookie: { maxAge: 60 * 1000 * 60 * 24 * 14 } //cookie存在兩週
-// }));
 ////頁面
 
 //主頁面
 router.get('/', function (req, res) {
-    if (req.param('admin') == req.session.Name && req.session.Name) {
-        res.render('admin.ejs', { title: 'DONG Admin', user: req.session.Name });
+    if (req.param('admin') == req.session.AdminName && req.session.AdminName) {
+        res.render('admin.ejs', { title: 'DONG Admin', adminName: req.session.AdminName, products: '123' });
     }
     else {
         res.redirect('/admin/login');
@@ -23,16 +19,70 @@ router.get('/', function (req, res) {
 })
 //登入驗證
 router.get('/login', function (req, res) {
-    res.render('login.ejs', { user: req.session.Name });
+    res.render('adminLogin.ejs', { user: req.session.AdminName });
 })
 //編輯管理者資訊頁面
-router.get('/editAdmin', function (req, res) {
-
+router.post('/editAdmin', function (req, res) {
+    var Body = req.body;
+    if (req.session.AdminName && req.session.AdminName == Body.Admin) {
+        adminService._getAdminInfo().then(function (data) {
+            //成功, 回傳管理者資料
+            res.render('partials/admin/editAdmin.ejs', {
+                adminName: Body.Admin,
+                adminData: data,
+                totalAdmin: data["TotalAdmin"],
+                updatePath: serverPath + "admin/updateAdminInfo",
+                addNewPath: serverPath + "admin/addNewAdmin",
+                refreshPath: serverPath + "admin/editAdmin"
+            }, function (err, html) {
+                res.send(html);
+            });
+        }).catch((err) => {
+            //失敗
+            res.json({ "Error": err });
+        })
+    }
+    else {
+        res.redirect('/admin/login');
+    }
 })
 //編輯產品資訊頁面
-router.get('/editProducts', function (req, res) {
-
+router.post('/editProducts', function (req, res) {
+    var Body = req.body;
+    if (req.session.AdminName && req.session.AdminName == Body.Admin) {
+        adminService._getProducts().then(function (data) {
+            res.render('partials/admin/editProducts.ejs', {
+                adminName: Body.Admin,
+                productData: data,
+                totalAdmin: data["TotalProducts"],
+                updatePath: serverPath + "admin/updateProduct",
+                addNewPath: serverPath + "admin/addNewProduct",
+                refreshPath: serverPath + "admin/editProducts"
+            }, function (err, html) {
+                res.send(html);
+            });
+        }).catch((err) => {
+            //失敗
+            res.json({ "Error": err });
+        })
+    }
+    else {
+        res.redirect('/admin/login');
+    }
 })
+//查詢使用者頁面
+router.post('/searchUser', function (req, res) {
+    var Body = req.body;
+    if (req.session.AdminName && req.session.AdminName == Body.Admin) {
+        res.render('partials/admin/searchUser.ejs', { adminName: Body.Admin, path: serverPath + "admin" }, function (err, html) {
+            res.send(html);
+        });
+    }
+    else {
+        res.redirect('/admin/login');
+    }
+})
+
 ////API
 //管理者登入
 router.post('/adminLogin', function (req, res) {
@@ -40,8 +90,8 @@ router.post('/adminLogin', function (req, res) {
     //取得登入狀況
     adminService._adminLogin(AdminData).then(function (data) {
         //登入成功
-        if (req.session.Name && req.session.Rights) {
-            if (req.session.Name == AdminData.Name) {
+        if (req.session.AdminName && req.session.Rights) {
+            if (req.session.AdminName == AdminData.Name) {
                 console.log(req.session);
                 res.json(
                     {
@@ -51,7 +101,7 @@ router.post('/adminLogin', function (req, res) {
             }
             else {
                 req.session.regenerate(function () {
-                    req.session.Name = AdminData.Name;
+                    req.session.AdminName = AdminData.Name;
                     req.session.Rights = data.Rights;
                     req.session.AdminID = data.AdminID;
                     res.json(
@@ -64,7 +114,7 @@ router.post('/adminLogin', function (req, res) {
             }
         }
         else {
-            req.session.Name = AdminData.Name;
+            req.session.AdminName = AdminData.Name;
             req.session.Rights = data.Rights;
             req.session.AdminID = data.AdminID;
             res.json(
@@ -80,9 +130,9 @@ router.post('/adminLogin', function (req, res) {
 })
 //管理者登出
 router.get('/adminLogout', function (req, res) {
-    if (req.session.Name) {
+    if (req.session.AdminName) {
         var AdminData = {
-            Name: req.session.Name
+            Name: req.session.AdminName
         }
         //取得登入狀況
         adminService._adminLogout(AdminData).then(function (data) {
@@ -108,13 +158,9 @@ router.post('/addNewAdmin', function (req, res) {
     var AdminData = req.body;
     //寫入管理者資訊(
     adminService._addNewAdmin(AdminData).then(function (data) {
-        req.session.Name = data.Name;
-        req.session.Rights = data.Rights;
-        req.session.AdminID = data.AdminID;
         //新增成功
         res.json({
-            "Message": "已加入管理者" + AdminData.Name + "。",
-            "Index": serverPath + "admin?admin=" + AdminData.Name
+            "Message": "已加入管理者" + AdminData.Name + "。"
         });
     }).catch((err) => {
         //新增失敗
@@ -180,9 +226,9 @@ router.post('/addNewProduct', function (req, res) {
     })
 })
 //編輯產品
-router.post('/editProduct', function (req, res) {
+router.post('/updateProduct', function (req, res) {
     var ProductData = req.body;
-    adminService._editProduct(ProductData).then(function (data) {
+    adminService._updateProduct(ProductData).then(function (data) {
         //編輯成功
         res.json({ "Message": data });
     }).catch((err) => {
@@ -210,7 +256,7 @@ router.post('/getProductFrequency', function (req, res) {
 
 })
 //目前線上使用者清單
-router.get('/getList', function (req, res) {
+router.get('/getUsersList', function (req, res) {
 
 })
 

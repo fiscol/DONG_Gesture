@@ -1,0 +1,63 @@
+<html>
+
+<head>
+	<title>PVD+ AdminLogin</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function(){
+    var serverPath = "http://localhost:3004/";
+    $('#login-submit').click(function(e){
+        e.preventDefault();
+        if($("#username").val().length != 0 && $("#password").val().length != 0){
+            $.post(serverPath + "admin/adminLogin",{ 
+                    Name : $("#username").val(), 
+                    Password : $("#password").val() 
+                    },function(data){
+                if(!data.Error) {
+                    window.location.replace(data.Index);
+                    //alert(data.Message);
+                } else {
+                    alert(data.Error);
+                }
+            });
+        
+        }
+        else{
+            alert("請輸入完整資訊");
+        }
+    });
+    $("#logout-submit").click(function(event){
+        event.preventDefault();
+        $.get(serverPath + "admin/adminLogout",function(data){  
+            if(!data.Error) {
+                window.location.replace(data.Index);
+                //alert(data.Message);
+            } else {
+                alert(data.Error);
+            }
+        });
+    });
+});
+</script>
+</head>
+<body>
+    <% include partials/headerBar.ejs %>
+        <div class="form-group" style="margin-top: 100px; width : 400px; margin-left : 50px;">
+            <input type="text" id="username" placeholder="Name" class="form-control"><br>
+            <!--<input type="text" id="useremail" placeholder="Email" class="form-control"><br>-->
+            <input type="password" id="password" placeholder="Password" class="form-control"><br>
+            <input type="button" id="login-submit" value="Log In" class="btn btn-primary">&nbsp;<a href="" id="reg">Sign up here </a>
+            <% if (user != null) { %>
+                <br>
+                <input type="button" id="logout-submit" value="Log Out" class="btn btn-primary">
+                <% } %>
+        </div>
+</body>
+
+</html>

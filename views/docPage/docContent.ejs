@@ -149,6 +149,81 @@
                     </tr>
                 </tbody>
             </table>
+            <p>Admin</p>
+            <table class="table table-striped table-bordered table-condensed">
+                <tbody>
+                    <tr>
+                        <th>URL</th>
+                        <th>HTTP Verb</th>
+                        <th>Functionality</th>
+                        <!-- <th>Parameters</th> -->
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#admin/adminLogin">admin/adminLogin</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Login with admin's account.</td>
+                        <!-- <td>Enter Option Parameters Here</td> -->
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#admin/adminLogout">admin/adminLogout</a>
+                        </td>
+                        <td>GET</td>
+                        <td>Logout of admin's interface.</td>
+                        <!-- <td>Enter Option Parameters Here</td> -->
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#admin/getAdminInfo">admin/getAdminInfo</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Get admin members' info.</td>
+                        <!-- <td>Enter Option Parameters Here</td> -->
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#admin/updateAdminInfo">admin/updateAdminInfo</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Update edited admin info.</td>
+                        <!-- <td>Enter Option Parameters Here</td> -->
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#admin/addNewAdmin">admin/addNewAdmin</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Add a new admin member.</td>
+                        <!-- <td>Enter Option Parameters Here</td> -->
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#admin/getProducts">admin/getProducts</a>
+                        </td>
+                        <td>GET</td>
+                        <td>Get products' info.</td>
+                        <!-- <td>Enter Option Parameters Here</td> -->
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#admin/updateProduct">admin/updateProduct</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Update edited product info.</td>
+                        <!-- <td>Enter Option Parameters Here</td> -->
+                    </tr>
+                    <tr>
+                        <td title="Option Name" class="optionName" data-content="Enter Option Description Here">
+                            <a href="#admin/addNewProduct">admin/addNewProduct</a>
+                        </td>
+                        <td>POST</td>
+                        <td>Add a new product.</td>
+                        <!-- <td>Enter Option Parameters Here</td> -->
+                    </tr>
+                </tbody>
+            </table>
             <p>Learning</p>
             <table class="table table-striped table-bordered table-condensed">
                 <tbody>
@@ -168,8 +243,6 @@
                     </tr>
                 </tbody>
             </table>
-
-
             <br>
             <!-- API Content Start -->
             <a name="api/v1/iOS/Raw" class="jumptarget"></a>
@@ -1601,6 +1674,733 @@ curl -H "Content-Type: application/json" \
   "Message":"Success",
   "Index":"http://dongcloud.herokuapp.com/users/main?user=David",
   "Page":"main"
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="admin/getAdminInfo" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>admin/adminLogin</h3>
+
+                <p>/admin/adminLogin Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/admin/adminLogin
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Name</td>
+                            <td>String</td>
+                            <td>Admin member's name</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Password</td>
+                            <td>String</td>
+                            <td>Admin member's password</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "Name":"Fiscol",
+     "Password":"123"}' \
+     https://dongcloud.herokuapp.com/admin/adminLogin
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Index</td>
+                            <td>String</td>
+                            <td>Next window.location(For WebPage use)</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Index":"http://dongcloud.herokuapp.com/admin?admin=Fiscol"
+}
+              </code></pre>
+
+            </div>
+                        <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="admin/adminLogout" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>admin/adminLogout</h3>
+
+                <p>/admin/adminLogout Description</p>
+                <p class="well note">
+                    <code>GET</code> https://dongcloud.herokuapp.com/admin/adminLogout
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X GET  \
+     https://dongcloud.herokuapp.com/admin/adminLogout
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Index</td>
+                            <td>String</td>
+                            <td>Next window.location(For WebPage use)</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Index":"http://dongcloud.herokuapp.com/admin/login"
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="admin/getAdminInfo" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>admin/getAdminInfo</h3>
+
+                <p>/admin/getAdminInfo Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/admin/getAdminInfo
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Name(Optional)</td>
+                            <td>String</td>
+                            <td>Admin member's name</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "Name":"Fiscol"}' \
+     https://dongcloud.herokuapp.com/admin/getAdminInfo
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>LastLoginAt</td>
+                            <td>String</td>
+                            <td>Last login datetime of the admin</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Name</td>
+                            <td>String</td>
+                            <td>Admin name</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Online</td>
+                            <td>Boolean</td>
+                            <td>Admin's online status</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Password</td>
+                            <td>String</td>
+                            <td>Admin's login password</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Rights</td>
+                            <td>String</td>
+                            <td>Admin's rights to database</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "LastLoginAt":"2016/12/08 19:00:00",
+  "Name":"Fiscol",
+  "Online":false,
+  "Password":123,
+  "Rights":DBOwner
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="admin/updateAdminInfo" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>users/updateAdminInfo</h3>
+
+                <p>/users/updateAdminInfo Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/users/updateAdminInfo
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>AdminID</td>
+                            <td>String</td>
+                            <td>Admin member's ID</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Name</td>
+                            <td>String</td>
+                            <td>Admin member's name</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Rights</td>
+                            <td>String</td>
+                            <td>Admin member's rights to database</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "AdminID":"Admin1",
+     "Name":"Andy",
+     "Rights":"DBReader,DBWriter"}' \
+     https://dongcloud.herokuapp.com/users/updateAdminInfo
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Message</td>
+                            <td>String</td>
+                            <td>Result of update admin's' info</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Message":"已更新管理者資訊。"
+}
+              </code></pre>
+
+            </div>
+                        <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="users/addNewAdmin" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>users/addNewAdmin</h3>
+
+                <p>/users/addNewAdmin Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/users/addNewAdmin
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Name</td>
+                            <td>String</td>
+                            <td>New admin's name</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Password</td>
+                            <td>String</td>
+                            <td>New admin's password</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Rights</td>
+                            <td>String</td>
+                            <td>New admin's rights to database</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "Name":"Mark",
+     "Password":"6543",
+     "Rights":"DBOwner"}' \
+     https://dongcloud.herokuapp.com/users/addNewAdmin
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Message</td>
+                            <td>String</td>
+                            <td>Result of adding a new admin member</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Message":"已加入管理者Mark。"
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="admin/getProducts" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>admin/getProducts</h3>
+
+                <p>/admin/getProducts Description</p>
+                <p class="well note">
+                    <code>GET</code> https://dongcloud.herokuapp.com/admin/getProducts
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -i -H "Content-Type: application/json" \ 
+     -X GET \
+     https://dongcloud.herokuapp.com/admin/getProducts
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>ProductObject</td>
+                            <td>Object</td>
+                            <td>All products information</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+    "Product1":{
+        "Description":"Capture motion data to improve your sports performances",
+        "Name":"Sports",
+        "NeedVerify":false,
+        "TotalUsers":1
+        },
+    "Product2":{
+        "Description":"Use directional gestures to control drone devices",
+        "Name":"Drone",
+        "NeedVerify":false,
+        "TotalUsers":2
+        }
+}
+              </code></pre>
+
+            </div>
+            <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="admin/updateProduct" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>users/updateProduct</h3>
+
+                <p>/users/updateProduct Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/users/updateProduct
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>ProductID</td>
+                            <td>String</td>
+                            <td>Update target product's ID</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Name(Optional)</td>
+                            <td>String</td>
+                            <td>Update target product's name</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Description(Optional)</td>
+                            <td>String</td>
+                            <td>Update target product's detail description</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>NeedVerify(Optional)</td>
+                            <td>Boolean</td>
+                            <td>Update target product's verification</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "ProductID":"Product1",
+     "Name":"Drone",
+     "Description":"Fly machines controller",
+     "NeedVerify":true}' \
+     https://dongcloud.herokuapp.com/users/updateProduct
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Message</td>
+                            <td>String</td>
+                            <td>Result of update product's info</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Message":"已更新產品。"
+}
+              </code></pre>
+
+            </div>
+                        <!-- API Content End -->
+            <!-- API Content Start -->
+            <a name="users/addNewProduct" class="jumptarget"></a>
+            <div class="API-Content">
+                <h3>users/addNewProduct</h3>
+
+                <p>/users/addNewProduct Description</p>
+                <p class="well note">
+                    <code>POST</code> https://dongcloud.herokuapp.com/users/addNewProduct
+                </p>
+                <h4>Headers</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Content-Type</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>Basic Og==</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <h4>Body</h4>
+
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Name</td>
+                            <td>String</td>
+                            <td>New product's name</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td>String</td>
+                            <td>New product's detail description</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                        <tr>
+                            <td>NeedVerify</td>
+                            <td>Boolean</td>
+                            <td>New product's verification</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Sample</h4>
+                <pre><code data-language="csharp">
+curl -H "Content-Type: application/json" \ 
+     -X POST -d '{ \
+     "Name":"Drone",
+     "Description":"Remote control drone with your apple watch",
+     "NeedVerify":false}' \
+     https://dongcloud.herokuapp.com/users/addNewProduct
+
+              </code></pre>
+                <h4>Response</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <!-- <th>Parameters</th> -->
+                        </tr>
+                        <tr>
+                            <td>Message</td>
+                            <td>String</td>
+                            <td>Result of adding a new admin member</td>
+                            <!-- <td>Enter Option Parameters Here</td> -->
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>Sample Response</h4>
+
+                <pre><code data-language="csharp">
+{
+  "Message":"已加入新產品Drone。"
 }
               </code></pre>
 
