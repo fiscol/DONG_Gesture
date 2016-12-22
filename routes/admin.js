@@ -5,7 +5,7 @@ var adminService = require('../services/admin/admin.js');
 var router = express.Router();
 var configDB = require('../config/path.js');
 var serverPath = configDB.ServerUrl;
-
+var PythonShell = require('python-shell');
 ////頁面
 
 //主頁面
@@ -259,5 +259,14 @@ router.post('/getProductFrequency', function (req, res) {
 router.get('/getUsersList', function (req, res) {
 
 })
-
+router.get('/py', function (req, res) {
+    PythonShell.run('/python.py', function (err, results) {
+        if (err) {
+            res.json({ 'err': err.message });
+        }
+        else {
+            res.json({ 'result': results });
+        }
+    });
+});
 module.exports = router;
