@@ -30,7 +30,7 @@ exports._requestDongSlide = function (Rate, Code, UID) {
 // Apicta 正昌DEMO使用
 exports._requestDongYoutube = function (Rate, Code) {
   var request = require('request')
-
+  console.log("video play / pause");
   var postData = {
     name: 'tony',
     slider_control: 'play',
