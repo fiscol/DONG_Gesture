@@ -52,9 +52,9 @@ router.post('/iOS/Minder', checkAuth, function (req, res, next) {
         demoServices._TriggerDongServices(req, MinderData.UID, MinderCode, _MinderResult, MinderThreshold, localurl);
 
         // For DT DEMO
-        var demoServicesSign = require('../services/api/demo-sign.js');
-        demoServicesSign._TriggerDongServicesDemoSign(req, _MinderResult);
-        boxingServices._TriggerBoxing(req, MinderCode, _MinderResult, MinderThreshold);
+        //var demoServicesSign = require('../services/api/demo-sign.js');
+        //demoServicesSign._TriggerDongServicesDemoSign(req, _MinderResult);
+        //boxingServices._TriggerBoxing(req, MinderCode, _MinderResult, MinderThreshold);
         res.json(_MinderResult);
         
     }).catch((err) => {

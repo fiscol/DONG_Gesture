@@ -52,6 +52,7 @@ exports._TriggerDongServices = function (req, _UID, _MinderCode, _MinderResult, 
     //Apicta 正昌DEMO使用
     // if (_UID == "70Hfhlb3P9VFEIeIozSqfoFy3eA2") {
         if (_MinderResult.Rate >= 0.4) {
+            console.log("pass(old)");
             DongServices._requestDongYoutube(SignRate, ActionCode);
         }
         // else if (_MinderResult.ActionCode == 2 && _MinderResult.Rate >= 0.4) {
