@@ -50,32 +50,32 @@ exports._TriggerDongServices = function (req, _UID, _MinderCode, _MinderResult, 
     var SignRate = _MinderResult.Rate;
     var ActionCode = _MinderResult.ActionCode;
     //Apicta 正昌DEMO使用
-    if (_UID == "70Hfhlb3P9VFEIeIozSqfoFy3eA2") {
+    // if (_UID == "70Hfhlb3P9VFEIeIozSqfoFy3eA2") {
         if (_MinderResult.ActionCode == 2 && _MinderResult.Rate >= 0.4) {
             DongServices._requestDongYoutube(SignRate, ActionCode);
         }
         // else if (_MinderResult.ActionCode == 2 && _MinderResult.Rate >= 0.4) {
         //     DongServices._requestDongSlide(SignRate, ActionCode, _UID);
         // };
-    }
+    // }
     // else {
     //     DongServices._requestDongSlide(SignRate, ActionCode);
     // }
     console.log('_requestDongSlide Good')
     // if (_UID != "70Hfhlb3P9VFEIeIozSqfoFy3eA2") {
-    if (_MinderResult.ActionCode == 1 && _MinderResult.Rate >= 0.55) {
-        console.log(_MinderResult.Rate);
-        DongServices._requestDongMotionSign(_Localurl);
-        console.log('Dong Services Sign.');
-        // DongServices._requestDongMotionKnock(_Localurl);
-        // console.log('Dong Services Knock.');
-    } else if (_MinderResult.ActionCode == 2 && _MinderResult.Rate > 0.4) {
-        // 2016/09/12 IOT Salon Demo Youtube Play
-        console.log(_MinderResult.Rate);
-        DongServices._requestDongMotionYoutubePlay(_Localurl);
-        console.log('Dong Services YoutubePlay.');
+    // if (_MinderResult.ActionCode == 1 && _MinderResult.Rate >= 0.55) {
+    //     console.log(_MinderResult.Rate);
+    //     DongServices._requestDongMotionSign(_Localurl);
+    //     console.log('Dong Services Sign.');
+    //     // DongServices._requestDongMotionKnock(_Localurl);
+    //     // console.log('Dong Services Knock.');
+    // } else if (_MinderResult.ActionCode == 2 && _MinderResult.Rate > 0.4) {
+    //     // 2016/09/12 IOT Salon Demo Youtube Play
+    //     console.log(_MinderResult.Rate);
+    //     DongServices._requestDongMotionYoutubePlay(_Localurl);
+    //     console.log('Dong Services YoutubePlay.');
 
-    };
+    // };
     // }
     // };
     //暫存最原始的三組簽名Data(Mark,BigQ,David)
