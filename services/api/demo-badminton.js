@@ -59,6 +59,9 @@ exports._TriggerDongServices = function (req, _UID, _MinderCode, _MinderResult, 
     // else {
     //     DongServices._requestDongSlide(SignRate, ActionCode);
     // }
+    console.log("UID = " + _UID);
+    console.log("ACD = " + _MinderResult.ActionCode);
+    console.log("Rate = " + _MinderResult.Rate);
 
     console.log('_requestDongSlide Good')
     // if (_UID != "70Hfhlb3P9VFEIeIozSqfoFy3eA2") {

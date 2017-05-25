@@ -40,6 +40,20 @@ exports._set = function (_Path, _ChildName, _Value, error) {
     // count++;
 };
 
+//remove
+exports._remove = function(_Path, _Callback){
+   var ref = db.ref(_Path);
+   ref.remove()
+     .then(function() {
+       console.log("Remove succeeded.");
+       return Promise.resolve("Remove succeeded.");
+     })
+     .catch(function(error) {
+       console.log("Remove failed: " + error.message);
+       return Promise.reject("Remove failed.");
+     });
+}
+
 // update
 // Error: Firebase.update failed: First argument  must be an object containing the children to replace.
 exports._update = function (_Path, _ChildName, _Value, error) {
@@ -63,7 +77,7 @@ exports._push = function (_Path, _ChildName, _Value, error) {
     if (error) {
         console.log("Data could not be pushed." + error);
     } else {
-        console.log("Data pushed successfully." + ref.child(childname).push(value).key);
+        console.log("Data pushed successfully." + ref.child(_ChildName).push(_Value).key);
     }
 };
 
