@@ -51,19 +51,16 @@ exports._TriggerDongServices = function (req, _UID, _MinderCode, _MinderResult, 
     var ActionCode = _MinderResult.ActionCode;
     //Apicta 正昌DEMO使用
     if (_UID == "70Hfhlb3P9VFEIeIozSqfoFy3eA2") {
-        if (_MinderResult.ActionCode == 1 && _MinderResult.Rate >= 0.4) {
+        if (_MinderResult.ActionCode == 2 && _MinderResult.Rate >= 0.4) {
             DongServices._requestDongYoutube(SignRate, ActionCode);
         }
-        else if (_MinderResult.ActionCode == 2 && _MinderResult.Rate >= 0.4) {
-            DongServices._requestDongSlide(SignRate, ActionCode, _UID);
-        };
+        // else if (_MinderResult.ActionCode == 2 && _MinderResult.Rate >= 0.4) {
+        //     DongServices._requestDongSlide(SignRate, ActionCode, _UID);
+        // };
     }
     // else {
     //     DongServices._requestDongSlide(SignRate, ActionCode);
     // }
-    console.log("UID = " + _UID);
-    console.log("ACD = " + _MinderResult.ActionCode);
-    console.log("Rate = " + _MinderResult.Rate);
     console.log('_requestDongSlide Good')
     // if (_UID != "70Hfhlb3P9VFEIeIozSqfoFy3eA2") {
     if (_MinderResult.ActionCode == 1 && _MinderResult.Rate >= 0.55) {
